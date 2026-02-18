@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* For Webkit-based browsers (Chrome, Safari, Edge) */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* For Firefox */
+.no-scrollbar {
+    scrollbar-width: none;
+}
+
+/* For IE and Edge (older versions) */
+.no-scrollbar {
+    -ms-overflow-style: none;
+}
+
+p{
+  @apply text-black
+}
+
+.signin-container {
+  @apply h-[100vh] w-[100vw] px-3 xl:pl-40 flex justify-start items-center 
+}
+.signin-box {
+  @apply w-[400px] h-[45s0px] rounded-lg p-5  shadow-[#3EB776] flex flex-col items-start;
+}
+.signin-box h1 {
+  @apply mb-5;
+}
+input {
+  @apply w-full h-[42px] p-1 px-3 rounded-md border border-gray-600 text-black;
+}
+
+/* select {
+  @apply  ;
+} */
+
+/* option {
+  @apply px-3;
+} */
+
+.form-control {
+  @apply p-2 rounded-md border border-gray-600 w-full;
+}
+
+body {
+  /* @apply bg-gradient-to-tr from-blue-600 to-teal-700; */
+  @apply bg-[#F2F2F2] text-black;
+}
+
+.signin-box .btn {
+  @apply mt-4 bg-[#3EB776] text-white px-6 py-2 rounded-md;
+}
+
+.btn {
+  @apply bg-[#009f4d] hover:bg-teal-900 text-white px-6 py-2 rounded-md;
+}
+
+.btn-delete {
+  @apply bg-red-500 hover:bg-red-800 text-white text-[16px] pb-[1px] xl:px-6 xl:py-3 w-[32px] h-[32px] rounded-md;
+}
+
+.btn-active {
+  @apply bg-white border-2 border-teal-600 text-teal-600;
+}
+
+.content-header {
+  @apply text-2xl font-bold;
+}
+
+.table {
+  @apply w-full;
+}
+
+.table thead {
+  @apply bg-teal-600 text-white;
+}
+
+.table thead th {
+  @apply p-3;
+}
+
+.table tbody tr {
+  @apply border-b border-gray-300;
+}
+
+.table tbody td {
+  @apply p-3 bg-gray-100;
+}
+
+.btn-edit {
+  @apply bg-blue-600 hover:bg-blue-900 text-white text-[15px] pb-[1px] xl:px-2 xl:py-1 w-[32px] h-[32px] rounded-md;
+}
+
+.btn-delete {
+  @apply text-white px-2 py-1 rounded-md;
+}
+
+.content {
+  @apply ml-[130px] 
+}
+
+table{
+  @apply text-[14px] xl:text-[16px]
+
+}
+
+svg{
+  @apply w-[18px] h-[18px] xl:w-[25px] xl:h-[25px]
+}

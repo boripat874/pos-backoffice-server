@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model userinfo {
+  uinfoid        String    @db.VarChar
+  ugroupid       String    @db.VarChar
+  shopid         String    @db.VarChar
+  uinfologinname String?   @db.VarChar
+  uinfologinpass String?   @db.VarChar
+  uinfoname      String?   @db.VarChar
+  uinfodata1     String?   @db.VarChar
+  uinfodata2     String?   @db.VarChar
+  uinfodata3     String?   @db.VarChar
+
+  @@id([uinfoid, ugroupid, shopid])
+}
+
+model usergroup {
+  ugroupid        String    @id @db.VarChar
+  ugroupname      String?   @db.VarChar
+  ugroupprivilege String?   @db.VarChar
+  ugroupremark    String?   @db.VarChar
+
+}
+
+model shopinfo {
+  shopid        String    @db.VarChar
+  merid         String    @db.VarChar
+  shoptype      String?   @db.VarChar
+  shopnameth    String?   @db.VarChar
+  shopnameeng   String?   @db.VarChar
+  shopopentime  String?   @db.VarChar
+  shopclosetime String?   @db.VarChar
+  shopexpiredate DateTime?
+  shopdata1     String?   @db.VarChar
+  shopdata2     String?   @db.VarChar
+  apikey        String?   @db.VarChar
+  shopimage1    String?   @db.VarChar
+  pickupnow     String?   @db.VarChar
+
+  @@id([shopid, merid])
+}
+
+model shopslot{
+  shopid        String   @db.VarChar
+  merid         String   @db.VarChar
+  shoptype      String?  @db.VarChar
+  shopnameth    String?  @db.VarChar
+  shopnameeng   String?  @db.VarChar
+  shopopentime  String?  @db.VarChar
+  shopclosetime String?  @db.VarChar
+  shopexpiredate DateTime?
+  shopdata1     String?  @db.VarChar
+  shopdata2     String?  @db.VarChar
+  apikey        String?  @db.VarChar
+  shopimage1    String?  @db.VarChar
+  pickupnow     String?  @db.VarChar
+
+  @@id([shopid, merid])
+}
+
+model productinfo {
+  productid       String    @db.VarChar
+  shopid          String    @db.VarChar
+  productnameth   String?   @db.VarChar
+  productnameeng  String?   @db.VarChar
+  productdatath   String?   @db.VarChar
+  productdataeng  String?   @db.VarChar
+  productprice    Decimal?
+  uomtext         String?   @db.VarChar
+  productimage    String?   @db.VarChar
+  produtoption    String?   @db.VarChar
+  productremain   String?   @db.VarChar
+  productlowalarm String?   @db.VarChar
+
+  @@id([productid, shopid])
+}
