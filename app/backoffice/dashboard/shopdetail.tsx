@@ -331,7 +331,7 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
             label={"รายได้รวมทั้งหมดจาก\nE-wallet"}
             value={`฿ ${totalewallet.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#e4002b]"
+            backgroundColor="bg-[#da1884]"
             iconpath={"/icon/E_wallet.svg"}
           />
 
@@ -340,7 +340,7 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
             label={"รายได้รวมทั้งหมดจาก\nเงินสด"}
             value={`฿ ${totalcash.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#da1884]"
+            backgroundColor="bg-[#a51890]"
             iconpath={"/icon/cash.svg"}
           />
 
@@ -349,7 +349,7 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
             label={"บิลที่ขายได้ทั้งหมด"}
             value={`${totalorder.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#a51890]"
+            backgroundColor="bg-[#0077c8]"
             iconpath={"/icon/order.svg"}
           />
 
@@ -358,7 +358,7 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
             label={"สินค้าขายออกทั้งหมด\nหลายชิ้น"}
             value={`${totalproductsell.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#0077c8]"
+            backgroundColor="bg-[#008eaa]"
             iconpath={"/icon/creait_card.svg"}
           />
         </div>

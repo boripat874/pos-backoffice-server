@@ -1,12 +1,12 @@
 export const config = {
-    // apiUrl: 'http://localhost:5001/api',
-    // apiUrl: 'http://192.168.1.179:5001/api',
 
-    apiUrl: 'https://10.10.46.2:443/api',
-    // apiUrlImage: 'http://localhost:5001',
-    // apiUrlImage: 'http://192.168.1.179:5001',
+    // apiUrl: 'http://35.186.144.224:80/api',
 
-    apiUrlImage: 'https://10.10.46.2:443',
+    apiUrl: 'https://10.10.46.102:443/api',
+
+    // apiUrlImage: 'http://35.186.144.224:80',
+
+    apiUrlImage: 'https://10.10.46.102:443',
 
     apiKey: '494eabae-b0f7-4d0d-a436-5af39c3abf62',
     // apiUrlZoo: 'https://devsmartzoo-api.netbay.co.th/external/pos',
