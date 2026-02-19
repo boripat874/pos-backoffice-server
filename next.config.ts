@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
         hostname: 'placehold.co',
       },
       {
-        protocol: 'http',
+        protocol: 'https',
         hostname: '10.10.46.3',
         port: '',
         pathname: '/**',
