@@ -8,7 +8,7 @@ module.exports = {
       args: "start", // อาร์กิวเมนต์ที่ส่งไปยัง script (ในที่นี้คือ 'start' เพื่อรัน Production build ของ Next.js)
       // cwd: "./", // working directory ของแอปพลิเคชัน
       env: {
-        PORT: 443, // กำหนด environment variable PORT เป็น 8080
+        PORT: 3001, // กำหนด environment variable PORT เป็น 8080
         NODE_ENV: "production", // กำหนด environment เป็น production
         NODE_TLS_REJECT_UNAUTHORIZED: "0", // แก้ปัญหาดึงรูปไม่ได้จาก SSL (Not Secure)
       },
