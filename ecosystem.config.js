@@ -6,7 +6,7 @@ module.exports = {
       watch: true,
       instances  : 1,
       args: "start", // อาร์กิวเมนต์ที่ส่งไปยัง script (ในที่นี้คือ 'start' เพื่อรัน Production build ของ Next.js)
-      cwd: "./", // working directory ของแอปพลิเคชัน
+      // cwd: "./", // working directory ของแอปพลิเคชัน
       env: {
         PORT: 443, // กำหนด environment variable PORT เป็น 8080
         NODE_ENV: "production", // กำหนด environment เป็น production
