@@ -5,7 +5,7 @@ module.exports = {
       script: "npm", // คำสั่งที่จะรัน (สามารถเป็น 'npm' หรือ 'yarn')
       watch: true,
       instances  : 1,
-      args: "", // อาร์กิวเมนต์ที่ส่งไปยัง script (ในที่นี้คือ 'start' เพื่อรัน Production build ของ Next.js)
+      args: "start", // อาร์กิวเมนต์ที่ส่งไปยัง script (ในที่นี้คือ 'start' เพื่อรัน Production build ของ Next.js)
       cwd: "./", // working directory ของแอปพลิเคชัน
       env: {
         PORT: 443, // กำหนด environment variable PORT เป็น 8080
