@@ -15,19 +15,13 @@ const nextConfig: NextConfig = {
         hostname: 'placehold.co',
       },
       {
-        protocol: 'https',
-        hostname: '10.10.46.3',
-        port: '',
-        pathname: '/**',
-      },
-      {
         protocol: 'http',
         hostname: '10.10.46.3',
         port: '',
         pathname: '/**',
       },
       {
-        protocol: 'https',
+        protocol: 'http',
         hostname: '10.10.46.102',
         port: '',
         pathname: '/**',
