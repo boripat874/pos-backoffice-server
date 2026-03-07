@@ -20,7 +20,7 @@ export default function Selectshop({shopid,shopslist,onChange,className="w-[160p
   return (
     <div>
       <select 
-        className={`${className} text-black text-[14px] xl:text-[16px] h-[40px] xl:h-[40px] rounded-md border-[#009f4d] px-2 border overflow-x-hedden`}
+        className={`${className} text-black text-[14px] xl:text-[16px] h-[40px] xl:h-[40px] rounded-md border-[#009f4d] px-2 border overflow-x-hidden`}
         onChange={(e) => onChange && onChange(e.target.value)}
         value={shopid}
         >
@@ -28,7 +28,7 @@ export default function Selectshop({shopid,shopslist,onChange,className="w-[160p
         {Array.isArray(shopslist) && shopslist.length > 0 ? (
           shopslist.map((shop: Shop) => (
             <option key={shop.shopid} value={shop.shopid}>
-              {shop.shopnameth}
+              {(shop.shopnameth || "").length > 30 ? `${shop.shopnameth.substring(0, 30)}...` : shop.shopnameth}
             </option>
           ))
         ) : (

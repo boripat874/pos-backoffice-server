@@ -2,14 +2,13 @@ export const config = {
 
     // apiUrl: 'http://35.186.144.224:80/api',
 
-    apiUrl: 'https://10.10.46.2:443/api',
+    apiUrl: process.env.NEXT_PUBLIC_API_URL ,
 // 
     // apiUrlImage: 'http://35.186.144.224:80',
 
-    apiUrlImage: 'https://10.10.46.2:443',
+    apiUrlImage: process.env.NEXT_PUBLIC_API_URL_IMAGE,
 // 
-    apiKey: '494eabae-b0f7-4d0d-a436-5af39c3abf62',
-    // apiUrlZoo: 'https://devsmartzoo-api.netbay.co.th/external/pos',
-    apiUrlZoo: 'https://uatsmartzoo-api.netbay.co.th/external/pos',
-    apiZookey: 'FD5lhGbfsNl9nTcoTcZd7hO7rscLbrc8dQccl2sr3u9vOPU8Om3hzU8Z9IJr70jt'
+    apiKey: process.env.NEXT_PUBLIC_API_KEY,
+    apiUrlZoo: process.env.NEXT_PUBLIC_API_URL_ZOO,
+    apiZookey: process.env.NEXT_PUBLIC_API_ZOO_KEY
 }

@@ -36,7 +36,7 @@ export default function CardShopdisplay({imageshop,shopname, total_income, total
       </div>
 
       <div>
-        <p className="text-[14px] xl:text-[16px] font-bold text-black mb-1">{shopname}</p>
+        <p className="text-[14px] xl:text-[16px] font-bold text-black mb-1">{(shopname || "").length > 30 ? `${shopname.substring(0, 30)}...` : shopname}</p>
       </div>
 
       <div className="text-[14px] md:text-[12px] xl:text-[14px] w-full h-2 px-2 py-2 flex flex-row justify-between">

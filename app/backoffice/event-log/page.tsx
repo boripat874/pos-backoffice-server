@@ -450,11 +450,11 @@ export default function Event_log() {
                       className="border-b border-gray-100 hover:bg-gray-50"
                     >
                       <td className="h-12 w-[150px]">
-                        {eventlog.timestamplog}
+                        {(eventlog.timestamplog || "").length > 30 ? eventlog.timestamplog.slice(0, 30) + "..." : eventlog.timestamplog}
                       </td>
-                      <td className="h-12 w-[100px]">{eventlog.shopnameth}</td>
-                      <td className="h-12 w-[100px]">{eventlog.uinfoname}</td>
-                      <td className="h-12 w-[350px]">{eventlog.details}</td>
+                      <td className="h-12 w-[100px]">{(eventlog.shopnameth || "").length > 30 ? eventlog.shopnameth.slice(0, 30) + "..." : eventlog.shopnameth}</td>
+                      <td className="h-12 w-[100px]">{(eventlog.uinfoname || "").length > 30 ? eventlog.uinfoname.slice(0, 30) + "..." : eventlog.uinfoname}</td>
+                      <td className="h-12 w-[350px]">{(eventlog.details || "").length > 50 ? eventlog.details.slice(0, 50) + "..." : eventlog.details}</td>
                     </tr>
                   ))
                 ) : (

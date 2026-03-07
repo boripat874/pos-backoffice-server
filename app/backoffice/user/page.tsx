@@ -1487,11 +1487,11 @@ export default function UserPage() {
                       key={user.uinfoid}
                       className="border-b border-gray-100 hover:bg-gray-50"
                     >
-                      <td className="h-12 w-[100px]">{user.shopnameth}</td>
-                      <td className="h-12 w-[100px]">{user.ugroupname}</td>
-                      <td className="h-12 w-[100px]">{user.uinfoname}</td>
-                      <td className="h-12 w-[100px]">{user.uinfologinname}</td>
-                      <td className="h-12 w-[100px]">{user.level}</td>
+                      <td className="h-12 w-[100px]">{(user.shopnameth || "").length > 30 ? `${user.shopnameth.substring(0, 30)}...` : user.shopnameth}</td>
+                      <td className="h-12 w-[100px]">{(user.ugroupname || "").length > 30 ? `${user.ugroupname.substring(0, 30)}...` : user.ugroupname}</td>
+                      <td className="h-12 w-[100px]">{(user.uinfoname || "").length > 20 ? `${user.uinfoname.substring(0, 20)}...` : user.uinfoname}</td>
+                      <td className="h-12 w-[100px]">{(user.uinfologinname || "").length > 20 ? `${user.uinfologinname.substring(0, 20)}...` : user.uinfologinname}</td>
+                      <td className="h-12 w-[100px]">{(user.level || "").length > 20 ? `${user.level.substring(0, 20)}...` : user.level}</td>
 
                       {/* <td className='h-12 w-[100px]'>฿ {getRandomInt(100,3000).toFixed(2).toLocaleString()}</td>
                       <td className='h-12 w-[100px]'>{getRandomInt(100,1000)}</td> */}

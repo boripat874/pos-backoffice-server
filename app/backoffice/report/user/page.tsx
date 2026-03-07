@@ -344,7 +344,7 @@ export default function Reportusers() {
       <hr className="mt-2 border-t-3 border-[#2B5F60]" />
 
       {/* ตัวเลือกข้อมูล */}
-        {level === "Admin" || level === "Owner" && (
+        {level === "Admin" || level === "Owner" ? (
         <div className="w-full h-11 flex flex-row justify-start items-center mt-2 gap-x-4">
           
           
@@ -366,7 +366,7 @@ export default function Reportusers() {
 
       
         </div>
-      )}
+      ): null}
 
       {/*table */}
       <div className="mt-2 overflow-auto">
@@ -460,12 +460,12 @@ export default function Reportusers() {
                         Array.isArray(reportusers) && reportusers.length > 0 ? (
                           reportusers.map((reportuser: ReportUser) => (
                             <tr key={reportuser.uinfoid}>
-                              <td className='h-12 px-2 truncate'>{reportuser.shopnameth}</td> 
-                              <td className='h-12 px-2 truncate'>{reportuser.ugroupname}</td>
-                              <td className='h-12 px-2 truncate'>{reportuser.uinfoname}</td> 
-                              <td className='h-12 px-2 text-center'>{reportuser.uinfologinname}</td> 
+                              <td className='h-12 px-2 truncate'>{(reportuser.shopnameth || "").length > 30 ? reportuser.shopnameth.slice(0, 30) + "..." : reportuser.shopnameth}</td> 
+                              <td className='h-12 px-2 truncate'>{(reportuser.ugroupname || "").length > 30 ? reportuser.ugroupname.slice(0, 30) + "..." : reportuser.ugroupname}</td>
+                              <td className='h-12 px-2 truncate'>{(reportuser.uinfoname || "").length > 30 ? reportuser.uinfoname.slice(0, 30) + "..." : reportuser.uinfoname}</td> 
+                              <td className='h-12 px-2 text-center'>{(reportuser.uinfologinname || "").length > 30 ? reportuser.uinfologinname.slice(0, 30) + "..." : reportuser.uinfologinname}</td> 
                               <td className='h-12 px-2 text-center'>{reportuser.level}</td> 
-                              <td className='h-12 px-2 text-center'>{reportuser.details}</td> 
+                              <td className='h-12 px-2 text-center'>{(reportuser.details || "").length > 50 ? reportuser.details.slice(0, 50) + "..." : reportuser.details}</td> 
                             </tr>
                           ))
                         ): (

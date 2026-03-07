@@ -494,9 +494,9 @@ const handleGroupDelete = async (userGroupid: string) => {
                   {Array.isArray(usergroups) && usergroups.length > 0 ? usergroups.map((usergroup: UserGroup) => (
                     <tr key={usergroup.ugroupid} className='border-b border-gray-100 hover:bg-gray-50'>
 
-                      <td className='h-12 w-[100px]'>{usergroup.ugroupname}</td>
-                      <td className='h-12 w-[100px]'>{usergroup.ugroupprivilege}</td>
-                      <td className='h-12 w-[100px]'>{usergroup.ugroupremark}</td>
+                      <td className='h-12 w-[100px]'>{(usergroup.ugroupname || "").length > 30 ? `${usergroup.ugroupname.substring(0, 30)}...` : usergroup.ugroupname}</td>
+                      <td className='h-12 w-[100px]'>{(usergroup.ugroupprivilege || "").length > 30 ? `${usergroup.ugroupprivilege.substring(0, 30)}...` : usergroup.ugroupprivilege}</td>
+                      <td className='h-12 w-[100px]'>{(usergroup.ugroupremark || "").length > 50 ? `${usergroup.ugroupremark.substring(0, 50)}...` : usergroup.ugroupremark}</td>
 
                       {/* <td className='h-12 w-[100px]'>฿ {getRandomInt(100,3000).toFixed(2).toLocaleString()}</td>
                       <td className='h-12 w-[100px]'>{getRandomInt(100,1000)}</td> */}

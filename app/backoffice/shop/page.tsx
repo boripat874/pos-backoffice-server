@@ -1360,11 +1360,11 @@ export default function ShopPage() {
 
                       </div>
                     </td>
-                    <td className="h-[48px] w-[190px]">{shop.shopnameth}</td>
-                    <td className="h-[48px] w-[190px]">{shop.shopnameeng}</td>
-                    <td className="h-[48px] w-[140px]">{shop.shoptype}</td>
-                    <td className="h-[48px] w-[120px]">{shop.shopopentime}</td>
-                    <td className="h-[48px] w-[120px]">{shop.shopclosetime}</td>
+                    <td className="h-[48px] w-[190px]">{(shop.shopnameth || "").length > 30 ? `${shop.shopnameth.substring(0, 30)}...` : shop.shopnameth}</td>
+                    <td className="h-[48px] w-[190px]">{(shop.shopnameeng || "").length > 30 ? `${shop.shopnameeng.substring(0, 30)}...` : shop.shopnameeng}</td>
+                    <td className="h-[48px] w-[140px]">{(shop.shoptype || "").length > 20 ? `${shop.shoptype.substring(0, 20)}...` : shop.shoptype}</td>
+                    <td className="h-[48px] w-[120px]">{(shop.shopopentime || "").length > 20 ? `${shop.shopopentime.substring(0, 20)}...` : shop.shopopentime}</td>
+                    <td className="h-[48px] w-[120px]">{(shop.shopclosetime || "").length > 20 ? `${shop.shopclosetime.substring(0, 20)}...` : shop.shopclosetime}</td>
                     <td className="h-[48px] w-[130px]">
                       {shop.shopexpiredate}
                     </td>

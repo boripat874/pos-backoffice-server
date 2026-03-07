@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import Selectshop  from '@/app/components/selectshop';
 import Selectdate from '@/app/components/selectdate';
 import jsPDF from 'jspdf';
+import { useReactToPrint } from "react-to-print";
 // import Image from 'next/image';
 
 // Define interfaces for the report data structures
@@ -129,6 +130,47 @@ export default function Reportorder() {
   const timestartRef = useRef(timestart); // สร้าง ref เก็บค่า shopid
   const timeendRef = useRef(timeend); // สร้าง ref เก็บค่า shopid
   const shopidRef = useRef(shopid); // สร้าง ref เก็บค่า shopid
+
+  // Ref สำหรับ Export PDF
+  const componentRef = useRef(null);
+
+  // ฟังก์ชัน Print
+  const handlePrint = useReactToPrint({
+    contentRef: componentRef,
+    documentTitle: "Order list Report",
+    onAfterPrint: () => {
+      // ลบ URL ชั่วคราวหลังจากพิมพ์เสร็จ
+      if (pdfPreviewUrl) {
+        URL.revokeObjectURL(pdfPreviewUrl);
+        setPdfPreviewUrl(null);
+      }
+    },
+    // เพิ่ม pageStyle เพื่อกำหนด margin ให้มีพื้นที่แสดงเลขหน้าของ Browser
+    pageStyle: `
+      @page {
+        size: A4 landscape; /* หรือ landscape ถ้าต้องการแนวนอนแบบ 1080p จริงๆ */
+        margin: 0; 
+      }
+      @media print {
+        /* บังคับให้พื้นหลังและสีมาครบ */
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        
+        /* บังคับให้ Element ที่ส่งมาพิมพ์ (ซึ่งมักจะกลายเป็น body ในหน้าต่างพิมพ์) ย่อขนาด */
+        html, body {
+          width: 1920px !important;
+          height: 1080px !important;
+          zoom: 112% !important; /* ค่าสำหรับ A4 Landscape (1123/1920 ≈ 0.58) */
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+
+       
+      }
+    `,
+  });
   
 
   useEffect(() => {
@@ -232,8 +274,8 @@ export default function Reportorder() {
 
           const params = {
             period: period,
-            timestart: timestart,
-            timeend: timeend,
+            date_start: timestart,
+            date_end: timeend,
           }
 
           const [
@@ -380,15 +422,15 @@ export default function Reportorder() {
 
           const paramstotal = {
             period: periodref,
-            timestart: timestartref,
-            timeend: timeendref,
+            date_start: timestartref,
+            date_end: timeendref,
           };
 
           const paramsOrder = {
             search: searchOrder,
             period: periodref,
-            timestart: timestartref,
-            timeend: timeendref,
+            date_start: timestartref,
+            date_end: timeendref,
           };
 
           const [
@@ -777,7 +819,7 @@ export default function Reportorder() {
             doc.setFont("helvetica", "bold");
           }
           doc.text("ยอดรวมสุทธิ:", margin, yPosition);
-          doc.text(`${receiptOrder.totalprice.toFixed(2)} บาท`, rightAlignX, yPosition, { align: 'right' });
+          doc.text(`${receiptOrder.totalpricenet.toFixed(2)} บาท`, rightAlignX, yPosition, { align: 'right' });
     
           // --- Save the PDF ---
           // doc.save(`receipt_${receiptOrder.receiptnumber}.pdf`);
@@ -815,51 +857,55 @@ export default function Reportorder() {
 
   return (
     <div className="flex flex-col">
-      {/* header */}
-      <div className="max-w-[1300px] flex flex-row justify-between items-center">
-        <div>
-          <p className="text-2xl xl:text-4xl pt-4 font-bold text-black">
-            รายงาน
-          </p>
-          <p className="text-md xl:text-lg pt-2 text-black">{date}</p>
+
+      {/* Content Area to Print */}
+      <div ref={componentRef} className="w-full print:p-4">
+
+        {/* header */}
+        <div className="max-w-[1300px] flex flex-row justify-between items-center">
+          <div>
+            <p className="text-2xl xl:text-4xl pt-4 font-bold text-black">
+              รายงาน
+            </p>
+            <p className="text-md xl:text-lg pt-2 text-black">{date}</p>
+          </div>
         </div>
-      </div>
 
-      {/* เส้นคั่น */}
-      <hr className="mt-2 border-t-3 border-[#2B5F60]" />
+        {/* เส้นคั่น */}
+        <hr className="mt-2 border-t-3 border-[#2B5F60]" />
 
-      {/* ตัวเลือกข้อมูล */}
-      <div className="w-full h-11 flex flex-row justify-start items-center mt-2 gap-x-4">
-        {/* เลือกร้านค้า */}
-        {level === "Admin" ||
-          (level === "Owner" && (
-            <>
-              {/* <div>
-            <select 
-              value={shopid} 
-              className="w-[180px] h-[40px] rounded-md border-[#009f4d] px-2 border text-black"
-              onChange={async(e) => {
-                
-                // setShopid(e.target.value)
-                // shopidRef.current = shopid
-                // fetchData()
+        {/* ตัวเลือกข้อมูล */}
+        <div className="w-full h-11 flex flex-row justify-start items-start mt-2 gap-x-4">
+          
+          {/* เลือกร้านค้า */}
+          {level === "Admin" || level === "Owner" ? (
+              <>
+                {/* <div>
+              <select 
+                value={shopid} 
+                className="w-[180px] h-[40px] rounded-md border-[#009f4d] px-2 border text-black"
+                onChange={async(e) => {
+                  
+                  // setShopid(e.target.value)
+                  // shopidRef.current = shopid
+                  // fetchData()
 
-                Promise.all([
-                  setShopid(e.target.value),
-                  (shopidRef.current = e.target.value),
-                  fetchData()
-                ])
-              }} 
-              >
-              {Array.isArray(shoplist) && shoplist.length > 0 ? (
-                shoplist.map((shop: Shop, index: number) => (
-                  <option key={index} value={shop.shopid}>{shop.shopnameth}</option>
-                ))
-              ) : (
-                <option value="">ไม่มีร้านค้า</option>
-              )}
-            </select>
-          </div> */}
+                  Promise.all([
+                    setShopid(e.target.value),
+                    (shopidRef.current = e.target.value),
+                    fetchData()
+                  ])
+                }} 
+                >
+                {Array.isArray(shoplist) && shoplist.length > 0 ? (
+                  shoplist.map((shop: Shop, index: number) => (
+                    <option key={index} value={shop.shopid}>{shop.shopnameth}</option>
+                  ))
+                ) : (
+                  <option value="">ไม่มีร้านค้า</option>
+                )}
+              </select>
+            </div> */}
 
               <Selectshop
                 shopid={shopid}
@@ -871,258 +917,278 @@ export default function Reportorder() {
                 }}
               />
             </>
-          ))}
+          ): null}
 
-        {/* เลือกช่วงเวลา */}
-        <Selectdate
-          period={period}
-          timestart={timestart}
-          timeend={timeend}
-          periodRef={periodRef}
-          onChangePeriod={(value) => {
-            setPeriod(value);
-            periodRef.current = value;
-            fetchData();
-          }}
-          onChangeTimestart={(value) => {
-            const newStartDateString = value;
-            setTimeStart(newStartDateString);
-            timestartRef.current = newStartDateString;
+          {/* Select Date & Export Button Row */}
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
 
-            // Convert to Date objects for comparison
-            const newStartDate = new Date(newStartDateString);
-            const currentEndDate = new Date(timeend);
-            if (newStartDate > currentEndDate) {
-              setTimeEnd(newStartDateString); // Set timeend to the new timestart
-              timeendRef.current = newStartDateString;
-            }
+            {/* เลือกช่วงเวลา */}
+            <Selectdate
+              period={period}
+              timestart={timestart}
+              timeend={timeend}
+              periodRef={periodRef}
+              onChangePeriod={(value) => {
+                setPeriod(value);
+                periodRef.current = value;
+                fetchData();
+              }}
+              onChangeTimestart={(value) => {
+                const newStartDateString = value;
+                setTimeStart(newStartDateString);
+                timestartRef.current = newStartDateString;
 
-            fetchData();
-          }}
-          onChangeTimeend={(value) => {
-            const newEndDateString = value;
-            // Convert to Date objects for comparison
-            const newEndDate = new Date(newEndDateString);
-            const currentStartDate = new Date(timestart);
-            if (newEndDate < currentStartDate) {
-              setTimeEnd(timestart); // Set timeend to the current timestart
-              timeendRef.current = timestart;
-            } else {
-              setTimeEnd(newEndDateString);
-              timeendRef.current = newEndDateString;
-            }
-            fetchData();
-          }}
-        />
-      </div>
- 
-      <div className="w-full grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 mt-2 gap-1 xl:gap-1">
-        
-        {/* รายได้รวมทั้งหมดจากทุกช่องทาง */}
-        <Carddisplay
-          label={"รายได้รวมทั้งหมดจาก\nทุกช่องทาง"}
-          value={`฿ ${totalincome.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}`}
-          textColor="text-[#FFFFFF]"
-          backgroundColor="bg-[#005670]"
-          iconpath={"/icon/money.svg"}
-        />
+                // Convert to Date objects for comparison
+                const newStartDate = new Date(newStartDateString);
+                const currentEndDate = new Date(timeend);
+                if (newStartDate > currentEndDate) {
+                  setTimeEnd(newStartDateString); // Set timeend to the new timestart
+                  timeendRef.current = newStartDateString;
+                }
 
-        {/* รายได้รวมทั้งหมดจาก Credit Card */}
-        <Carddisplay
-          label={"รายได้รวมทั้งหมดจาก\nCredit Card"}
-          value={`฿ ${totalcreditcard.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}`}
-          textColor="text-[#FFFFFF]"
-          backgroundColor="bg-[#009f4d]"
-          iconpath={"/icon/creait_card.svg"}
-        />
+                fetchData();
+              }}
+              onChangeTimeend={(value) => {
+                const newEndDateString = value;
+                // Convert to Date objects for comparison
+                const newEndDate = new Date(newEndDateString);
+                const currentStartDate = new Date(timestart);
+                if (newEndDate < currentStartDate) {
+                  setTimeEnd(timestart); // Set timeend to the current timestart
+                  timeendRef.current = timestart;
+                } else {
+                  setTimeEnd(newEndDateString);
+                  timeendRef.current = newEndDateString;
+                }
+                fetchData();
+              }}
+            />
 
-        {/* รายได้รวมทั้งหมดจาก PromptPay */}
-        <Carddisplay
-          label={"รายได้รวมทั้งหมดจาก\nPromptPay"}
-          value={`฿ ${totalpromptpay.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}`}
-          textColor="text-[#FFFFFF]"
-          backgroundColor="bg-[#fe5000]"
-          iconpath={"/icon/promaptpay.svg"}
-        />
-
-        {/* รายได้รวมทั้งหมดจาก E-wallet */}
-        <Carddisplay
-          label={"รายได้รวมทั้งหมดจาก\nE-wallet"}
-          value={`฿ ${totalewallet.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}`}
-          textColor="text-[#FFFFFF]"
-          backgroundColor="bg-[#da1884]"
-          iconpath={"/icon/E_wallet.svg"}
-        />
-
-        {/* รายได้รวมทั้งหมดจาก เงินสด */}
-        <Carddisplay
-          label={"รายได้รวมทั้งหมดจาก\nเงินสด"}
-          value={`฿ ${totalcash.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}`}
-          textColor="text-[#FFFFFF]"
-          backgroundColor="bg-[#a51890]"
-          iconpath={"/icon/cash.svg"}
-        />
-
-        {/* บิลที่ขายได้ทั้งหมด */}
-        <Carddisplay
-          label={"บิลที่ขายได้ทั้งหมด"}
-          value={`${totalorder.toLocaleString("en-US")}`}
-          textColor="text-[#FFFFFF]"
-          backgroundColor="bg-[#0077c8]"
-          iconpath={"/icon/order.svg"}
-        />
-
-        {/* สินค้าขายออกทั้งหมดหลายชิ้น */}
-        <Carddisplay
-          label={"สินค้าขายออกทั้งหมด\nหลายชิ้น"}
-          value={`${totalproductsell.toLocaleString("en-US")}`}
-          textColor="text-[#FFFFFF]"
-          backgroundColor="bg-[#008eaa]"
-          iconpath={"/icon/creait_card.svg"}
-        />
-      </div>
-
-      {/*table */}
-      <div className="mt-2 overflow-auto">
-
-        {/* table order */}
-        <div className="w-[1325px] xl:w-full mt-0 p-4 rounded-lg bg-white shadow-sm">
-          {/* Added w-full, max-w, mx-auto */}
-          {/* header table */}
-          <div className="w-full flex flex-row justify-between items-start text-white gap-4">
-
-            {/* Responsive flex direction */}
-            <div className="p-2">
-              <p className="text-lg xl:text-2xl font-bold text-black">
-                {" "}
-                รายการสั่งซื้อ
-              </p>
-            </div>
-
-            <div className="p-2 flex flex-row items-start gap-4 sm:gap-6">
-              {" "}
-              {/* Responsive flex direction and gap */}
-              {/* --- Attach onClick handler --- */}
-              <button
-                className="btn w-[150px] xl:w-[160px]" // Responsive width
-                onClick={handleExportOrdersCSV}
-                disabled={!reportorders || reportorders.length === 0} // Disable if no data
-              >
-                <i className="fa-solid fa-arrow-right-from-bracket mr-2"></i>{" "}
-                <span className="text-[14px] xl:text-[16px]">ส่งออก CSV</span>
-              </button>
-              <div className="relative">
-                {" "}
-                {/* Responsive width */}
-                <i className="fa-solid fa-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 z-10"></i>
-                <input
-                  type="text"
-                  placeholder="Search for Order ..."
-                  className="text-[14px] xl:text-[16px] w-[300px] p-2 pl-10 rounded-lg border-0 bg-[#F6F4F4] focus:outline-none focus:ring-2 focus:ring-[#2B5F60]"
-                  onChange={(e) => setSearchOrder(e.target.value)}
-                  value={searchOrder}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      fetchDataOrder(); // ค้นหาเมื่อกด Enter
-                    }
-                  }}
-                />
-              </div>
-            </div>
+            {/* PDF Export Button */}
+            <button 
+              className="print:hidden p-2 text-center text-[#FFFFFF] hover:text-[#009f4d] bg-[#009f4d] hover:bg-transparent border border-[#009f4d] rounded-md h-[40px] px-4 whitespace-nowrap"
+              onClick={() => handlePrint()}
+            >
+              Export to PDF
+            </button>
           </div>
 
-          {/* Allow horizontal scroll on small screens */}
-          <div className="w-full overflow-y-auto">
-            {" "}
-            {/* Set height and vertical scroll on this div */}
-            <table className="w-full text-[16px] table-fixed text-center text-black">
-              <thead className="border-b border-[#2B5F60] bg-[#74d2e7] sticky top-0 z-5">
-                <tr>
-                  <th className="h-12 w-[150px] px-2">เวลา วันที่</th>
-                  {/* <th className='h-12 w-[120px] px-2'>ร้าน</th> */}
-                  <th className="h-12 w-[120px] px-2">หมายเลขบิล</th>
-                  <th className="h-12 w-[120px] px-2">ราคารวม</th>
-                  <th className="h-12 w-[100px] px-2">Vat 7%</th>
-                  <th className="h-12 w-[100px] px-2">ส่วนลด</th>
-                  <th className="h-12 w-[130px] px-2">ราคารวมสุทธิ</th>
-                  <th className="h-12 w-[130px] px-2">การชำระ</th>
-                  <th className="h-12 w-[100px] px-2">บิล</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Array.isArray(reportorders) && reportorders.length > 0 ? (
-                  reportorders.map((reportorder: ReportOrder, index: number) => (
-                    <tr
-                      key={index}
-                      className="border-b border-gray-100 hover:bg-gray-50"
-                    >
-                      <td className="h-12 px-2 truncate">
-                        {reportorder.ordertimestamp}
-                      </td>
-                      {/* <td className='h-12 px-2 truncate'>{`ON${Math.floor(Math.random() * 999999999) + 100000000}`}</td> */}
-                      <td className="h-12 px-2 truncate">
-                        {reportorder.ordernumber}
-                      </td>
-                      <td className="h-12 px-2 truncate">
-                        {Number(reportorder.ordertotalprice).toFixed(2)}
-                      </td>
-                      <td className="h-12 px-2 text-center">
-                        {Number(reportorder.vat7pc).toFixed(2)}
-                      </td>
-                      <td className="h-12 px-2 text-center">
-                        {Number(reportorder.ordertotaldiscount).toFixed(2)}
-                      </td>
-                      <td className="h-12 px-2 text-center">
-                        {Number(reportorder.orderpricenet).toFixed(2)}
-                      </td>
-                      <td className="h-12 px-2 text-center">
-                        {orderPaymentType[reportorder.paymenttype - 1].label}
-                      </td>
-                      <td className="h-12 px-2 text-center items-center justify-center flex">
-                        <button
-                          onClick={() => handleGenerateReceiptPdf(reportorder.ordernumber)}
-                          className="w-4 h-4 xl:w-8 xl:h-8 text-white bg-[#e4002b] hover:bg-red-900 rounded-sm xl:rounded-md flex justify-center items-center"
-                        >
-                          <TbPdf size={25} />
-                        </button>
+
+        </div>
+  
+        <div className="w-full grid grid-cols-4 xl:grid-cols-7 mt-2 gap-1 xl:gap-1 pr-2">
+          
+          {/* รายได้รวมทั้งหมดจากทุกช่องทาง */}
+          <Carddisplay
+            label={"รายได้รวมทั้งหมดจาก\nทุกช่องทาง"}
+            value={`฿ ${totalincome.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}`}
+            textColor="text-[#FFFFFF]"
+            backgroundColor="bg-[#005670]"
+            iconpath={"/icon/money.svg"}
+          />
+
+          {/* รายได้รวมทั้งหมดจาก Credit Card */}
+          <Carddisplay
+            label={"รายได้รวมทั้งหมดจาก\nCredit Card"}
+            value={`฿ ${totalcreditcard.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}`}
+            textColor="text-[#FFFFFF]"
+            backgroundColor="bg-[#009f4d]"
+            iconpath={"/icon/creait_card.svg"}
+          />
+
+          {/* รายได้รวมทั้งหมดจาก PromptPay */}
+          <Carddisplay
+            label={"รายได้รวมทั้งหมดจาก\nPromptPay"}
+            value={`฿ ${totalpromptpay.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}`}
+            textColor="text-[#FFFFFF]"
+            backgroundColor="bg-[#fe5000]"
+            iconpath={"/icon/promaptpay.svg"}
+          />
+
+          {/* รายได้รวมทั้งหมดจาก E-wallet */}
+          <Carddisplay
+            label={"รายได้รวมทั้งหมดจาก\nE-wallet"}
+            value={`฿ ${totalewallet.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}`}
+            textColor="text-[#FFFFFF]"
+            backgroundColor="bg-[#da1884]"
+            iconpath={"/icon/E_wallet.svg"}
+          />
+
+          {/* รายได้รวมทั้งหมดจาก เงินสด */}
+          <Carddisplay
+            label={"รายได้รวมทั้งหมดจาก\nเงินสด"}
+            value={`฿ ${totalcash.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}`}
+            textColor="text-[#FFFFFF]"
+            backgroundColor="bg-[#a51890]"
+            iconpath={"/icon/cash.svg"}
+          />
+
+          {/* บิลที่ขายได้ทั้งหมด */}
+          <Carddisplay
+            label={"บิลที่ขายได้ทั้งหมด"}
+            value={`${totalorder.toLocaleString("en-US")}`}
+            textColor="text-[#FFFFFF]"
+            backgroundColor="bg-[#0077c8]"
+            iconpath={"/icon/order.svg"}
+          />
+
+          {/* สินค้าขายออกทั้งหมดหลายชิ้น */}
+          <Carddisplay
+            label={"สินค้าขายออกทั้งหมด\nหลายชิ้น"}
+            value={`${totalproductsell.toLocaleString("en-US")}`}
+            textColor="text-[#FFFFFF]"
+            backgroundColor="bg-[#008eaa]"
+            iconpath={"/icon/creait_card.svg"}
+          />
+        </div>
+
+        {/*table */}
+        <div className="mt-2 overflow-auto">
+
+          {/* table order */}
+          <div className="w-[1325px] xl:w-full mt-0 p-4 rounded-lg bg-white shadow-sm">
+            {/* Added w-full, max-w, mx-auto */}
+            {/* header table */}
+            <div className="w-full flex flex-row justify-between items-start text-white gap-4 ">
+
+              {/* Responsive flex direction */}
+              <div className="p-2">
+                <p className="text-lg xl:text-2xl font-bold text-black">
+                  {" "}
+                  รายการสั่งซื้อ
+                </p>
+              </div>
+
+              <div className="p-2 flex flex-row items-start gap-4 sm:gap-6">
+                {" "}
+                {/* Responsive flex direction and gap */}
+                {/* --- Attach onClick handler --- */}
+                <button
+                  className="btn w-[150px] xl:w-[160px]" // Responsive width
+                  onClick={handleExportOrdersCSV}
+                  disabled={!reportorders || reportorders.length === 0} // Disable if no data
+                >
+                  <i className="fa-solid fa-arrow-right-from-bracket mr-2"></i>{" "}
+                  <span className="text-[14px] xl:text-[16px]">ส่งออก CSV</span>
+                </button>
+                <div className="relative">
+                  {" "}
+                  {/* Responsive width */}
+                  <i className="fa-solid fa-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 z-10"></i>
+                  <input
+                    type="text"
+                    placeholder="Search for Order ..."
+                    className="text-[14px] xl:text-[16px] w-[300px] p-2 pl-10 rounded-lg border-0 bg-[#F6F4F4] focus:outline-none focus:ring-2 focus:ring-[#2B5F60]"
+                    onChange={(e) => setSearchOrder(e.target.value)}
+                    value={searchOrder}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        fetchDataOrder(); // ค้นหาเมื่อกด Enter
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Allow horizontal scroll on small screens */}
+            <div className="w-full overflow-y-auto">
+              {" "}
+              {/* Set height and vertical scroll on this div */}
+              <table className="w-full text-[16px] table-fixed text-center text-black">
+                <thead className="border-b border-[#2B5F60] bg-[#74d2e7] sticky top-0 z-5">
+                  <tr>
+                    <th className="h-12 w-[150px] px-2">เวลา วันที่</th>
+                    {/* <th className='h-12 w-[120px] px-2'>ร้าน</th> */}
+                    <th className="h-12 w-[120px] px-2">หมายเลขบิล</th>
+                    <th className="h-12 w-[120px] px-2">ราคารวม</th>
+                    {/* <th className="h-12 w-[100px] px-2">Vat 7%</th> */}
+                    <th className="h-12 w-[100px] px-2">ส่วนลด</th>
+                    <th className="h-12 w-[130px] px-2">ราคารวมสุทธิ</th>
+                    <th className="h-12 w-[130px] px-2">การชำระ</th>
+                    <th className="h-12 w-[100px] px-2">บิล</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Array.isArray(reportorders) && reportorders.length > 0 ? (
+                    reportorders.map((reportorder: ReportOrder, index: number) => (
+                      <tr
+                        key={index}
+                        className="border-b border-gray-100 hover:bg-gray-50"
+                      >
+                        <td className="h-12 px-2 truncate">
+                          {(reportorder.ordertimestamp || "").length > 20
+                            ? reportorder.ordertimestamp.slice(0, 20) + "..."
+                            : reportorder.ordertimestamp}
+                        </td>
+                        {/* <td className='h-12 px-2 truncate'>{`ON${Math.floor(Math.random() * 999999999) + 100000000}`}</td> */}
+                        <td className="h-12 px-2 truncate">
+                          {(reportorder.ordernumber || "").length > 30
+                            ? reportorder.ordernumber.slice(0, 30) + "..."
+                            : reportorder.ordernumber}
+                        </td>
+                        <td className="h-12 px-2 truncate">
+                          {Number(reportorder.ordertotalprice).toFixed(2)}
+                        </td>
+                        {/* <td className="h-12 px-2 text-center">
+                          {Number(reportorder.vat7pc).toFixed(2)}
+                        </td> */}
+                        <td className="h-12 px-2 text-center">
+                          {Number(reportorder.ordertotaldiscount).toFixed(2)}
+                        </td>
+                        <td className="h-12 px-2 text-center">
+                          {Number(reportorder.orderpricenet).toFixed(2)}
+                        </td>
+                        <td className="h-12 px-2 text-center">
+                          {orderPaymentType[reportorder.paymenttype - 1].label}
+                        </td>
+                        <td className="h-12 px-2 text-center items-center justify-center flex">
+                          <button
+                            onClick={() => handleGenerateReceiptPdf(reportorder.ordernumber)}
+                            className="w-4 h-4 xl:w-8 xl:h-8 text-white bg-[#e4002b] hover:bg-red-900 rounded-sm xl:rounded-md flex justify-center items-center"
+                          >
+                            <TbPdf size={25} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan={7}
+                        className="py-4 text-[16px] text-center text-black opacity-60"
+                      >
+                        ไม่พบข้อมูลรายการบิล
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td
-                      colSpan={8}
-                      className="py-4 text-[16px] text-center text-black opacity-60"
-                    >
-                      ไม่พบข้อมูลรายการบิล
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
       
+      
 
       {/* PDF Preview Modal */}
       {isPdfModalOpen && pdfPreviewUrl && (
-        <div className="w-full h-full bg-black bg-opacity-70 fixed top-0 left-0 inset-0 flex items-center justify-center z-50">
+        <div className="w-full h-full bg-black bg-opacity-70 fixed top-0 left-0 inset-0 flex items-center justify-center z-[101]">
           <div
             className="w-[90%] h-[95%] max-w-[500px] max-h-[700px] bg-white rounded-lg shadow-xl flex items-center justify-center"
           >

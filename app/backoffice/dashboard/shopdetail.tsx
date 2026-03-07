@@ -70,16 +70,35 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
 
   // ฟังก์ชัน Print
   const handlePrint = useReactToPrint({
-    contentRef: componentRef,
-    documentTitle: "Dashboard Product sales Report",
-    // เพิ่ม pageStyle เพื่อกำหนด margin ให้มีพื้นที่แสดงเลขหน้าของ Browser
-    pageStyle: `
-      @page {
-        size: auto;
-        margin: 20mm;
-      }
-    `,
-  });
+      contentRef: componentRef,
+      documentTitle: "Order list Report",
+
+      // เพิ่ม pageStyle เพื่อกำหนด margin ให้มีพื้นที่แสดงเลขหน้าของ Browser
+      pageStyle: `
+        @page {
+          size: A4 landscape; /* หรือ landscape ถ้าต้องการแนวนอนแบบ 1080p จริงๆ */
+          margin: 0; 
+        }
+        @media print {
+          /* บังคับให้พื้นหลังและสีมาครบ */
+          * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          
+          /* บังคับให้ Element ที่ส่งมาพิมพ์ (ซึ่งมักจะกลายเป็น body ในหน้าต่างพิมพ์) ย่อขนาด */
+          html, body {
+            width: 1920px !important;
+            height: 1080px !important;
+            zoom: 95% !important; /* ค่าสำหรับ A4 Landscape (1123/1920 ≈ 0.58) */
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+  
+         
+        }
+      `,
+    });
 
   useEffect(() => {
     const updateTime = () => {
@@ -210,76 +229,78 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
 
   return (
     <div className={`flex flex-col ${params.className || ""}`}>
-      {/* Header */}
-      <div className="w-full flex flex-row justify-between items-center">
-        <div>
-          <p className="text-lg md:text-2xl xl:text-4xl pt-2 md:pt-3 xl:pt-4 font-bold">Dashboard</p>
-          <p className="text-xs md:text-md xl:text-lg pt-1 md:pt-2 xl:pt-4">{date}</p>
-        </div>
-      </div>
-
-      <hr className="mt-2 border-t-3 border-[#2B5F60]" />
-
-      {/* Controls: Select Shop, Date, PDF Button */}
-      <div className="w-full flex flex-col md:flex-row justify-start mt-2 items-start gap-x-4 gap-y-2 md:gap-y-0">
-        
-        {/* Select Shop */}
-        {(level === "Admin" || level === "Owner") && (
-          <Selectshop 
-            shopid={shopid} 
-            shopslist={shoplist} 
-            onChange={(value) => {
-              setShopid(value);
-              shopidRef.current = value;
-              fetchData();
-            }} 
-          />
-        )}
-
-        {/* Select Date & Export Button Row */}
-        <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-          <Selectdate
-            period={period}
-            timestart={timestart}
-            timeend={timeend}
-            periodRef={periodRef}
-            onChangePeriod={(value) => {
-              setPeriod(value);
-              periodRef.current = value;
-              fetchData();
-            }}
-            onChangeTimestart={(value) => {
-              setTimeStart(value);
-              timestartRef.current = value;
-              if (new Date(value) > new Date(timeend)) {
-                setTimeEnd(value);
-                timeendRef.current = value;
-              }
-              fetchData();
-            }}
-            onChangeTimeend={(value) => {
-              setTimeEnd(value);
-              timeendRef.current = value;
-              if (new Date(value) < new Date(timestart)) {
-                setTimeEnd(timestart);
-                timeendRef.current = timestart;
-              }
-              fetchData();
-            }}
-          />
-
-          {/* PDF Export Button */}
-          <button 
-            className="print:hidden p-2 text-center text-[#FFFFFF] hover:text-[#009f4d] bg-[#009f4d] hover:bg-transparent border border-[#009f4d] rounded-md h-[40px] px-4 whitespace-nowrap"
-            onClick={() => handlePrint()}
-          >
-            Export to PDF
-          </button>
-        </div>
-      </div>
 
       {/* Content Area to Print */}
       <div ref={componentRef} className="w-full print:p-4">
+        {/* Header */}
+        <div className="w-full flex flex-row justify-between items-center">
+          <div>
+            <p className="text-lg md:text-2xl xl:text-4xl pt-2 md:pt-3 xl:pt-4 font-bold">Dashboard</p>
+            <p className="text-xs md:text-md xl:text-lg pt-1 md:pt-2 xl:pt-4">{date}</p>
+          </div>
+        </div>
+
+        <hr className="mt-2 border-t-3 border-[#2B5F60]" />
+
+        {/* Controls: Select Shop, Date, PDF Button */}
+        <div className="w-full flex flex-col md:flex-row justify-start mt-2 items-start gap-x-4 gap-y-2 md:gap-y-0">
+          
+          {/* Select Shop */}
+          {(level === "Admin" || level === "Owner") && (
+            <Selectshop 
+              shopid={shopid} 
+              shopslist={shoplist} 
+              onChange={(value) => {
+                setShopid(value);
+                shopidRef.current = value;
+                fetchData();
+              }} 
+            />
+          )}
+
+          {/* Select Date & Export Button Row */}
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+            <Selectdate
+              period={period}
+              timestart={timestart}
+              timeend={timeend}
+              periodRef={periodRef}
+              onChangePeriod={(value) => {
+                setPeriod(value);
+                periodRef.current = value;
+                fetchData();
+              }}
+              onChangeTimestart={(value) => {
+                setTimeStart(value);
+                timestartRef.current = value;
+                if (new Date(value) > new Date(timeend)) {
+                  setTimeEnd(value);
+                  timeendRef.current = value;
+                }
+                fetchData();
+              }}
+              onChangeTimeend={(value) => {
+                setTimeEnd(value);
+                timeendRef.current = value;
+                if (new Date(value) < new Date(timestart)) {
+                  setTimeEnd(timestart);
+                  timeendRef.current = timestart;
+                }
+                fetchData();
+              }}
+            />
+
+            {/* PDF Export Button */}
+            <button 
+              className="print:hidden p-2 text-center text-[#FFFFFF] hover:text-[#009f4d] bg-[#009f4d] hover:bg-transparent border border-[#009f4d] rounded-md h-[40px] px-4 whitespace-nowrap"
+              onClick={() => handlePrint()}
+            >
+              Export to PDF
+            </button>
+          </div>
+        </div>
+
+      
         {/* Shop Info Header */}
         <div className="flex flex-row p-4 mt-2 justify-start items-center gap-x-4 bg-white rounded-xl">
           <Image
@@ -298,7 +319,7 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
         </div>
 
         {/* Info Cards Grid - ปรับสีตามรูปตัวอย่าง (HTML Dump) */}
-        <div className="w-full grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 mt-2 gap-1 xl:gap-1">
+        <div className="w-full grid grid-cols-4 xl:grid-cols-7 mt-2 gap-1 xl:gap-1">
           {/* Card 1: Income All Channels - Green #358326 */}
           <Carddisplay
             label={"รายได้รวมทั้งหมดจาก\nทุกช่องทาง"}
