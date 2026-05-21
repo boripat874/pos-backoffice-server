@@ -605,7 +605,7 @@ export default function ShopPage() {
       inputLabel: 'กรุณาใส่รหัสผ่านสำหรับยืนยันการลบ',
       showCancelButton: true,
       confirmButtonColor: '#d33',
-      cancelButtonColor: '#2B5F60',
+      cancelButtonColor: '#188875',
       confirmButtonText: 'ลบ',
       cancelButtonText: 'ยกเลิก',
     });
@@ -1250,23 +1250,23 @@ export default function ShopPage() {
       {/* header */}
       <div className="flex flex-row justify-between items-center">
         <div>
-          <p className="text-xl md:text-2xl xl:text-4xl pt-4 font-bold">
+          <p className="text-xl md:text-2xl xl:text-4xl pt-4 font-bold text-oxbowteal">
             ร้านค้า
           </p>
-          <p className="text-xs md:text-md xl:text-lg pt-2">{date}</p>
+          <p className="text-xs md:text-md xl:text-lg pt-2 ">{date}</p>
         </div>
       </div>
 
       {/* เส้นคั่น */}
-      <hr className="mt-2 border-t-3 border-[#2B5F60]" />
+      <hr className="mt-2 border-t-3 border-oxbowteal" />
 
       {/* content table shop */}
-      <div className="w-full mt-2 mb py-4 px-4 bg-white rounded-lg text-black flex flex-col overflow-auto">
+      <div className="w-full mt-2 mb py-4 px-4 bg-oatmilk rounded-lg text-oxbowteal flex flex-col overflow-auto border">
         
         {/* header table */}
         <div className="w-[1325px] xl:w-full flex flex-row justify-between items-center">
           <div className="flex flex-row justify-between items-center p-4">
-            <p className="text-lg xl:text-2xl font-bold text-black">
+            <p className="text-lg xl:text-2xl font-bold text-oxbowteal">
               {" "}
               รายการร้านค้า
             </p>
@@ -1302,7 +1302,7 @@ export default function ShopPage() {
               <input
                 type="text"
                 placeholder="Search for Shop ..."
-                className="w-[300px] p-2 pl-10 rounded-lg border-0 bg-[#F6F4F4] text-black focus:outline-none focus:ring-2 focus:ring-[#2B5F60]"
+                className="w-[300px] p-2 pl-10 rounded-lg border-0 bg-lessengray text-oxbowteal focus:outline-none focus:ring-2 focus:ring-oxbowteal"
                 value={search}
                 onChange={(e) => {
                   setSearch(e.target.value);
@@ -1323,7 +1323,7 @@ export default function ShopPage() {
         {/* table */}
         <div className="w-[1325px] xl:w-full overflow-y-auto">
           <table className="text-[16px] table-auto w-full text-center ">
-            <thead className="border-b border-[#009f4d] sticky top-0 bg-[#74d2e7] ">
+            <thead className="border-b text-oxbowteal border-t border-oxbowteal bg-oatmilk sticky top-0 shadow-md">
               <tr>
                 <th className="h-12 w-[100px]">โลโก้</th>
                 <th className="h-12 w-[190px]">ชื่อร้านค้าภาษาไทย</th>
@@ -1341,7 +1341,7 @@ export default function ShopPage() {
                 shops.map((shop: Shop) => (
                   <tr
                     key={shop.shopid}
-                    className={`${shop.status ? "" : "text-gray-400 "} border-b border-gray-100 hover:bg-gray-50`}
+                    className={`${shop.status ? "" : "text-gray-400 "} border-b border-lessengray hover:bg-hoverteal`}
                   >
                     <td className="h-[48px] min-w-[100px]">
                       <div className=" flex justify-center items-center py-1">
@@ -1383,7 +1383,7 @@ export default function ShopPage() {
                               <>
                                 {/* ตั้งค่า */}
                                 <button
-                                  className="w-[32px] h-[32px] mr-2 bg-[#84bd00] hover:bg-green-900 text-white px-[5px] xl:px-2 xl:pt-[2px] xl:pb-[5px] rounded-md"
+                                  className="w-[32px] h-[32px] mr-2 bg-oxbowteal hover:bg-lessenteal text-white px-[5px] xl:px-2 xl:pt-[2px] xl:pb-[5px] rounded-md"
                                   onClick={() => handleSetup(shop.shopid)}
                                 >
                                   <Image
@@ -1410,7 +1410,7 @@ export default function ShopPage() {
                           <>
                             {/* กู้คืน */}
                             <button
-                              className="w-[32px] h-[32px] text-white text-base px-2 py-1 rounded-md bg-[#84bd00] hover:bg-green-900 mr-2"
+                              className="w-[32px] h-[32px] text-white text-base px-2 py-1 rounded-md bg-oxbowteal hover:bg-lessenteal mr-2"
                               onClick={() => handleRestore(shop.shopid)}
                             >
                               <i className="fa-solid fa-rotate-left"></i>
@@ -1425,7 +1425,7 @@ export default function ShopPage() {
                 <tr>
                   <td
                     colSpan={7}
-                    className="py-4 text-center text-base text-black  opacity-60"
+                    className="py-4 text-center text-base text-oxbowteal  opacity-60"
                   >
                     ไม่มีข้อมูลร้านค้า
                   </td>
@@ -1444,8 +1444,8 @@ export default function ShopPage() {
                 key={index + 1}
                 className={`px-4 py-2 mx-1 rounded-lg ${
                   currentPage === index + 1
-                    ? "bg-[#3DA48F] text-white" // หน้าปัจจุบัน: พื้นหลังสีเขียวเข้ม ตัวอักษรสีขาว
-                    : "bg-white text-black border border-gray-300" // หน้าอื่น: พื้นหลังสีขาว ตัวอักษรสีดำ
+                    ? "bg-oxbowteal text-white" // หน้าปัจจุบัน: พื้นหลังสีเขียวเข้ม ตัวอักษรสีขาว
+                    : "bg-oatmilk text-oxbowteal border border-oxbowteal" // หน้าอื่น: พื้นหลังสีขาว ตัวอักษรสีดำ
                 }`}
                 onClick={() => {
                   setCurrentPage(index + 1);
@@ -1474,7 +1474,7 @@ export default function ShopPage() {
                 กลุ่มบัญชีผู้ใช้ <span className="text-red-500">*</span>
               </div>
               <select
-                className="border border-[#2B5F60] p-2 rounded-md w-full"
+                className="border p-2 rounded-md w-full bg-oatmilk text-oxbowteal border-oxbowteal"
                 value={ugroupid}
                 onChange={(e) => setUgroupid(e.target.value)}
               >
@@ -1520,6 +1520,7 @@ export default function ShopPage() {
                   type="file"
                   accept=".png, .jpg"
                   onChange={handleFileChange}
+                  className='bg-oatmilk text-oxbowteal border-oxbowteal'
                 />
                 {/* อนุญาตเฉพาะไฟล์รูปภาพ */}
               </div>
@@ -1535,7 +1536,7 @@ export default function ShopPage() {
                 onChange={(e) => setShoptype(e.target.value)}
               /> */}
               <select
-                className="border border-[#2B5F60] p-2 rounded-md w-full"
+                className="border bg-oatmilk text-oxbowteal border-oxbowteal p-2 rounded-md w-full"
                 value={shoptype}
                 onChange={(e) => setShoptype(e.target.value)}
               >
@@ -1555,6 +1556,7 @@ export default function ShopPage() {
                 type="text"
                 placeholder="ชื่อร้านค้าภาษาไทย"
                 value={shopnameth}
+                className='bg-oatmilk text-oxbowteal border-oxbowteal'
                 onChange={(e) => setShopnameth(e.target.value)}
               />
             </div>
@@ -1567,6 +1569,7 @@ export default function ShopPage() {
                 type="text"
                 placeholder="ชื่อร้านค้าภาษาอังกฤษ"
                 value={shopnameeng}
+                className='bg-oatmilk text-oxbowteal border-oxbowteal'
                 onChange={(e) => setShopnameeng(e.target.value)}
               />
             </div>
@@ -1578,6 +1581,7 @@ export default function ShopPage() {
               <input
                 type="time"
                 value={shopopentime}
+                className='bg-oatmilk text-oxbowteal border-oxbowteal'
                 onChange={(e) => {
                   setShopopentime(e.target.value);
                 }}
@@ -1591,6 +1595,7 @@ export default function ShopPage() {
               <input
                 type="time"
                 value={shopclosetime}
+                className='bg-oatmilk text-oxbowteal border-oxbowteal'
                 onChange={(e) => setShopclosetime(e.target.value)}
               />
             </div>
@@ -1602,6 +1607,7 @@ export default function ShopPage() {
               <input
                 type="date"
                 value={shopexpiredate}
+                className='bg-oatmilk text-oxbowteal border-oxbowteal'
                 onChange={(e) => {
                   setShopexpiredate(e.target.value);
                 }}
@@ -1614,6 +1620,7 @@ export default function ShopPage() {
                 type="text"
                 placeholder="กรุณากรอกข้อมูลร้านค้า 1"
                 value={shopdata1}
+                className='bg-oatmilk text-oxbowteal border-oxbowteal'
                 onChange={(e) => setShopdata1(e.target.value)}
               />
             </div>
@@ -1624,6 +1631,7 @@ export default function ShopPage() {
                 type="text"
                 placeholder="กรุณากรอกข้อมูลร้านค้า 2"
                 value={shopdata2}
+                className='bg-oatmilk text-oxbowteal border-oxbowteal'
                 onChange={(e) => setShopdata2(e.target.value)}
               />
             </div>
@@ -1652,7 +1660,7 @@ export default function ShopPage() {
                 กลุ่มบัญชีผู้ใช้ <span className="text-red-500">*</span>
               </div>
               <select
-                className="border border-[#2B5F60] p-2 rounded-md w-full"
+                className="border bg-oatmilk border-oxbowteal text-oxbowteal p-2 rounded-md w-full"
                 value={ugroupid}
                 onChange={(e) => setUgroupid(e.target.value)}
               >
@@ -1674,6 +1682,7 @@ export default function ShopPage() {
                 <input
                   type="file"
                   accept=".png, .jpg"
+                  className='bg-oatmilk border-oxbowteal text-oxbowteal'
                   onChange={handleFileChange}
                 />
                 {/* อนุญาตเฉพาะไฟล์รูปภาพ */}
@@ -1690,7 +1699,7 @@ export default function ShopPage() {
                 onChange={(e) => setShoptype(e.target.value)}
               /> */}
               <select
-                className="border border-[#2B5F60] p-2 rounded-md w-full"
+                className="border bg-oatmilk border-oxbowteal text-oxbowteal p-2 rounded-md w-full"
                 value={shoptype}
                 onChange={(e) => setShoptype(e.target.value)}
               >
@@ -1710,6 +1719,7 @@ export default function ShopPage() {
                 type="text"
                 placeholder="กรุณากรอกชื่อร้านค้าภาษาไทย"
                 value={shopnameth}
+                className='bg-oatmilk border-oxbowteal text-oxbowteal'
                 onChange={(e) => setShopnameth(e.target.value)}
               />
             </div>
@@ -1722,6 +1732,7 @@ export default function ShopPage() {
                 type="text"
                 placeholder="กรุณากรอกชื่อร้านค้าภาษาอังกฤษ"
                 value={shopnameeng}
+                className='bg-oatmilk border-oxbowteal text-oxbowteal'
                 onChange={(e) => setShopnameeng(e.target.value)}
               />
             </div>
@@ -1733,6 +1744,7 @@ export default function ShopPage() {
               <input
                 type="time"
                 value={shopopentime}
+                className='bg-oatmilk border-oxbowteal text-oxbowteal'
                 onChange={(e) => setShopopentime(e.target.value)}
               />
             </div>
@@ -1744,6 +1756,7 @@ export default function ShopPage() {
               <input
                 type="time"
                 value={shopclosetime}
+                className='bg-oatmilk border-oxbowteal text-oxbowteal'
                 onChange={(e) => setShopclosetime(e.target.value)}
               />
             </div>
@@ -1755,6 +1768,7 @@ export default function ShopPage() {
               <input
                 type="date"
                 value={shopexpiredate}
+                className='bg-oatmilk border-oxbowteal text-oxbowteal'
                 onChange={(e) => setShopexpiredate(e.target.value)}
               />
             </div>
@@ -1765,6 +1779,7 @@ export default function ShopPage() {
                 type="text"
                 placeholder="กรุณากรอกข้อมูลร้านค้า 1"
                 value={shopdata1}
+                className='bg-oatmilk border-oxbowteal text-oxbowteal'
                 onChange={(e) => setShopdata1(e.target.value)}
               />
             </div>
@@ -1775,6 +1790,7 @@ export default function ShopPage() {
                 type="text"
                 placeholder="กรุณากรอกข้อมูลร้านค้า 2"
                 value={shopdata2}
+                className='bg-oatmilk border-oxbowteal text-oxbowteal'
                 onChange={(e) => setShopdata2(e.target.value)}
               />
             </div>
@@ -1823,10 +1839,10 @@ export default function ShopPage() {
                         )
                       );
                     }}
-                    className="w-4 h-4 border-2 border-[#009f4d] rounded checked:bg-[#009f4d] "
+                    className="w-4 h-4 border-2 border-oxbowteal rounded checked:bg-oxbowteal text-oxbowteal accent-oxbowteal"
                   />
 
-                  <p className="text-[16px] text-black">
+                  <p className="text-[16px] text-oxbowteal">
                     {slot.slottimestart} - {slot.slottimeend}
                   </p>
                   <input
@@ -1845,7 +1861,7 @@ export default function ShopPage() {
                         );
                       }
                     }}
-                    className="w-[100px] h-[40px] border-2 text-black border-[#009f4d] rounded"
+                    className="w-[100px] h-[40px] border-2 border-oxbowteal text-oxbowteal rounded bg-oatmilk"
                   />
                 </div>
               ))}
@@ -1858,7 +1874,7 @@ export default function ShopPage() {
             </div>
           </div>
         ) : (
-          <div className="col-span-full w-[600px] h-[600px] text-2xl opacity-60 text-black flex justify-center items-center">
+          <div className="col-span-full w-[600px] h-[600px] text-2xl opacity-60 text-oxbowteal flex justify-center items-center">
             ไม่มีสล็อต
           </div>
         )}
@@ -1887,7 +1903,7 @@ export default function ShopPage() {
                     กลุ่มบัญชีผู้ใช้ <span className="text-red-500">*</span>
                   </div> */}
                   <select
-                    className="border border-[#2B5F60] p-2 rounded-md w-full"
+                    className="border bg-oatmilk border-oxbowteal text-oxbowteal p-2 rounded-md w-full"
                     value={ugroupidExport}
                     onChange={(e) => setugroupidExport(e.target.value)}
                   >
@@ -1915,7 +1931,7 @@ export default function ShopPage() {
                   onChange={(e) => setShoptype(e.target.value)}
                 /> */}
                 <select
-                  className="border border-[#2B5F60] p-2 rounded-md w-full"
+                  className="border bg-oatmilk border-oxbowteal text-oxbowteal p-2 rounded-md w-full"
                   value={shoptypeExport}
                   onChange={(e) => setshoptypeExport(e.target.value)}
                 >
@@ -1953,7 +1969,7 @@ export default function ShopPage() {
                     กลุ่มบัญชีผู้ใช้ <span className="text-red-500">*</span>
                   </div> */}
                   <select
-                    className="border border-[#2B5F60] p-2 rounded-md w-full"
+                    className="border bg-oatmilk border-oxbowteal text-oxbowteal p-2 rounded-md w-full"
                     value={ugroupidImport}
                     onChange={(e) => setugroupidImport(e.target.value)}
                   >
@@ -1976,7 +1992,7 @@ export default function ShopPage() {
               {/* ประเภทร้านค้า */}
               <div>
                 <select
-                  className="border border-[#2B5F60] p-2 rounded-md w-full"
+                  className="border bg-oatmilk border-oxbowteal text-oxbowteal p-2 rounded-md w-full"
                   value={shoptypeImport}
                   onChange={(e) => setshoptypeImport(e.target.value)}
                 >
@@ -1990,7 +2006,7 @@ export default function ShopPage() {
             </div>
 
             <input
-              className="w-full p-1 mt-2 border-[#009f4d]"
+              className="w-full p-1 mt-2 border-oxbowteal text-oxbowteal"
               type="file"
               accept=".csv"
               onChange={(e) => {
@@ -2005,6 +2021,7 @@ export default function ShopPage() {
             </button>
             {/* </div> */}
           </div>
+
         </div>
       </ModalWauto>
     </div>

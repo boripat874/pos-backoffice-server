@@ -213,7 +213,7 @@ export default function DashboardOverview() {
 
         <button
           onClick={() => setSelectedShopId(null)}
-          className="absolute text-xs md:text-sm xl:text-md self-start mt-2  px-4 py-2 md:py-2 xl:py-2 bg-[#009f4d] text-white rounded-md hover:border-[#3DA48F] hover:bg-[#3DA48F] transition-colors"
+          className="absolute text-xs md:text-sm xl:text-md self-start mt-2  px-4 py-2 md:py-2 xl:py-2 bg-oxbowteal text-white rounded-md hover:border-lessenteal hover:bg-lessenteal transition-colors"
         >
           &larr; Back to Overview
         </button>
@@ -233,15 +233,19 @@ export default function DashboardOverview() {
     <div className="w-full flex flex-col gap-4xl:gap-0">
 
       {/* header */}
-      <div className="w-full flex flex-row justify-between items-center">
+      <div className="w-full flex  flex-row justify-between items-center">
         <div>
-          <p className="text-lg md:text-2xl xl:text-4xl pt-4 font-bold">Dashboard</p>
+          <p className="text-lg md:text-2xl text-oxbowteal xl:text-4xl pt-4 font-bold">Dashboard</p>
           <p className="text-xs md:text-md xl:text-lg pt-1 md:pt-2">{date}</p>
         </div>
       </div>
 
+      {/* <div className='w-full h-14 bg-oxbowteal'></div>
+      <div className='w-full h-14 bg-deepforest'></div> */}
+
+
       {/* เส้นคั่น */}
-      <hr className="mt-2 border-t-3 border-[#2B5F60]" />
+      <hr className="mt-2 border-t-3 border-deepforest" />
 
       {/* ตัวเลือกข้อมูล */}
       <div className="w-full h-auto flex flex-row justify-start items-center mt-2 gap-x-4">
@@ -368,7 +372,7 @@ export default function DashboardOverview() {
             <button
               key={index}
               onClick={() => setSelectedShopId(shop.shopid)}
-              className="text-left p-0 focus:outline-none focus:ring-2 focus:ring-[#009f4d] rounded-lg overflow-hidden"
+              className="text-left p-0 focus:outline-none focus:ring-2 focus:ring-oxbowteal rounded-lg overflow-hidden"
             >
               <CardShopdisplay
                 key={index}
@@ -385,13 +389,13 @@ export default function DashboardOverview() {
       ) : null}
 
       {/* ยอดขายสินค้า */}
-      <div className="w-full bg-white flex flex-col mt-2 p-2 rounded-lg shadow">
-        <p className="text-[12px] md:text-[16px] xl:text-2xl  text-center py-2 font-semibold">ยอดขายสินค้า</p>
+      <div className="w-full bg-oatmilk flex flex-col mt-2 p-2 rounded-lg shadow">
+        <p className="text-[12px] md:text-[16px] xl:text-2xl text-oxbowteal text-center py-2 font-semibold">ยอดขายสินค้า</p>
         <div className="w-[99%] min-h-[200px] mx-auto  border rounded-lg flex flex-col justify-center items-center">
           {dashboarddatalist.length > 0 ? (
             <HorizontalBarChart productsellslist={dashboarddatalist} />
           ) : (
-            <div className="text-md xl:text-lg w-full text-black opacity-60 text-center">
+            <div className="text-md xl:text-lg w-full text-oxbowteal opacity-60 text-center">
               ไม่พบข้อมูลยอดขายสินค้า
             </div>
           )}

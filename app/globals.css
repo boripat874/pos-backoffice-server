@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 /* For Webkit-based browsers (Chrome, Safari, Edge) */
 .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -25,7 +26,7 @@ p{
   @apply h-[100vh] w-[100vw] px-3 xl:pl-40 flex justify-start items-center 
 }
 .signin-box {
-  @apply w-[400px] h-[45s0px] rounded-lg p-5  shadow-[#3EB776] flex flex-col items-start;
+  @apply w-[400px] h-[45s0px] rounded-lg p-5  shadow-[#188875] flex flex-col items-start;
 }
 .signin-box h1 {
   @apply mb-5;
@@ -33,6 +34,7 @@ p{
 input {
   @apply w-full h-[42px] p-1 px-3 rounded-md border border-gray-600 text-black;
 }
+
 
 /* select {
   @apply  ;
@@ -48,23 +50,23 @@ input {
 
 body {
   /* @apply bg-gradient-to-tr from-blue-600 to-teal-700; */
-  @apply bg-[#F2F2F2] text-black;
+  @apply bg-oatmilk text-black;
 }
 
 .signin-box .btn {
-  @apply mt-4 bg-[#3EB776] text-white px-6 py-2 rounded-md;
+  @apply mt-4 bg-[#188875] text-white px-6 py-2 rounded-md;
 }
 
 .btn {
-  @apply bg-[#009f4d] hover:bg-teal-900 text-white px-6 py-2 rounded-md;
+  @apply bg-oxbowteal hover:bg-lessenteal text-white px-6 py-2 rounded-md;
 }
 
 .btn-delete {
-  @apply bg-red-500 hover:bg-red-800 text-white text-[16px] pb-[1px] xl:px-6 xl:py-3 w-[32px] h-[32px] rounded-md;
+  @apply bg-red-500 hover:bg-hoverred text-white text-[16px] pb-[1px] xl:px-6 xl:py-3 w-[32px] h-[32px] rounded-md;
 }
 
 .btn-active {
-  @apply bg-white border-2 border-teal-600 text-teal-600;
+  @apply bg-oatmilk border-2 border-teal-600 text-teal-600;
 }
 
 .content-header {
@@ -88,18 +90,18 @@ body {
 }
 
 .table tbody td {
-  @apply p-3 bg-gray-100;
+  @apply p-3 bg-oatmilk;
 }
 
 .btn-edit {
-  @apply bg-blue-600 hover:bg-blue-900 text-white text-[15px] pb-[1px] xl:px-2 xl:py-1 w-[32px] h-[32px] rounded-md;
+  @apply bg-safariyellow hover:bg-hoveryellow text-white text-[15px] pb-[1px] xl:px-2 xl:py-1 w-[32px] h-[32px] rounded-md;
 }
 
 .btn-delete {
   @apply text-white px-2 py-1 rounded-md;
 }
 
-.content {
+.content { 
   @apply ml-[130px] 
 }
 

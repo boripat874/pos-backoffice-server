@@ -732,7 +732,7 @@ export default function ProductsPage() {
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
-        cancelButtonColor: '#2B5F60',
+        cancelButtonColor: '#188875',
         confirmButtonText: 'ลบ',
         cancelButtonText: 'ยกเลิก',
       });
@@ -1135,7 +1135,7 @@ export default function ProductsPage() {
               setGategoryPage(false);
               fetchData();
             }}
-            className="absolute  self-start mt-2 px-4 py-2 bg-[#009f4d] text-white rounded-md hover:border-[#3DA48F] hover:bg-[#3DA48F] transition-colors"
+            className="absolute  self-start mt-2 px-4 py-2 bg-oxbowteal text-white rounded-md hover:bg-lessenteal transition-colors"
           >
             &larr; กลับไปที่หน้าสินค้า
           </button>
@@ -1174,15 +1174,15 @@ export default function ProductsPage() {
     return (
       <div className="flex flex-col">
         {/* header */}
-        <div className="text-black">
-          <p className="text-xl md:text-2xl xl:text-4xl  pt-4 font-bold ">
+        <div className="">
+          <p className="text-oxbowteal text-xl md:text-2xl xl:text-4xl  pt-4 font-bold ">
             สินค้า
           </p>
           <p className="text-xs md:text-md xl:text-lg pt-2">{date}</p>
         </div>
 
         {/* เส้นคั่น */}
-        <hr className="w-full mt-2 border-t-3 border-[#2B5F60]" />
+        <hr className="w-full mt-2 border-t-3 border-oxbowteal" />
 
         {/* table content */}
         <div className="w-full mt-2 px-4 rounded-lg overflow-auto">
@@ -1191,7 +1191,7 @@ export default function ProductsPage() {
           <div className="flex flex-col xl:flex-row items-start xl:justify-between xl:items-center mb-2">
             {/* title */}
             <div className="flex flex-row justify-between items-center ">
-              <p className="text-lg xl:text-2xl font-bold text-black">
+              <p className="text-lg xl:text-2xl font-bold text-oxbowteal">
                 จัดการสินค้า
               </p>
             </div>
@@ -1222,7 +1222,7 @@ export default function ProductsPage() {
                 </p> */}
                 <select
                   className="text-[14px] xl:text-[16px] w-[220px] h-[40px] xl:w-[180px] xl:h-[40px]
-                  p-2 rounded-md border-solid border text-black border-[#009f4d] border-opacity-50 overflow-x-hedden"
+                  p-2 rounded-md border-solid border text-oxbowteal border-oxbowteal bg-oatmilk border-opacity-50 overflow-x-hedden"
                   value={categoryid}
                   onChange={(e) => {
                     setCategoryid(e.target.value);
@@ -1247,7 +1247,7 @@ export default function ProductsPage() {
               {/* Category product */}
               {level !== "Employee" && (
                 <button
-                  className="btn w-[220px] xl:w-[220px] h-[40px] text-white rounded-md
+                  className="btn w-[220px] xl:w-[220px] h-[40px] text-oxbowteal rounded-md
                   flex flex-row justify-center items-center gap-1
                   "
                   onClick={() => setGategoryPage(true)} // ไปที่หน้าจัดการหมวดหมู่สินค้า
@@ -1278,7 +1278,7 @@ export default function ProductsPage() {
                 <input
                   type="text"
                   placeholder="Search for Product..."
-                  className=" md:w-full xl:w-[300px] p-2 pl-10 rounded-lg border bg-[#F6F4F4] border-[#009f4d] text-black focus:outline-none focus:ring-2 focus:ring-[#009f4d]"
+                  className=" md:w-full xl:w-[300px] p-2 pl-10 rounded-lg border-0 bg-lessengray text-oxbowteal focus:outline-none focus:ring-2 focus:ring-oxbowteal"
                   value={search}
                   onChange={(e) => {
                     setSearch(e.target.value);
@@ -1300,9 +1300,9 @@ export default function ProductsPage() {
 
             {/* เพิ่มสินค้า */}
             {level !== "Employee" && (
-              <div className="min-w-[160px] md:min-w-[150px] h-[300px] md:h-[260px] xl:h-[300px] bg-white border-dashed border-2 border-[#009f4d] border-opacity-50 rounded-xl  flex flex-col items-center">
+              <div className="min-w-[160px] md:min-w-[150px] h-[300px] md:h-[260px] xl:h-[300px] border-dashed border-2 border-oxbowteal border-opacity-50 rounded-xl  flex flex-col items-center">
                 <button
-                  className="w-full h-full text-[#009f4d]  bg-[#84bd00] bg-opacity-20"
+                  className="w-full h-full text-[#009f4d]  bg-lessenteal hover:bg-oatmilk hover:m-2 bg-opacity-20"
                   onClick={handleOpenCreate}
                 >
                   <i className="fa-solid fa-plus py-4"></i>
@@ -1333,7 +1333,7 @@ export default function ProductsPage() {
                           ? "h-[300px] md:h-[260px] xl:h-[300px]"
                           : "h-[240px] md:h-[200px] xl:h-[240px] pb-3"
                       } 
-                    bg-white rounded-xl border-solid border border-black 
+                    bg-oatmilk rounded-xl border-solid border border-oxbowteal 
                     flex flex-col items-center justify-between`}
                   >
                     <div className="relative w-full">
@@ -1349,8 +1349,8 @@ export default function ProductsPage() {
                         }
                       />
 
-                      <div className="absolute w-[140px] h-[40px] top-3 left-0  bg-opacity-80 bg-white rounded-br-lg rounded-tr-lg p-1 flex justify-start items-center">
-                        <p className="text-black text-sm xl:text-[16px]">
+                      <div className="absolute w-[140px] h-[40px] top-3 left-0  bg-opacity-80 bg-oatmilk rounded-br-lg rounded-tr-lg p-1 flex justify-start items-center">
+                        <p className="text-oxbowteal text-sm xl:text-[16px]">
                           คงเหลือ:{" "}
                           {Number(product.productremain).toLocaleString()}
                         </p>
@@ -1406,7 +1406,7 @@ export default function ProductsPage() {
 
                     <div className="">
                       <div className="pt-2 flex flex-col justify-center items-center text-black">
-                        <p className="text-sm xl:text-md">
+                        <p className="text-sm xl:text-md text-oxbowteal">
                           {product.productnameth.length > 30
                             ? product.productnameth.substring(0, 30) + "..."
                             : product.productnameth || ""}
@@ -1414,11 +1414,11 @@ export default function ProductsPage() {
                         <div className="flex flex-row justify-center items-center gap-x-3">
                           {product.promotion &&
                             product.promotion.length > 0 && (
-                              <p className="line-through text-sm">
+                              <p className="line-through text-sm text-oxbowteal">
                                 ฿ {product.productprice}
                               </p>
                             )}
-                          <p className="text-md">
+                          <p className="text-md text-oxbowteal">
                             ฿{" "}
                             {/* {Number(product.productprice)
                               .toFixed(2)
@@ -1437,7 +1437,7 @@ export default function ProductsPage() {
                     {level !== "Employee" && (
                       <div className="w-full pt-2 flex justify-center items-center">
                         <button
-                          className="w-full h-[55px] text-black  bg-[#84bd00] bg-opacity-30 p-3 rounded-bl-lg"
+                          className="w-full h-[55px] text-black text-opacity-70  bg-oxbowteal bg-opacity-50 hover:bg-opacity-30 p-3 rounded-bl-lg"
                           onClick={() => handleEdit(product.productid)}
                         >
                           <i className="fa-solid fa-pen pr-2 text-sm xl:text-lg"></i>
@@ -1445,7 +1445,7 @@ export default function ProductsPage() {
                         </button>
 
                         <button
-                          className="w-full h-[55px] text-black  bg-[#84bd00] bg-opacity-30 p-3 rounded-br-lg"
+                          className="w-full h-[55px] text-black text-opacity-70  bg-oxbowteal bg-opacity-50 hover:bg-opacity-30 p-3 rounded-br-lg"
                           onClick={() => handleEdittreasury(product.productid)}
                         >
                           <i className="fa-solid fa-box pr-2 text-sm xl:text-lg"></i>
@@ -1523,6 +1523,7 @@ export default function ProductsPage() {
                 <input
                   type="file"
                   accept=".png, .jpg"
+                  className='bg-oatmilk text-oxbowteal border border-oxbowteal'
                   onChange={handleFileChange}
                 />
               </div>
@@ -1532,7 +1533,7 @@ export default function ProductsPage() {
                 <select
                   value={productCgtyId}
                   onChange={(e) => setProductCgtyId(e.target.value)}
-                  className="w-full h-[42px] border border-[#2B5F60] rounded-md p-2"
+                  className="w-full h-[42px] bg-oatmilk text-oxbowteal border border-oxbowteal rounded-md p-2"
                 >
                   {Array.isArray(categorylist) && categorylist.length > 0
                     ? categorylist.map((category) => (
@@ -1556,6 +1557,7 @@ export default function ProductsPage() {
                   type="text"
                   placeholder="กรุณากรอกชื่อภาษาไทย"
                   value={productnameth}
+                  className='bg-oatmilk text-oxbowteal border border-oxbowteal'
                   onChange={(e) => setProductnameth(e.target.value)}
                 />
               </div>
@@ -1568,6 +1570,7 @@ export default function ProductsPage() {
                   type="text"
                   placeholder="กรุณากรอกชื่อภาษาอังกฤษ"
                   value={productnameeng}
+                  className='bg-oatmilk text-oxbowteal border border-oxbowteal'
                   onChange={(e) => setProductnameeng(e.target.value)}
                 />
               </div>
@@ -1578,6 +1581,7 @@ export default function ProductsPage() {
                   type="text"
                   placeholder="กรุณากรอกข้อมูลสินค้าภาษาไทย"
                   value={productdatath}
+                  className='bg-oatmilk text-oxbowteal border border-oxbowteal'
                   onChange={(e) => setProductdatath(e.target.value)}
                 />
               </div>
@@ -1588,6 +1592,7 @@ export default function ProductsPage() {
                   type="text"
                   placeholder="กรุณากรอกข้อมูลสินค้าภาษาอังกฤษ"
                   value={productdataeng}
+                  className='bg-oatmilk text-oxbowteal border border-oxbowteal'
                   onChange={(e) => setProductdataeng(e.target.value)}
                 />
               </div>
@@ -1600,6 +1605,7 @@ export default function ProductsPage() {
                   type="number"
                   placeholder="กรุณากรอกราคา"
                   value={productprice}
+                  className='bg-oatmilk text-oxbowteal border border-oxbowteal'
                   onChange={(e) => setProductprice(Number(e.target.value))}
                 />
               </div>
@@ -1615,6 +1621,8 @@ export default function ProductsPage() {
                     border: "1px solid black",
                     borderRadius: "5px",
                     padding: "0px",
+                    backgroundColor: "#FFFBF5",
+                    color: "#188875",
                     // backgroundColor: "white",
                     // borderBottom: "none",
                     // border: "0px solid #009f4d",/
@@ -1629,26 +1637,33 @@ export default function ProductsPage() {
                       borderRadius: "5px",
                       padding: "0px",
                       borderBottom: "none",
-                      backgroundColor: "white",
+                      color: "#188875",
+                      backgroundColor: "#FFFBF5",
                       // border: "0px",
 
                       ":hover": {
-                        backgroundColor: "white",
+                        backgroundColor: "#FFFBF5",
+
                       },
 
                       "& .MuiInputBase-root": {
                         padding: "0px",
                         borderRadius: "5px",
                         // minHeight: "40px",
-                        backgroundColor: "white",
-                        borderBottom: "none",
+                        backgroundColor: "#FFFBF5",
+                        color: "#188875",
 
                         "& .MuiAutocomplete-input": {
                           paddingX: "12px",
                           paddingY: "2px",
                           borderRadius: "5px",
                           minHeight: "35px",
+                          color: "#188875",
                         },
+
+                        "& .MuiChip-label": {
+                          color: "#188875",
+                        }
                         // .css-1mb1do-MuiInputBase-root-MuiFilledInput-root::after
                       }
 
@@ -1788,6 +1803,7 @@ export default function ProductsPage() {
                 <input
                   type="file"
                   accept=".png, .jpg"
+                  className='bg-oatmilk text-oxbowteal border border-oxbowteal'
                   onChange={handleFileChange}
                 />{" "}
                 {/* อนุญาตเฉพาะไฟล์รูปภาพ */}
@@ -1799,7 +1815,7 @@ export default function ProductsPage() {
                 <select
                   value={productCgtyId}
                   onChange={(e) => setProductCgtyId(e.target.value)}
-                  className="w-full h-[42px] border border-[#2B5F60] rounded-md p-2"
+                  className="w-full h-[42px] bg-oatmilk text-oxbowteal border border-oxbowteal rounded-md p-2"
                 >
                   {Array.isArray(categorylist) && categorylist.length > 0
                     ? categorylist.map((category) => (
@@ -1824,6 +1840,7 @@ export default function ProductsPage() {
                   placeholder="กรุณากรอกชื่อสินค้าภาษาไทย"
                   value={productnameth}
                   onChange={(e) => setProductnameth(e.target.value)}
+                  className='bg-oatmilk text-oxbowteal border border-oxbowteal'
                 />
               </div>
 
@@ -1836,6 +1853,7 @@ export default function ProductsPage() {
                   placeholder="กรุณากรอกชื่อสินค้าภาษาอังกฤษ"
                   value={productnameeng}
                   onChange={(e) => setProductnameeng(e.target.value)}
+                  className='bg-oatmilk text-oxbowteal border border-oxbowteal'
                 />
               </div>
 
@@ -1846,6 +1864,7 @@ export default function ProductsPage() {
                   placeholder="กรุณากรอกข้อมูลสินค้าภาษาไทย"
                   value={productdatath}
                   onChange={(e) => setProductdatath(e.target.value)}
+                  className='bg-oatmilk text-oxbowteal border border-oxbowteal'
                 />
               </div>
 
@@ -1856,6 +1875,7 @@ export default function ProductsPage() {
                   placeholder="กรุณากรอกข้อมูลสินค้าภาษาอังกฤษ"
                   value={productdataeng}
                   onChange={(e) => setProductdataeng(e.target.value)}
+                  className='bg-oatmilk text-oxbowteal border border-oxbowteal'
                 />
               </div>
 
@@ -1868,6 +1888,7 @@ export default function ProductsPage() {
                   placeholder="กรุณากรอกราคา"
                   value={productprice}
                   onChange={(e) => setProductprice(Number(e.target.value))}
+                  className='bg-oatmilk text-oxbowteal border border-oxbowteal'
                 />
               </div>
 
@@ -1886,12 +1907,13 @@ export default function ProductsPage() {
 
                   sx={{
                     width: "100%",
-                    border: "1px solid black",
+                    border: "1px solid #188875",
                     borderRadius: "5px",
                     padding: "0px",
-                    // backgroundColor: "white",
+                    backgroundColor: "#FFFBF5",
+                    color: "#188875",
                     // borderBottom: "none",
-                    // border: "0px solid #009f4d",/
+                    // borderColor: "1px solid #188875"
 
                     // ":hover": {
                     //   // borderBottom: "none",
@@ -1903,18 +1925,20 @@ export default function ProductsPage() {
                       borderRadius: "5px",
                       padding: "0px",
                       borderBottom: "none",
-                      backgroundColor: "white",
+                      color: "#188875",
+                      backgroundColor: "#FFFBF5",
                       // border: "0px",
 
                       ":hover": {
-                        backgroundColor: "white",
+                        backgroundColor: "#FFFBF5",
                       },
 
                       "& .MuiInputBase-root": {
                         padding: "0px",
                         borderRadius: "5px",
                         // minHeight: "40px",
-                        backgroundColor: "white",
+                        backgroundColor: "#FFFBF5",
+                        color: "#188875",
                         borderBottom: "none",
 
                         "& .MuiAutocomplete-input": {
@@ -1922,7 +1946,13 @@ export default function ProductsPage() {
                           paddingY: "2px",
                           borderRadius: "5px",
                           minHeight: "35px",
+                          color: "#188875",
+
                         },
+
+                        "& .MuiChip-label": {
+                          color: "#188875",
+                        }
                         // .css-1mb1do-MuiInputBase-root-MuiFilledInput-root::after
                       }
 
@@ -2028,7 +2058,7 @@ export default function ProductsPage() {
         >
           <div className="flex flex-col w-[340px] md:w-[550px] xl:w-[700px] max-h-[650px]  md:max-h-[650px]">
             <div className="overflow-y-auto max-h-[650px] md:max-h-[650px] grid grid-cols-1 md:grid-cols-1 justify-between gap-x-4">
-              <label className="mb-2 flex flex-row gap-x-6 pb-5">
+              <label className="mb-2 flex flex-row gap-x-6 pb-2">
                 <p>
                   ชื่อสินค้าภาษาไทย:{" "}
                   {productnameth.length > 20
@@ -2050,6 +2080,7 @@ export default function ProductsPage() {
                   value={productremain}
                   max={100000}
                   min={0}
+                  className='bg-oatmilk text-oxbowteal border border-oxbowteal'
                   onChange={(e) => {
                     if (Number(e.target.value) > 100000) {
                       setProductremain(100000);
@@ -2102,7 +2133,7 @@ export default function ProductsPage() {
 
               <select
                 className="mt-2 p-2 text-[16px] w-[220px] xl:w-[220px]
-                    rounded-md border-solid border text-black border-[#009f4d] border-opacity-50 overflow-x-hedden"
+                    rounded-md border-solid bg-oatmilk border border-oxbowteal border-opacity-50 text-oxbowteal overflow-x-hedden"
                 value={productCgtyIdExport}
                 onChange={(e) => {
                   setProductCgtyIdExport(e.target.value);
@@ -2155,7 +2186,7 @@ export default function ProductsPage() {
                     </p> */}
                 <select
                   className="mt-2 p-2 text-[16px] w-[220px] xl:w-[220px]
-                       rounded-md border-solid border text-black border-[#009f4d] border-opacity-50 overflow-x-hedden"
+                       rounded-md border-solid bg-oatmilk border border-oxbowteal border-opacity-50 text-oxbowteal overflow-x-hedden"
                   value={productCgtyIdImport}
                   onChange={(e) => {
                     setProductCgtyIdImport(e.target.value);
@@ -2177,9 +2208,10 @@ export default function ProductsPage() {
               </div>
 
               <input
-                className="w-full p-1 mt-2 border-[#009f4d]"
+                className="w-full p-1 mt-2 bg-oatmilk border border-oxbowteal border-opacity-50 text-oxbowteal"
                 type="file"
                 accept=".csv"
+                
                 onChange={(e) => {
                   if (e.target.files?.[0]) setImportFile(e.target.files[0]);
                 }}

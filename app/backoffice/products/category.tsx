@@ -437,8 +437,8 @@ const handleCategoryDelete = async (categoryId: string) => {
         text: 'คุณต้องการลบหมวดหมู่สินค้านี้หรือไม่?',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#188875',
         confirmButtonText: 'ใช่',
         cancelButtonText: 'ยกเลิก'
       })
@@ -502,24 +502,24 @@ const handleCategoryDelete = async (categoryId: string) => {
       {/* header */}
       <div className="flex flex-row justify-between items-center">
         <div>
-          <p className="text-2xl xl:text-4xl pt-4 font-bold">สินค้า</p>
+          <p className="text-2xl xl:text-4xl pt-4 font-bold text-oxbowteal">สินค้า</p>
           <p className="text-md pt-2">{date}</p>
         </div>
       </div>
 
       {/* เส้นคั่น */}
-      <hr className="mt-2 border-t-3 border-[#2B5F60]" />
+      <hr className="mt-2 border-t-3 border-oxbowteal" />
 
 
       {/* content table */}
-      <div className="w-full mt-2 overflow-auto">
+      <div className="w-full mt-2 overflow-auto ">
 
-        <div className="w-[1325px] xl:w-full bg-white p-4 rounded-lg shadow-sm">
+        <div className="w-[1325px] xl:w-full bg-oatmilk p-4 rounded-lg shadow-sm border">
 
           {/* header table */}
           <div className="flex flex-row justify-between items-center text-white">
             <div className="flex flex-row justify-between items-center p-4">
-              <p className="text-lg xl:text-2xl font-bold text-black">
+              <p className="text-lg xl:text-2xl font-bold text-oxbowteal">
                 หมวดหมู่สินค้า
               </p>
             </div>
@@ -569,7 +569,7 @@ const handleCategoryDelete = async (categoryId: string) => {
                 <input
                   type="text"
                   placeholder="Search for User ..."
-                  className=" w-[300px] p-2 pl-10 rounded-lg border-0 bg-[#F6F4F4] text-black focus:outline-none focus:ring-2 focus:ring-[#2B5F60]"
+                  className=" w-[300px] p-2 pl-10 rounded-lg border-0 bg-lessengray text-oxbowteal focus:outline-none focus:ring-2 focus:ring-oxbowteal"
                   onChange={(e) => setSearch(e.target.value)}
                   value={search}
                   onKeyDown={(e) => {
@@ -586,7 +586,7 @@ const handleCategoryDelete = async (categoryId: string) => {
           <div className="w-full overflow-y-auto">
             
             <table className="text-[16px] p-4 table-auto w-full text-center">
-              <thead className="border-b border-[#2B5F60] bg-white sticky top-0">
+              <thead className="sticky top-0 border-b border-t border-oxbowteal bg-oatmilk text-oxbowteal shadow-md ">
                 <tr>
                   <th className="h-12 w-[200px]">หมวดหมู่สินค้า</th>
                   <th className="h-12 w-[300px]">รายละเอียด</th>
@@ -600,7 +600,7 @@ const handleCategoryDelete = async (categoryId: string) => {
                   category.map((category: Category) => (
                     <tr
                       key={category.CgtyId}
-                      className="border-b border-gray-100 hover:bg-gray-50"
+                      className="border-b border-oatmilk hover:bg-hoverteal text-oxbowteal"
                     >
                       <td className="h-12 w-[200px]">{category.categoryname}</td>
                       <td className="h-12 w-[300px]">{category.details}</td>
@@ -631,7 +631,7 @@ const handleCategoryDelete = async (categoryId: string) => {
                   <tr>
                     <td
                       colSpan={4}
-                      className="py-4 text-center text-[16px] opacity-60"
+                      className="py-4 text-center text-[16px] text-oxbowteal opacity-60"
                     >
                       ไม่พบข้อมูลกลุ่มบัญชีผู้ใช้
                     </td>
@@ -657,6 +657,7 @@ const handleCategoryDelete = async (categoryId: string) => {
               type="text"
               placeholder="กรุณากรอกชื่อหมวดหมู่สินค้า"
               value={categoryname}
+              className='bg-oatmilk border-oxbowteal text-oxbowteal'
               onChange={(e) => setCategoryname(e.target.value)}
             />
 
@@ -668,6 +669,7 @@ const handleCategoryDelete = async (categoryId: string) => {
               type="text"
               placeholder="กรุณากรอกรายละเอียด"
               value={details}
+              className='bg-oatmilk border-oxbowteal text-oxbowteal'
               onChange={(e) => setDetails(e.target.value)}
             />
 
@@ -698,6 +700,7 @@ const handleCategoryDelete = async (categoryId: string) => {
               type="text"
               placeholder="กรุณากรอกชื่อหมวดหมู่สินค้า"
               value={categoryname}
+              className='bg-oatmilk border-oxbowteal text-oxbowteal'
               onChange={(e) => setCategoryname(e.target.value)}
             />
 
@@ -706,6 +709,7 @@ const handleCategoryDelete = async (categoryId: string) => {
               type="text"
               placeholder="กรุณากรอกรายละเอียด"
               value={details}
+              className='bg-oatmilk border-oxbowteal text-oxbowteal'
               onChange={(e) => setDetails(e.target.value)}
             />
 

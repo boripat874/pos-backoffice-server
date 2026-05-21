@@ -335,7 +335,7 @@ export default function Reportusers() {
       {/* header */}
       <div className='max-w-[1300px] flex flex-row justify-between items-center'>
         <div>
-          <p className='text-4xl pt-4 font-bold'>รายงาน</p>
+          <p className='text-4xl pt-4 font-bold text-oxbowteal'>รายงาน</p>
           <p className='text-md xl:text-lg pt-2'>{date}</p>
         </div>
       </div>
@@ -372,13 +372,13 @@ export default function Reportusers() {
       <div className="mt-2 overflow-auto">
 
         {/* table user */}
-        <div className='w-[1325px] xl:w-full bg-white p-4 rounded-lg shadow-sm mx-auto'> {/* Added w-full, max-w, mx-auto */}
+        <div className='w-[1325px] xl:w-full bg-oatmilk p-4 rounded-lg shadow-sm border mx-auto'> {/* Added w-full, max-w, mx-auto */}
 
             {/* header table */}
             <div className='flex flex-row justify-between items-start text-white gap-4'> {/* Responsive flex direction */}
               
               <div className='p-2'>
-                <p className='text-lg xl:text-2xl font-bold text-black'>รายงานบัญชีผู้ใช้</p>
+                <p className='text-lg xl:text-2xl font-bold text-oxbowteal'>รายงานบัญชีผู้ใช้</p>
               </div>
 
               <div className="text-[14px] xl:text-[16px] p-2 flex flex-row items-center gap-4"> {/* Responsive flex direction and gap */}
@@ -398,7 +398,7 @@ export default function Reportusers() {
                   <input
                     type="text"
                     placeholder="Search for User..."
-                    className=" w-[300px] p-2 pl-10 rounded-lg border-0 bg-[#F6F4F4] text-black focus:outline-none focus:ring-2 focus:ring-[#2B5F60]"
+                    className=" w-[300px] p-2 pl-10 rounded-lg border-0 bg-lessengray text-oxbowteal focus:outline-none focus:ring-2 focus:ring-oxbowteal"
                     onChange={(e) => setSearch(e.target.value)}
                     value={search}
                     onKeyDown={(e) => {
@@ -412,10 +412,10 @@ export default function Reportusers() {
             </div>
 
             {/* content table - Use a wrapper div for scrolling */}
-            <div className='w-full mt-2 overflow-x-auto text-black'> {/* Allow horizontal scroll on small screens */}
+            <div className='w-full mt-2 overflow-x-auto text-oxbowteal'> {/* Allow horizontal scroll on small screens */}
               <div className='overflow-y-auto'> {/* Set height and vertical scroll on this div */}
                 <table className='text-[16px] table-fixed w-full text-center '>
-                  <thead className='border-b border-[#2B5F60] sticky top-0 z-10 bg-[#74d2e7]'>
+                  <thead className='border-b border-t border-oxbowteal bg-oatmilk sticky top-0 shadow-md z-10'>
                     <tr>
 
                       <th className='h-12 w-[150px] px-2'>ร้าน</th> 
@@ -427,7 +427,7 @@ export default function Reportusers() {
 
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className='text-oxbowteal hover:bg-hoverteal'>
                       {/* {Array.isArray(reportusers) && reportusers.length > 0 ? (reportusers.map((reportorder: ReportUser, index: number) => (
                       <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
                         <td className='h-12 px-2 truncate'>{reportorder.ordertimestamp}</td> 
@@ -470,7 +470,7 @@ export default function Reportusers() {
                           ))
                         ): (
                           <tr>
-                            <td colSpan={6} className="py-4 text-[16px] text-center text-black opacity-60">ไม่มีข้อมูลรายงานบัญชีผู้ใช้</td>
+                            <td colSpan={6} className="py-4 text-[16px] text-center text-oxbowteal opacity-60">ไม่มีข้อมูลรายงานบัญชีผู้ใช้</td>
                           </tr>
                         )
 

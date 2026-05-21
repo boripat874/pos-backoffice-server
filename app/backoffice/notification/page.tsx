@@ -299,13 +299,13 @@ export default function Notification() {
       {/* header */}
       <div className="flex flex-row justify-between items-center">
         <div>
-          <p className="text-2xl xl:text-4xl pt-4 font-bold">Notification</p>
+          <p className="text-2xl xl:text-4xl pt-4 font-bold text-oxbowteal">Notification</p>
           <p className="text-md xl:text-lg pt-2">{date}</p>
         </div>
       </div>
 
       {/* เส้นคั่น */}
-      <hr className="mt-4 border-t-3 border-[#2B5F60]" />
+      <hr className="mt-4 border-t-3 border-oxbowteal" />
 
       {/* ตัวเลือกข้อมูล */}
       <div className="w-full flex flex-col md:flex-row justify-start items-start mt-2 gap-x-2 xl:gap-x-4 gap-y-2 xl:gap-y-0">
@@ -315,7 +315,7 @@ export default function Notification() {
         (level === "Owner" && (
           <div>
             <select
-              className="text-[16px] w-[160px]  xl:w-[180px] h-[40px] xl:h-[40px] rounded-md border-[#009f4d] px-2 border text-black"
+              className="text-[16px] w-[160px]  xl:w-[180px] h-[40px] xl:h-[40px] rounded-md bg-oatmilk border-oxbowteal px-2 border text-oxbowteal"
               value={shopid}
               onChange={(e) => {
                 setShopid(e.target.value);
@@ -387,13 +387,13 @@ export default function Notification() {
       <div className="mt-2 overflow-auto">
 
         {/* table event log */}
-        <div className="w-[1335px] xl:w-full bg-white p-4 rounded-lg shadow-sm">
+        <div className="w-[1335px] xl:w-full bg-oatmilk p-4 rounded-lg shadow-sm border">
           
           {/* header table */}
           <div className="flex flex-row justify-between items-center text-white">
 
             <div className="flex flex-row justify-between items-center p-4">
-              <p className="text-lg xl:text-2xl font-bold text-black"> รายการแจ้งเตือน</p>
+              <p className="text-lg xl:text-2xl font-bold text-oxbowteal"> รายการแจ้งเตือน</p>
             </div>
 
             {/* <div className='p-4'>
@@ -406,7 +406,7 @@ export default function Notification() {
                 <input
                   type="text"
                   placeholder="Search for Notification..."
-                  className="text-[14px] xl:text-[16px] w-[300px] p-2 pl-10 rounded-lg border-0 bg-[#F6F4F4] text-black focus:outline-none focus:ring-2 focus:ring-[#2B5F60]"
+                  className="text-[14px] xl:text-[16px] w-[300px] p-2 pl-10 rounded-lg border-0 bg-lessengray text-oxbowteal focus:outline-none focus:ring-2 focus:ring-oxbowteal"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   onKeyDown={(e) => {
@@ -422,11 +422,11 @@ export default function Notification() {
           </div>
 
           {/* content table */}
-          <div className="overflow-x-auto text-black">
+          <div className="overflow-x-auto">
             
-            <table className="text-[14px] xl:text-[16px] w-full p-4 table-auto text-center ">
+            <table className="text-[14px] xl:text-[16px] w-full p-4 table-auto text-center text-oxbowteal">
               
-              <thead className="border-b border-[#2B5F60] sticky top-0 bg-[#74d2e7]">
+              <thead className="border-b border-t border-oxbowteal sticky top-0 bg-oatmilk shadow-md">
                 <tr>
                   <th className="h-12 w-[80px]">เวลา วันที่</th>
                   <th className="h-12 w-[100px]">หัวข้อ</th>
@@ -440,7 +440,7 @@ export default function Notification() {
                   notifications.map((notification: NotificationItem) => (
                     <tr
                       key={notification.notificationid}
-                      className="border-b border-gray-100 hover:bg-gray-50"
+                      className="border-b border-lessengray hover:bg-hoverteal"
                     >
                       <td className="h-12 w-[80px]">
                         {notification.create_at}
@@ -466,7 +466,7 @@ export default function Notification() {
                   <tr>
                     <td
                       colSpan={4}
-                      className="py-4 text-base text-center text-black opacity-60"
+                      className="py-4 text-base text-center opacity-60"
                     >
                       ไม่พบข้อมูลการแจ้งเตือน
                     </td>

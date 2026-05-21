@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
 
 
 const geistSans = Geist({
@@ -34,11 +34,11 @@ export default function RootLayout({
           referrerPolicy="no-referrer"
         />
 
-        <link rel="icon" type="image/ico" sizes="32x32" href="/img/management_gui_icon.ico" />
+        <link rel="icon" type="image/ico" sizes="32x32" href="/logo/logobackoffice.ico" />
 
       </head>
 
-      <body className={`bg-slate-100 ${geistSans.variable} ${geistMono.variable} antialiased`} >
+      <body className={`bg-oatmilk ${geistSans.variable} ${geistMono.variable} antialiased`} >
 
         {children}
 

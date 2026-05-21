@@ -235,12 +235,12 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
         {/* Header */}
         <div className="w-full flex flex-row justify-between items-center">
           <div>
-            <p className="text-lg md:text-2xl xl:text-4xl pt-2 md:pt-3 xl:pt-4 font-bold">Dashboard</p>
+            <p className="text-lg text-oxbowteal md:text-2xl xl:text-4xl pt-2 md:pt-3 xl:pt-4 font-bold">Dashboard</p>
             <p className="text-xs md:text-md xl:text-lg pt-1 md:pt-2 xl:pt-4">{date}</p>
           </div>
         </div>
 
-        <hr className="mt-2 border-t-3 border-[#2B5F60]" />
+        <hr className="mt-2 border-t-3 border-deepforest" />
 
         {/* Controls: Select Shop, Date, PDF Button */}
         <div className="w-full flex flex-col md:flex-row justify-start mt-2 items-start gap-x-4 gap-y-2 md:gap-y-0">
@@ -292,7 +292,7 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
 
             {/* PDF Export Button */}
             <button 
-              className="print:hidden p-2 text-center text-[#FFFFFF] hover:text-[#009f4d] bg-[#009f4d] hover:bg-transparent border border-[#009f4d] rounded-md h-[40px] px-4 whitespace-nowrap"
+              className="print:hidden p-2 text-center text-[#FFFFFF] bg-oxbowteal hover:bg-lessenteal border rounded-md h-[40px] px-4 whitespace-nowrap"
               onClick={() => handlePrint()}
             >
               Export to PDF
@@ -302,7 +302,7 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
 
       
         {/* Shop Info Header */}
-        <div className="flex flex-row p-4 mt-2 justify-start items-center gap-x-4 bg-white rounded-xl">
+        <div className="flex flex-row p-4 mt-2 justify-start items-center gap-x-4 rounded-xl shadow-sm shadow-deepforest">
           <Image
             src={`${
               shoplogoimage != "" && shoplogoimage != null
@@ -315,7 +315,7 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
             className="inline-block w-[60px] h-[50px] xl:w-[80px] xl:h-[60px] object-contain"
             style={{ transform: "rotate(0deg)" }}
           />
-          <p className="ml-10 text-lg xl:text-2xl font-bold">{shopnameth || "-"}</p>
+          <p className="ml-10 text-oxbowteal  text-lg xl:text-2xl font-bold">{shopnameth || "-"}</p>
         </div>
 
         {/* Info Cards Grid - ปรับสีตามรูปตัวอย่าง (HTML Dump) */}
@@ -325,7 +325,7 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
             label={"รายได้รวมทั้งหมดจาก\nทุกช่องทาง"}
             value={`฿ ${totalincome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#005670]" 
+            backgroundColor="bg-[#548f85]" 
             iconpath={"/icon/money.svg"}
           />
 
@@ -334,7 +334,7 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
             label={"รายได้รวมทั้งหมดจาก\nCredit Card"}
             value={`฿ ${totalcreditcard.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#358326]" 
+            backgroundColor="bg-oxbowteal" 
             iconpath={"/icon/creait_card.svg"}
           />
 
@@ -343,7 +343,7 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
             label={"รายได้รวมทั้งหมดจาก\nPromptPay"}
             value={`฿ ${totalpromptpay.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#fe5000]"
+            backgroundColor="bg-deepforest"
             iconpath={"/icon/promaptpay.svg"}
           />
 
@@ -352,7 +352,7 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
             label={"รายได้รวมทั้งหมดจาก\nE-wallet"}
             value={`฿ ${totalewallet.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#da1884]"
+            backgroundColor="bg-burntorange"
             iconpath={"/icon/E_wallet.svg"}
           />
 
@@ -361,7 +361,7 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
             label={"รายได้รวมทั้งหมดจาก\nเงินสด"}
             value={`฿ ${totalcash.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#a51890]"
+            backgroundColor="bg-earthbrown"
             iconpath={"/icon/cash.svg"}
           />
 
@@ -370,7 +370,7 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
             label={"บิลที่ขายได้ทั้งหมด"}
             value={`${totalorder.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#0077c8]"
+            backgroundColor="bg-safariyellow"
             iconpath={"/icon/order.svg"}
           />
 
@@ -379,19 +379,19 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
             label={"สินค้าขายออกทั้งหมด\nหลายชิ้น"}
             value={`${totalproductsell.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#008eaa]"
+            backgroundColor="bg-olivedust"
             iconpath={"/icon/creait_card.svg"}
           />
         </div>
 
         {/* Chart Section */}
-        <div className="w-full bg-white flex flex-col mt-2 p-2 rounded-lg shadow">
-          <p className="text-[12px] md:text-[16px] xl:text-2xl text-center py-2 font-semibold">ยอดขายสินค้า</p>
+        <div className="w-full flex flex-col mt-2 p-2 rounded-lg shadow">
+          <p className="text-[12px] md:text-[16px] xl:text-2xl text-oxbowteal text-center py-2 font-semibold">ยอดขายสินค้า</p>
           <div className="w-[99%] min-h-[100px] mx-auto border rounded-lg flex flex-col items-center justify-center">
             {dashboarddatalist.length > 0 ? (
               <HorizontalBarChart productsellslist={dashboarddatalist} />
             ) : (
-              <p className="text-md xl:text-lg text-center text-black opacity-60">ไม่พบข้อมูลยอดขายสินค้า</p>
+              <p className="text-md xl:text-lg text-center text-oxbowteal opacity-60">ไม่พบข้อมูลยอดขายสินค้า</p>
             )}
           </div>
         </div>

@@ -71,20 +71,20 @@ function ButtomSidebar( {label,urllink, status,hoveraction , children , onClick}
         href={urllink}
         onClick={onClick} // เพิ่ม onClick handler
         className={`relative w-full h-[50px] md:h-[45px] xl:h-[70px] pl-[8px] xl:pl-[10px] rounded-tl-md rounded-bl-md md:rounded-tl-lg md:rounded-bl-lg xl:rounded-tl-xl xl:rounded-bl-xl ${
-          status ? "bg-[#2B5F60]" : "bg-white hover:bg-[#ecf7f4]"
+          status ? "bg-deepforest" : "bg-oatmilk hover:bg-hoverteal"
         } flex items-center`}
       >
         {/* <Link href={urllink}> */}
           {/* ไอคอน */}
           <div
             className={`w-[45px]  md:w-[35px] xl:w-[55px] h-[40px] md:h-[30px]  xl:h-[50px] rounded-lg xl:rounded-lg flex justify-center items-center ${
-              status ? "bg-[#009f4d]" : "bg-white"
+              status ? "bg-oxbowteal" : "bg-oatmilk"
             }`}
           >
             {children}
           </div>
           {showLabelWithDelay ? (
-            <span className={`ml-8 md:ml-2 xl:ml-4 text-[16px] md:text-[10px] xl:text-sm font-semibold ${status ? "text-white" : "text-[#009f4d]"}`}>{label}</span>
+            <span className={`ml-8 md:ml-2 xl:ml-4 text-[16px] md:text-[10px] xl:text-sm font-semibold ${status ? "text-oatmilk" : "text-oxbowteal"}`}>{label}</span>
           ):null}
         {/* </Link> */}
 

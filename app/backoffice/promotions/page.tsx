@@ -409,7 +409,7 @@ export default function Promotions() {
         Swal.fire({
           icon: 'success',
           title: 'สำเร็จ',
-          text: 'เพิ่มข้อมูลสำเร็จ',
+          text: 'แก้ไขข้อมูลสำเร็จ',
           timer: 2000
         });
 
@@ -444,8 +444,8 @@ export default function Promotions() {
         text: 'คุณแน่ใจหรือไม่ว่าต้องการลบโปรโมชั่นนี้?',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#188875',
         confirmButtonText: 'ลบ',
       }).then(async (result) => {
 
@@ -655,7 +655,7 @@ export default function Promotions() {
       {/* header */}
       <div className="flex flex-row justify-between items-center">
         <div>
-          <p className="text-xl md:text-2xl xl:text-4xl pt-4 font-bold">
+          <p className="text-oxbowteal text-xl md:text-2xl xl:text-4xl pt-4 font-bold">
             โปรโมชั่น
           </p>
           <p className="text-xs md:text-md xl:text-lg pt-2">{date}</p>
@@ -663,7 +663,7 @@ export default function Promotions() {
       </div>
 
       {/* เส้นคั่น */}
-      <hr className="mt-2 border-t-3 border-[#2B5F60]" />
+      <hr className="mt-2 border-t-3 border-oxbowteal" />
 
       {/* ตัวเลือกข้อมูล */}
       <div className="w-full flex flex-col md:flex-row justify-start items-start mt-2 gap-x-2 xl:gap-x-4 gap-y-2 xl:gap-y-0">
@@ -734,11 +734,11 @@ export default function Promotions() {
       {/* <div className=" min-w-[374px] md:w-[700px] mt-2 xl:min-w-full overflow-auto"> */}
       <div className="mt-2 overflow-auto">
         {/* Promotions */}
-        <div className="w-[1325px] xl:w-full mt-0 bg-white p-4 rounded-lg shadow-sm flex flex-col">
+        <div className="w-[1325px] xl:w-full mt-0 p-4 rounded-lg flex flex-col border">
           {/* header table */}
           <div className="w-full flex flex-row justify-between items-center">
             <div className="flex flex-row justify-between items-center p-4">
-              <p className="text-lg xl:text-2xl font-bold text-black">
+              <p className="text-lg xl:text-2xl font-bold text-oxbowteal">
                 {" "}
                 รายการโปรโมชั่น
               </p>
@@ -763,7 +763,7 @@ export default function Promotions() {
                 <input
                   type="text"
                   placeholder="Search for Promotions..."
-                  className="w-[300px] p-2 pl-10 rounded-lg border-0 bg-[#F6F4F4] text-black focus:outline-none focus:ring-2 focus:ring-[#2B5F60]"
+                  className="w-[300px] p-2 pl-10 rounded-lg border-0 bg-lessengray text-oxbowteal focus:outline-none focus:ring-2 focus:ring-oxbowteal"
                   value={search}
                   onChange={(e) => {
                     setSearch(e.target.value);
@@ -781,8 +781,8 @@ export default function Promotions() {
 
           {/* content table */}
           <div className="w-full  overflow-y-auto">
-            <table className="p-2 xl:p-4 w-full text-center text-black ">
-              <thead className="border-b border-[#2B5F60] bg-[#74d2e7] sticky top-0">
+            <table className="p-2 xl:p-4 w-full text-center text-oxbowteal rounded-lg">
+              <thead className="border-b border-oxbowteal border-t bg-oatmilk shadow-md sticky top-0">
                 <tr>
                   <th className="h-12 w-[130px]">วันที่ สร้าง/แก้ไข ล่าสุด</th>
 
@@ -803,7 +803,7 @@ export default function Promotions() {
                   promotionslist.map((promotion: Promotion) => (
                     <tr
                       key={promotion.promoid}
-                      className="border-b border-gray-100 hover:bg-gray-50"
+                      className="border-b border-oatmilk hover:bg-hoverteal"
                     >
                       <td className="h-12 w-[130px]">
                         {promotion.datepromotion}
@@ -842,7 +842,7 @@ export default function Promotions() {
                   <tr>
                     <td
                       colSpan={8}
-                      className="py-4 text-center text-[16px] text-black  opacity-60"
+                      className="py-4 text-center text-[16px] text-oxbowteal  opacity-60"
                     >
                       ไม่มีข้อมูลโปรโมชั่น
                     </td>
@@ -863,8 +863,8 @@ export default function Promotions() {
                   key={index + 1}
                   className={`px-4 py-2 mx-1 rounded-lg ${
                     currentPage === index + 1
-                      ? "bg-[#3DA48F] text-white" // หน้าปัจจุบัน: พื้นหลังสีเขียวเข้ม ตัวอักษรสีขาว
-                      : "bg-white text-black border border-gray-300" // หน้าอื่น: พื้นหลังสีขาว ตัวอักษรสีดำ
+                      ? "bg-oxbowteal text-white" // หน้าปัจจุบัน: พื้นหลังสีเขียวเข้ม ตัวอักษรสีขาว
+                      : "bg-oatmilk text-oxbowteal border border-oxbowteal" // หน้าอื่น: พื้นหลังสีขาว ตัวอักษรสีดำ
                   }`}
                   onClick={() => {
                     setCurrentPage(index + 1);
@@ -884,7 +884,7 @@ export default function Promotions() {
         title="เพิ่มโปรโมชั่น"
         isOpen={isOpen}
         onClose={handleCloseModal}
-        className="w-[350px] md:w-[580px] xl:w-[800px] max-h-[800px] md:max-h-[500px]"
+        className=" w-[350px] md:w-[580px] xl:w-[800px] max-h-[800px] md:max-h-[500px]"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-[800px] md:max-h-[420px] overflow-y-auto">
           {/* <div>ร้าน</div>
@@ -908,7 +908,7 @@ export default function Promotions() {
             <input
               type="text"
               value={promotionname}
-              className=""
+              className="bg-oatmilk border-oxbowteal text-oxbowteal"
               onChange={(e) => setPromotionname(e.target.value)}
             />
           </div>
@@ -918,7 +918,7 @@ export default function Promotions() {
             <input
               type="text"
               value={initial}
-              className=""
+              className="bg-oatmilk border-oxbowteal text-oxbowteal"
               onChange={(e) => setInitial(e.target.value)}
             />
           </div>
@@ -946,7 +946,7 @@ export default function Promotions() {
             {/* <input type="text" value={typepromotions} onChange={(e) => setTypepromotions(e.target.value)} />
              */}
             <select
-              className="w-full p-2 border border-[#2B5F60] rounded-md text-black"
+              className="w-full p-2 border border-oxbowteal bg-oatmilk rounded-md text-oxbowteal"
               defaultValue={typepromotionsList[0].value}
               onChange={(e) => {
                 setTypepromotions(e.target.value);
@@ -1041,7 +1041,7 @@ export default function Promotions() {
               value={discount}
               max={100}
               min={0}
-              className="w-full rounded-md"
+              className="w-full rounded-md bg-oatmilk border border-oxbowteal text-oxbowteal"
               // placeholder="0"
               onChange={(e) => setDiscount(Number(e.target.value))}
             />
@@ -1052,7 +1052,7 @@ export default function Promotions() {
             <input
               type="date"
               value={promotionstart}
-              className="text-black"
+              className="bg-oatmilk border-oxbowteal text-oxbowteal"
               onChange={(e) => setPromotionstart(e.target.value)}
             />
           </div>
@@ -1062,7 +1062,7 @@ export default function Promotions() {
             <input
               type="date"
               value={promotionend}
-              className="text-black"
+              className="bg-oatmilk border-oxbowteal text-oxbowteal"
               onChange={(e) => setPromotionend(e.target.value)}
             />
           </div>
@@ -1072,16 +1072,21 @@ export default function Promotions() {
             <input
               type="text"
               value={promotiondetail}
+              className="bg-oatmilk border-oxbowteal text-oxbowteal"
               onChange={(e) => setPromotiondetail(e.target.value)}
             />
           </div>
         </div>
+
         <div className="mt-2 border-t-2 border-gray-300 pt-2">
+
           <button className="btn" onClick={handleAdd}>
             <i className="fa-solid fa-plus mr-2"></i>
             เพิ่ม
           </button>
+
         </div>
+        
       </ModalWauto>
 
       {/* แก้ไข */}
@@ -1096,7 +1101,7 @@ export default function Promotions() {
             <div>ชื่อโปรโมชั่น</div>
             <input
               type="text"
-              className=""
+              className="bg-oatmilk border-oxbowteal text-oxbowteal"
               value={promotionname}
               onChange={(e) => setPromotionname(e.target.value)}
             />
@@ -1107,7 +1112,7 @@ export default function Promotions() {
             <input
               type="text"
               value={initial}
-              className=""
+              className="bg-oatmilk border-oxbowteal text-oxbowteal"
               onChange={(e) => setInitial(e.target.value)}
             />
           </div>
@@ -1131,7 +1136,7 @@ export default function Promotions() {
             {/* <input type="text" value={typepromotions} onChange={(e) => setTypepromotions(e.target.value)} />
              */}
             <select
-              className="w-full p-2 border border-[#2B5F60] rounded-md"
+              className="w-full p-2 border rounded-md bg-oatmilk border-oxbowteal text-oxbowteal"
               name="typepromotions"
               value={typepromotions}
               onChange={(e) => {
@@ -1225,6 +1230,7 @@ export default function Promotions() {
               value={discount}
               max={100}
               min={0}
+              className='bg-oatmilk border-oxbowteal text-oxbowteal'
               onChange={(e) => setDiscount(Number(e.target.value))}
             />
           </div>
@@ -1234,6 +1240,7 @@ export default function Promotions() {
             <input
               type="date"
               value={promotionstart}
+              className='bg-oatmilk border-oxbowteal text-oxbowteal'
               onChange={(e) => setPromotionstart(e.target.value)}
             />
           </div>
@@ -1243,6 +1250,7 @@ export default function Promotions() {
             <input
               type="date"
               value={promotionend}
+              className='bg-oatmilk border-oxbowteal text-oxbowteal'
               onChange={(e) => setPromotionend(e.target.value)}
             />
           </div>
@@ -1252,6 +1260,7 @@ export default function Promotions() {
             <input
               type="text"
               value={promotiondetail}
+              className='bg-oatmilk border-oxbowteal text-oxbowteal'
               onChange={(e) => setPromotiondetail(e.target.value)}
             />
           </div>

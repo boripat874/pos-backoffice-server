@@ -20,7 +20,7 @@ export default function Selectshop({shopid,shopslist,onChange,className="w-[160p
   return (
     <div>
       <select 
-        className={`${className} text-black text-[14px] xl:text-[16px] h-[40px] xl:h-[40px] rounded-md border-[#009f4d] px-2 border overflow-x-hidden`}
+        className={`${className} bg-oatmilk text-oxbowteal text-[14px] xl:text-[16px] h-[40px] xl:h-[40px] rounded-md border-oxbowteal px-2 border overflow-x-hidden`}
         onChange={(e) => onChange && onChange(e.target.value)}
         value={shopid}
         >

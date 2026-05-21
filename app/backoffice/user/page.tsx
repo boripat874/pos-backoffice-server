@@ -1393,7 +1393,7 @@ export default function UserPage() {
       {/* header */}
       <div className="flex flex-row justify-between items-center">
         <div>
-          <p className="text-xl md:text-2xl xl:text-4xl pt-4 font-bold">บัญชีผู้ใช้</p>
+          <p className="text-xl md:text-2xl xl:text-4xl pt-4 font-bold text-oxbowteal">บัญชีผู้ใช้</p>
           <p className="text-xs md:text-md xl:text-lg pt-2">{date}</p>
         </div>
       </div>
@@ -1405,11 +1405,12 @@ export default function UserPage() {
       <div className="mt-2 overflow-auto">
 
         {/* table user */}
-        <div className="w-[1325px] xl:w-full mt-0 bg-white p-4 rounded-lg shadow-sm">
+        <div className="w-[1325px] xl:w-full mt-0 p-4 bg-oatmilk rounded-lg shadow-sm border flex flex-col overflow-auto">
+
           {/* header table */}
           <div className="flex flex-row justify-between items-center text-white">
             <div className="flex flex-row justify-between items-center p-4">
-              <p className="text-lg xl:text-2xl font-bold text-black">
+              <p className="text-lg xl:text-2xl font-bold text-oxbowteal">
                 รายการบัญชีผู้ใช้
               </p>
             </div>
@@ -1453,7 +1454,7 @@ export default function UserPage() {
                 <input
                   type="text"
                   placeholder="Search for User ..."
-                  className=" w-[300px] p-2 pl-10 rounded-lg border-0 bg-[#F6F4F4] text-black focus:outline-none focus:ring-2 focus:ring-[#2B5F60]"
+                  className=" w-[300px] p-2 pl-10 rounded-lg border-0 bg-lessengray text-oxbowteal focus:outline-none focus:ring-2 focus:ring-oxbowteal"
                   onChange={(e) => setSearch(e.target.value)}
                   value={search}
                   onKeyDown={(e) => {
@@ -1468,8 +1469,8 @@ export default function UserPage() {
 
           {/* content table */}
           <div className="overflow-y-auto">
-            <table className="text-[16px] p-2 xl:p-4 table-auto w-full text-center text-black">
-              <thead className="border-b border-[#2B5F60] sticky top-0 bg-[#74d2e7]">
+            <table className="text-[16px] p-2 xl:p-4 table-auto w-full text-center text-oxbowteal">
+              <thead className="border-b border-t border-oxbowteal sticky top-0 bg-oatmilk shadow-md">
                 <tr>
                   <th className="h-12 w-[150px]">ร้าน</th>
                   <th className="h-12 w-[150px]">กลุ่มบัญชีผู้ใช้</th>
@@ -1485,7 +1486,7 @@ export default function UserPage() {
                   users.map((user: User) => (
                     <tr
                       key={user.uinfoid}
-                      className="border-b border-gray-100 hover:bg-gray-50"
+                      className="border-b border-oatmilk hover:bg-hoverteal"
                     >
                       <td className="h-12 w-[100px]">{(user.shopnameth || "").length > 30 ? `${user.shopnameth.substring(0, 30)}...` : user.shopnameth}</td>
                       <td className="h-12 w-[100px]">{(user.ugroupname || "").length > 30 ? `${user.ugroupname.substring(0, 30)}...` : user.ugroupname}</td>

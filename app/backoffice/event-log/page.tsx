@@ -295,31 +295,35 @@ export default function Event_log() {
       {/* header */}
       <div className="flex flex-row justify-between items-center">
         <div>
-          <p className="text-2xl xl:text-4xl pt-4 font-bold">ดำเนินการ</p>
+          <p className="text-2xl xl:text-4xl pt-4 font-bold text-oxbowteal ">ดำเนินการ</p>
           <p className="text-md xl:text-lg pt-2">{date}</p>
         </div>
       </div>
 
       {/* เส้นคั่น */}
-      <hr className="mt-2 border-t-3 border-[#2B5F60]" />
+      <hr className="mt-2 border-t-3 border-oxbowteal" />
 
       {/* ตัวเลือกข้อมูล */}
       <div className="w-full flex flex-col md:flex-row justify-start items-start mt-2 gap-x-2 xl:gap-x-4 gap-y-2 xl:gap-y-0">
         {/* เลือกร้านค้า */}
         {(level === "Admin" || level === "Owner") && (
+
           <div>
             <select
-              className="text-[16px] w-[160px]  xl:w-[180px] h-[40px] xl:h-[40px] rounded-md border-[#009f4d] px-2 border text-black"
+              className="text-[16px] w-[160px]  xl:w-[180px] h-[40px] xl:h-[40px] rounded-md bg-oatmilk border-oxbowteal px-2 border text-oxbowteal"
               value={shopid}
               onChange={(e) => {
+
                 setShopid(e.target.value);
                 shopidRef.current = e.target.value;
                 fetchData();
+
               }}
             >
               <option key={""} value={""}>
                 ร้านค้าทั้งหมด
               </option>
+
               {shoplist.map((shop) => (
                 <option key={shop.shopid} value={shop.shopid}>
                   {shop.shopnameth}
@@ -387,11 +391,11 @@ export default function Event_log() {
       {/*table */}
       <div className="mt-2 overflow-auto">
         {/* table event log */}
-        <div className="w-[1325px] xl:w-full mt-0 bg-white p-4 rounded-lg shadow-sm">
+        <div className="w-[1325px] xl:w-full mt-0 bg-oatmilk p-4 rounded-lg shadow-sm border">
           {/* header table */}
           <div className="flex flex-row justify-between items-center text-white">
             <div className="flex flex-row justify-between items-center p-4">
-              <p className="text-lg xl:text-2xl font-bold text-black">
+              <p className="text-lg xl:text-2xl font-bold text-oxbowteal">
                 {" "}
                 การดำเนินงาน
               </p>
@@ -416,7 +420,7 @@ export default function Event_log() {
                 <input
                   type="text"
                   placeholder="Search for Event log ..."
-                  className="w-[300px] p-2 pl-10 rounded-lg border-0 bg-[#F6F4F4] text-black focus:outline-none focus:ring-2 focus:ring-[#2B5F60]"
+                  className="w-[300px] p-2 pl-10 rounded-lg border-0 bg-lessengray text-oxbowteal focus:outline-none focus:ring-2 focus:ring-oxbowteal"
                   onChange={(e) => setSearch(e.target.value)}
                   value={search}
                   onKeyDown={(e) => {
@@ -432,8 +436,8 @@ export default function Event_log() {
 
           {/* content table */}
           <div className="overflow-y-auto text-black">
-            <table className="text-[14px] xl:text-[16px] p-4 table-auto w-full text-center ">
-              <thead className="border-b border-[#2B5F60 sticky top-0 bg-[#74d2e7]">
+            <table className="text-[14px] xl:text-[16px] p-4 table-auto w-full text-center text-oxbowteal ">
+              <thead className="border-b border-t border-oxbowteal sticky top-0 bg-oatmilk z-10 shadow-md">
                 <tr>
                   <th className="h-12 w-[150px]">เวลา วันที่</th>
                   <th className="h-12 w-[100px]">ร้าน</th>
@@ -447,7 +451,7 @@ export default function Event_log() {
                   eventloglist.map((eventlog: EventLogItem) => (
                     <tr
                       key={eventlog.id}
-                      className="border-b border-gray-100 hover:bg-gray-50"
+                      className="border-b border-lessengray hover:bg-hoverteal"
                     >
                       <td className="h-12 w-[150px]">
                         {(eventlog.timestamplog || "").length > 30 ? eventlog.timestamplog.slice(0, 30) + "..." : eventlog.timestamplog}
@@ -461,7 +465,7 @@ export default function Event_log() {
                   <tr>
                     <td
                       colSpan={4}
-                      className="py-4  text-base text-center text-black opacity-60"
+                      className="py-4  text-base text-center opacity-60"
                     >
                       ไม่พบข้อมูลการดำเนินงาน
                     </td>

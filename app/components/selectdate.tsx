@@ -41,7 +41,7 @@ export default function Selectdate({
       {/* เลือกช่วงเวลา */}
       <div className="w-[160px]  xl:w-[180px] h-[40px] xl:h-[40px]">
         <select
-          className="w-full h-full text-[14px] xl:text-[16px] rounded-md border-[#009f4d] px-2 border text-black"
+          className="w-full h-full text-[14px] xl:text-[16px] rounded-md bg-oatmilk border-oxbowteal px-2 border text-oxbowteal"
           onChange={(e) => onChangePeriod && onChangePeriod(e.target.value)}
           value={period}
         >
@@ -58,10 +58,10 @@ export default function Selectdate({
         <div className='flex md:flex-row items-center gap-2 md:gap-x-4'>
 
           <div className="flex flex-col md:flex-row justify-start items-start md:items-center gap-x-4 gap-y-1 md:gap-y-0">
-            <p className="text-[14px] xl:text-[16px]">เริ่มต้น</p>
+            <p className="text-[14px] xl:text-[16px] text-oxbowteal">เริ่มต้น</p>
             <input
               type="date"
-              className="text-[14px] xl:text-[16px] h-[40px] w-[180px] md:w-[120px] xl:w-[140px] rounded-md border-[#009f4d] px-2 border text-black"
+              className=" text-[14px] xl:text-[16px] h-[40px] w-[180px] md:w-[120px] xl:w-[140px] rounded-md bg-oatmilk border-oxbowteal px-2 border text-oxbowteal"
               // value={(new Date()).toISOString().split('T')[0]}
               value={timestart}
               onChange={(e) =>
@@ -71,10 +71,10 @@ export default function Selectdate({
           </div>
 
           <div className="flex flex-col md:flex-row justify-start items-start md:items-center gap-x-4 gap-y-1 md:gap-y-0">
-            <p className="text-[14px] xl:text-[16px]">สิ้นสุด</p>
+            <p className="text-[14px] xl:text-[16px] text-oxbowteal">สิ้นสุด</p>
             <input
               type="date"
-              className="text-[14px] xl:text-[16px] h-[40px] w-[180px] md:w-[120px] xl:w-[140px] rounded-md border-[#009f4d] px-2 border text-black"
+              className="text-[14px] xl:text-[16px] h-[40px] w-[180px] md:w-[120px] xl:w-[140px] rounded-md bg-oatmilk border-oxbowteal px-2 border text-oxbowteal"
               // value={(new Date()).toISOString().split('T')[0]}
               value={timeend}
               onChange={(e) =>

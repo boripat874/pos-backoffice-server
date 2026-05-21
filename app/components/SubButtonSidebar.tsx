@@ -89,12 +89,12 @@ function SubButtomSidebar( {label,data , status,hoveraction , children , onClick
   };
 
   return (
-    <div className={`relative w-full ${status ? "bg-slate-700" : "bg-white"} md:rounded-tl-lg md:rounded-bl-lg rounded-tl-xl rounded-bl-xl flex flex-col justify-start`}>
+    <div className={`relative w-full ${status ? "bg-deepforest" : "bg-oatmilk"} md:rounded-tl-lg md:rounded-bl-lg rounded-tl-xl rounded-bl-xl flex flex-col justify-start`}>
 
       <button
         onClick={handleButtonClick} // Use the new handler
         className={`relative w-full h-[50px] xl:h-[70px] pl-[10px] md:rounded-tl-lg md:rounded-bl-lg rounded-tl-xl rounded-bl-xl ${
-          status ? "bg-[#2B5F60]" : "bg-white hover:bg-[#ecf7f4]"
+          status ? "bg-deepforest" : "bg-oatmilk hover:bg-hoverteal"
         } flex items-center justify-between pr-2`}
       >
 
@@ -103,7 +103,7 @@ function SubButtomSidebar( {label,data , status,hoveraction , children , onClick
           {/* ไอคอน */}
           <div
             className={`w-[45px]  md:w-[35px] xl:w-[55px] h-[40px] md:h-[30px]  xl:h-[50px] rounded-md md:rounded-lg flex justify-center items-center ${
-              status ? "bg-[#3DA48F]" : "bg-white"
+              status ? "bg-oxbowteal" : "bg-oatmilk"
             }`}
           >
             {children}
@@ -111,7 +111,7 @@ function SubButtomSidebar( {label,data , status,hoveraction , children , onClick
           {showLabelWithDelay ? (
             <span
               className={`ml-8 md:ml-2 xl:ml-4 text-[16px] md:text-[10px] xl:text-sm font-semibold ${
-                status ? "text-white" : "text-[#3DA48F]"
+                status ? "text-white" : "text-oxbowteal"
               }`}
             >
               {label}
@@ -123,12 +123,12 @@ function SubButtomSidebar( {label,data , status,hoveraction , children , onClick
           isSubMenuOpen ? (
             <BiChevronUp
               size={25}
-              className={`ml-2 ${status ? "text-white" : "text-[#3DA48F]"}`}
+              className={`ml-2 ${status ? "text-white" : "text-oxbowteal"}`}
             />
           ) : (
             <BiChevronDown
               size={25}
-              className={`ml-2 ${status ? "text-white" : "text-[#3DA48F]"}`}
+              className={`ml-2 ${status ? "text-white" : "text-oxbowteal"}`}
             />
           )
         ) : null}
@@ -167,8 +167,8 @@ function SubButtomSidebar( {label,data , status,hoveraction , children , onClick
               className={`text-[16px] md:text-[10px] xl:text-sm flex items-center justify-center w-full h-[35px] xl:h-[45px] md:rounded-bl-lg rounded-bl-xl
                           ${
                             currentPathname === item.urllink
-                              ? "bg-[#2B5F60] text-white" // Active link style
-                              : "text-white hover:bg-slate-600" // Default and hover style
+                              ? "bg-oxbowteal  text-white" // Active link style
+                              : "text-white hover:bg-lessenteal" // Default and hover style
                           }`}
             >
               {item.label}

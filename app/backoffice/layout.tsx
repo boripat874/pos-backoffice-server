@@ -26,10 +26,10 @@ export default function BackOfficeLayout({ children }: { children: React.ReactNo
       <div className="relative flex">
         {isMobile && (
             <button
-              className="absolute top-2 right-2 z-50 h-[35px] bg-[#84bd00] px-2 py-1  bg-opacity-80 rounded-lg "
+              className="absolute top-2 right-2 z-50 h-[35px] bg-[#134737] px-2 py-1  bg-opacity-80 rounded-lg "
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             >
-              <i className="fa-solid fa-bars text-black text-2xl"></i>
+              <i className="fa-solid fa-bars text-white text-2xl"></i>
             </button>
 
         )}

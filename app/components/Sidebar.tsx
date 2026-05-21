@@ -2,7 +2,7 @@ import React from 'react';
 
 function Sidebar() {
   return (
-    <div className="w-64 bg-gray-100 h-screen p-4">
+    <div className="w-64 bg-oatmilk h-screen p-4">
       <ul>
         <li className="group relative mb-2">
           <a href="#" className="block p-2 rounded-md hover:bg-gray-200">

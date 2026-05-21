@@ -864,7 +864,7 @@ export default function Reportorder() {
         {/* header */}
         <div className="max-w-[1300px] flex flex-row justify-between items-center">
           <div>
-            <p className="text-2xl xl:text-4xl pt-4 font-bold text-black">
+            <p className="text-2xl xl:text-4xl pt-4 font-bold text-oxbowteal">
               รายงาน
             </p>
             <p className="text-md xl:text-lg pt-2 text-black">{date}</p>
@@ -872,7 +872,7 @@ export default function Reportorder() {
         </div>
 
         {/* เส้นคั่น */}
-        <hr className="mt-2 border-t-3 border-[#2B5F60]" />
+        <hr className="mt-2 border-t-3 border-oxbowteal" />
 
         {/* ตัวเลือกข้อมูล */}
         <div className="w-full h-11 flex flex-row justify-start items-start mt-2 gap-x-4">
@@ -966,7 +966,7 @@ export default function Reportorder() {
 
             {/* PDF Export Button */}
             <button 
-              className="print:hidden p-2 text-center text-[#FFFFFF] hover:text-[#009f4d] bg-[#009f4d] hover:bg-transparent border border-[#009f4d] rounded-md h-[40px] px-4 whitespace-nowrap"
+              className="print:hidden p-2 text-center text-white bg-oxbowteal hover:bg-lessenteal rounded-md h-[40px] px-4 whitespace-nowrap"
               onClick={() => handlePrint()}
             >
               Export to PDF
@@ -986,7 +986,7 @@ export default function Reportorder() {
               maximumFractionDigits: 2,
             })}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#005670]"
+            backgroundColor="bg-[#548f85]"
             iconpath={"/icon/money.svg"}
           />
 
@@ -998,7 +998,7 @@ export default function Reportorder() {
               maximumFractionDigits: 2,
             })}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#009f4d]"
+            backgroundColor="bg-oxbowteal"
             iconpath={"/icon/creait_card.svg"}
           />
 
@@ -1010,7 +1010,7 @@ export default function Reportorder() {
               maximumFractionDigits: 2,
             })}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#fe5000]"
+            backgroundColor="bg-deepforest"
             iconpath={"/icon/promaptpay.svg"}
           />
 
@@ -1022,7 +1022,7 @@ export default function Reportorder() {
               maximumFractionDigits: 2,
             })}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#da1884]"
+            backgroundColor="bg-burntorange"
             iconpath={"/icon/E_wallet.svg"}
           />
 
@@ -1034,7 +1034,7 @@ export default function Reportorder() {
               maximumFractionDigits: 2,
             })}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#a51890]"
+            backgroundColor="bg-earthbrown"
             iconpath={"/icon/cash.svg"}
           />
 
@@ -1043,7 +1043,7 @@ export default function Reportorder() {
             label={"บิลที่ขายได้ทั้งหมด"}
             value={`${totalorder.toLocaleString("en-US")}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#0077c8]"
+            backgroundColor="bg-safariyellow"
             iconpath={"/icon/order.svg"}
           />
 
@@ -1052,7 +1052,7 @@ export default function Reportorder() {
             label={"สินค้าขายออกทั้งหมด\nหลายชิ้น"}
             value={`${totalproductsell.toLocaleString("en-US")}`}
             textColor="text-[#FFFFFF]"
-            backgroundColor="bg-[#008eaa]"
+            backgroundColor="bg-olivedust"
             iconpath={"/icon/creait_card.svg"}
           />
         </div>
@@ -1061,14 +1061,14 @@ export default function Reportorder() {
         <div className="mt-2 overflow-auto">
 
           {/* table order */}
-          <div className="w-[1325px] xl:w-full mt-0 p-4 rounded-lg bg-white shadow-sm">
+          <div className="w-[1325px] xl:w-full mt-0 p-4 rounded-lg bg-oatmilk shadow-sm border">
             {/* Added w-full, max-w, mx-auto */}
             {/* header table */}
             <div className="w-full flex flex-row justify-between items-start text-white gap-4 ">
 
               {/* Responsive flex direction */}
               <div className="p-2">
-                <p className="text-lg xl:text-2xl font-bold text-black">
+                <p className="text-lg xl:text-2xl font-bold text-oxbowteal">
                   {" "}
                   รายการสั่งซื้อ
                 </p>
@@ -1093,7 +1093,7 @@ export default function Reportorder() {
                   <input
                     type="text"
                     placeholder="Search for Order ..."
-                    className="text-[14px] xl:text-[16px] w-[300px] p-2 pl-10 rounded-lg border-0 bg-[#F6F4F4] focus:outline-none focus:ring-2 focus:ring-[#2B5F60]"
+                    className="text-[14px] xl:text-[16px] w-[300px] p-2 pl-10 rounded-lg border-0 bg-lessengray text-oxbowteal focus:outline-none focus:ring-2 focus:ring-oxbowteal"
                     onChange={(e) => setSearchOrder(e.target.value)}
                     value={searchOrder}
                     onKeyDown={(e) => {
@@ -1110,8 +1110,8 @@ export default function Reportorder() {
             <div className="w-full overflow-y-auto">
               {" "}
               {/* Set height and vertical scroll on this div */}
-              <table className="w-full text-[16px] table-fixed text-center text-black">
-                <thead className="border-b border-[#2B5F60] bg-[#74d2e7] sticky top-0 z-5">
+              <table className="w-full text-[16px] table-fixed text-center text-oxbowteal">
+                <thead className="sticky top-0 border-b border-t border-oxbowteal bg-oatmilk  shadow-md ">
                   <tr>
                     <th className="h-12 w-[150px] px-2">เวลา วันที่</th>
                     {/* <th className='h-12 w-[120px] px-2'>ร้าน</th> */}
@@ -1129,7 +1129,7 @@ export default function Reportorder() {
                     reportorders.map((reportorder: ReportOrder, index: number) => (
                       <tr
                         key={index}
-                        className="border-b border-gray-100 hover:bg-gray-50"
+                        className="text-oxbowteal border-b border-lessengray hover:bg-hoverteal"
                       >
                         <td className="h-12 px-2 truncate">
                           {(reportorder.ordertimestamp || "").length > 20
@@ -1171,7 +1171,7 @@ export default function Reportorder() {
                     <tr>
                       <td
                         colSpan={7}
-                        className="py-4 text-[16px] text-center text-black opacity-60"
+                        className="py-4 text-[16px] text-center text-oxbowteal opacity-60"
                       >
                         ไม่พบข้อมูลรายการบิล
                       </td>
@@ -1209,7 +1209,7 @@ export default function Reportorder() {
                 <a
                   href={pdfPreviewUrl}
                   download={`receipt_${receiptOrder.receiptnumber}.pdf`}
-                  className="absolute right-14 top-3 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-800"
+                  className="absolute right-14 top-3 bg-oxbowteal text-white px-3 py-1 rounded hover:bg-lessenteal"
                 >
               
                 ดาวน์โหลด PDF

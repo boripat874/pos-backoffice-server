@@ -11,8 +11,8 @@ export default function Modal({ title, children, isOpen, onClose }: ModalProps) 
     return (
         isOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                <div className={`bg-white rounded-lg shadow-lg w-1/4`}>
-                    <h2 className="text-lg xl:text-xl mb-4 bg-teal-600 text-white p-4 rounded-t-lg">
+                <div className={`bg-oatmilk rounded-lg shadow-lg w-1/4`}>
+                    <h2 className="text-lg xl:text-xl mb-4 bg-oxbowteal text-white p-4 rounded-t-lg">
                         {title}
                         <button className="float-right text-gray-300" onClick={onClose}>
                             <i className="fa-solid fa-xmark"></i>
