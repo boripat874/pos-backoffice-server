@@ -332,7 +332,7 @@ export default function Sidebar({ className }: SidebarProps) {
 
       <div className="absolute w-full top-0 flex justify-center items-center shadow-sm  z-50">
 
-        <div className=" max-w-[100px] xl:max-w-[150px] h-[100px] xl:h-[150px] my-[4px] pl-[2px] xl:pl-[13px] px-[2px] xl:pr-[15px] xl:py-10 flex justify-center items-center">
+        <div className=" max-w-[100px] xl:max-w-[120px] h-[100px] xl:h-[120px] my-[4px] pl-[2px] xl:pl-[13px] px-[2px] xl:pr-[15px] xl:py-10 flex justify-center items-center">
           <Link href="/backoffice/dashboard">
             <Image
               src="/img/logobackoffice.png"
