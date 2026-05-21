@@ -1277,23 +1277,27 @@ export default function ShopPage() {
           </div> */}
 
           <div className="text-[14px] xl:text-[16px] p-4 flex items-center gap-6">
-            <button
-              className="btn h-[40px] w-[150px] xl:w-[150px]"
-              onClick={handleOpenCreate}
-            >
-              <i className="fa-solid fa-plus"></i> เพิ่มร้านค้า
-            </button>
 
-            {level !== "Employee" && (
-              <button
-                className="btn w-[220px] xl:w-[220px] h-[40px] text-white rounded-md
-                  flex flex-row justify-center items-center gap-x-2
-                  "
-                onClick={handleOpenDataManagement} // ไปที่หน้าจัดการหมวดหมู่สินค้า
-              >
-                <i className="fa-solid fa-database"></i>
-                <span className="">จัดการข้อมูลร้านค้า</span>
-              </button>
+            {level === "Admin" && (
+              <>
+                <button
+                  className="btn h-[40px] w-[150px] xl:w-[150px]"
+                  onClick={handleOpenCreate}
+                >
+                  <i className="fa-solid fa-plus"></i> เพิ่มร้านค้า
+                </button>
+
+                
+                  <button
+                    className="btn w-[220px] xl:w-[220px] h-[40px] text-white rounded-md
+                      flex flex-row justify-center items-center gap-x-2
+                      "
+                    onClick={handleOpenDataManagement} // ไปที่หน้าจัดการหมวดหมู่สินค้า
+                  >
+                    <i className="fa-solid fa-database"></i>
+                    <span className="">จัดการข้อมูลร้านค้า</span>
+                  </button>
+              </>
             )}
 
             {/* ค้นหา */}
@@ -1318,6 +1322,7 @@ export default function ShopPage() {
               />
             </div>
           </div>
+
         </div>
 
         {/* table */}
@@ -1399,12 +1404,19 @@ export default function ShopPage() {
                             )}
 
                             {/* ลบ */}
-                            <button
-                              className="btn-delete"
-                              onClick={() => handleDelete(shop.shopid)}
-                            >
-                              <i className="fa-solid fa-trash"></i>
-                            </button>
+
+                            {level === "Admin" && (
+
+                              <button
+                                className="btn-delete"
+                                onClick={() => handleDelete(shop.shopid)}
+                              >
+                                <i className="fa-solid fa-trash"></i>
+                              </button>
+
+                            )}
+
+
                           </>
                         ) : (
                           <>
