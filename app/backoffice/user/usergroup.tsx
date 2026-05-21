@@ -429,19 +429,19 @@ const handleGroupDelete = async (userGroupid: string) => {
       </div>
 
       {/* เส้นคั่น */}
-      <hr className="mt-2 border-t-3 border-[#2B5F60]" />
+      <hr className="mt-2 border-t-3 border-oxbowteal" />
 
       {/*table */}
       <div className="mt-2 overflow-auto">
 
         {/* table user */}
-        <div className='w-[1325px] xl:w-full mt-0 bg-white p-4 rounded-lg shadow-sm'>
+        <div className='w-[1325px] xl:w-full mt-0 bg-oatmilk p-4 rounded-lg shadow-sm border'>
 
             {/* header table */}
             <div className='flex flex-row justify-between items-center text-white'>
 
               <div className='flex flex-row justify-between items-center p-4'>
-                <p className='text-lg xl:text-2xl font-bold text-black'> รายการกลุ่มบัญชีผู้ใช้</p>
+                <p className='text-lg xl:text-2xl font-bold text-oxbowteal'> รายการกลุ่มบัญชีผู้ใช้</p>
               </div>
 
               {/* <div className='p-4'>
@@ -463,7 +463,7 @@ const handleGroupDelete = async (userGroupid: string) => {
                   <input
                     type="text"
                     placeholder="Search for User ..."
-                    className="w-[300px] p-2 pl-10 rounded-lg border-0 bg-[#F6F4F4] text-black focus:outline-none focus:ring-2 focus:ring-[#2B5F60]"
+                    className="w-[300px] p-2 pl-10 rounded-lg border-0 bg-lessengray text-oxbowteal focus:outline-none focus:ring-2 focus:ring-oxbowteal"
                     onChange={(e) => setSearch(e.target.value)}
                     value={search}
                     onKeyDown={(e) => {
@@ -478,8 +478,8 @@ const handleGroupDelete = async (userGroupid: string) => {
 
             {/* content table */}
             <div className='overflow-y-auto'>
-              <table className='text-[16px] p-2 xl:p-4 table-auto w-full text-center text-black'>
-                <thead className='border-b border-[#2B5F60] sticky top-0 bg-[#74d2e7]'>
+              <table className='text-[16px] p-2 xl:p-4 table-auto w-full text-center text-oxbowteal'>
+                <thead className='border-b border-t border-oxbowteal sticky top-0 bg-aotmilk z-10 shadow-md'>
                   <tr>
 
                     <th className='h-12 w-[150px]'>กลุ่มบัญชีผู้ใช้</th>
@@ -492,7 +492,7 @@ const handleGroupDelete = async (userGroupid: string) => {
 
                 <tbody>
                   {Array.isArray(usergroups) && usergroups.length > 0 ? usergroups.map((usergroup: UserGroup) => (
-                    <tr key={usergroup.ugroupid} className='border-b border-gray-100 hover:bg-gray-50'>
+                    <tr key={usergroup.ugroupid} className='border-b border-lessengray hover:bg-hoverteal'>
 
                       <td className='h-12 w-[100px]'>{(usergroup.ugroupname || "").length > 30 ? `${usergroup.ugroupname.substring(0, 30)}...` : usergroup.ugroupname}</td>
                       <td className='h-12 w-[100px]'>{(usergroup.ugroupprivilege || "").length > 30 ? `${usergroup.ugroupprivilege.substring(0, 30)}...` : usergroup.ugroupprivilege}</td>
@@ -535,7 +535,14 @@ const handleGroupDelete = async (userGroupid: string) => {
             <div className='w-[320px] md:w-[400px] flex flex-col gap-2'>
 
                 <div>ชื่อกลุ่มบัญชีผู้ใช้ <span className="text-red-500">*</span></div>
-                <input type="text" placeholder='กรุณากรอกชื่อกลุ่มบัญชีผู้ใช้' value={ugroupname} onChange={(e) => setGroupname(e.target.value)} />
+
+                <input 
+                  type="text" 
+                  placeholder='กรุณากรอกชื่อกลุ่มบัญชีผู้ใช้' 
+                  value={ugroupname} 
+                  className='bg-oatmilk text-oxbowteal border-oxbowteal'
+                  onChange={(e) => setGroupname(e.target.value)} 
+                />
 
                 {/* <div>สิทธิพิเศษ</div>
                 <input type="text" value={ugroupprivilege} onChange={(e) => setGroupprivilege(e.target.value)} />
@@ -567,7 +574,13 @@ const handleGroupDelete = async (userGroupid: string) => {
             <div className='w-[320px] md:w-[400px] flex flex-col gap-2'>
 
                 <div>ชื่อกลุ่มบัญชีผู้ใช้ <span className="text-red-500">*</span></div>
-                <input type="text" placeholder='กรุณากรอกชื่อกลุ่มบัญชีผู้ใช้' value={ugroupname} onChange={(e) => setGroupname(e.target.value)} />
+                <input 
+                  type="text" 
+                  placeholder='กรุณากรอกชื่อกลุ่มบัญชีผู้ใช้' 
+                  value={ugroupname} 
+                  onChange={(e) => setGroupname(e.target.value)} 
+                  className='bg-oatmilk text-oxbowteal border-oxbowteal'
+                />
 
                 {/* <div>สิทธิพิเศษ</div>
                 <input type="text" value={ugroupprivilege} onChange={(e) => setGroupprivilege(e.target.value)} />

@@ -336,7 +336,8 @@ export default function UserPage() {
 
         }else if(leveluser === 'Owner'){
 
-          setShopid('0');
+          // setShopid('0');
+          setShopid(response.data.result[0].shopid);
           
         }else if(leveluser === 'Manager'){
 
@@ -1374,7 +1375,7 @@ export default function UserPage() {
           setToUserGroupPage(false);
           fetchData();
         }}
-        className="absolute mt-2 px-4 py-2 bg-[#009f4d] text-white rounded-md hover:border-[#3DA48F] hover:bg-[#3DA48F] transition-colors"
+        className="absolute mt-2 px-4 py-2 bg-oxbowteal text-white rounded-md hover:bg-lessenteal transition-colors"
       >
         &larr; กลับไปที่หน้าบัญชีผู้ใช้
       </button>
@@ -1497,18 +1498,31 @@ export default function UserPage() {
                       {/* <td className='h-12 w-[100px]'>฿ {getRandomInt(100,3000).toFixed(2).toLocaleString()}</td>
                       <td className='h-12 w-[100px]'>{getRandomInt(100,1000)}</td> */}
                       <td className="h-12 w-[100px]">
+
                         <button
                           className="btn-edit mr-2"
                           onClick={() => handleEdit(user.uinfoid)}
                         >
                           <i className="fa-solid fa-edit"></i>
                         </button>
-                        <button
-                          className="btn-delete"
-                          onClick={() => handleDelete(user.uinfoid)}
-                        >
-                          <i className="fa-solid fa-trash"></i>
-                        </button>
+
+                        {(
+
+                          leveluser !== "Employee" && 
+                          (leveluser === "Manager" ? (user.level === "Manager" ? false : true) : true) && 
+                          (leveluser === "Owner" ? (user.level === "Owner" ? false : true) : true)
+
+                        ) ? (
+                          <button
+                            className="btn-delete"
+                            onClick={() => handleDelete(user.uinfoid)}
+                          >
+                            <i className="fa-solid fa-trash"></i>
+                          </button>
+                        ): (
+                          <button className='w-8 h-1'> &nbsp; </button>
+                        )}
+                        
                       </td>
                     </tr>
                   ))
@@ -1516,7 +1530,7 @@ export default function UserPage() {
                   <tr>
                     <td
                       colSpan={6}
-                      className="py-4 text-center text-base text-black opacity-60"
+                      className="py-4 text-center text-base text-oxbowteal opacity-60"
                     >
                       ไม่มีข้อมูลบัญชีผู้ใช้
                     </td>
@@ -1542,7 +1556,7 @@ export default function UserPage() {
                 <div>กลุ่มบัญชีผู้ใช้</div>
 
                 <select
-                  className="w-full h-[42px] border border-[#2B5F60] rounded-md p-2"
+                  className="w-full h-[42px] border border-oxbowteal text-oxbowteal bg-oatmilk  rounded-md p-2"
                   value={ugroupId}
                   onChange={(e) => {
 
@@ -1575,11 +1589,13 @@ export default function UserPage() {
               </div>
             )}
 
-            {(leveluser === "Admin" || leveluser === "Owner") && (
+            {(leveluser === "Admin" || (leveluser === "Owner"? (level === "Owner"? false : true) : false ))&& (
+
               <div>
+
                 <div>ร้าน</div>
                 <select
-                  className="w-full h-[42px] border border-[#2B5F60] rounded-md p-2"
+                  className="w-full h-[42px] border border-oxbowteal text-oxbowteal bg-oatmilk  rounded-md p-2"
                   value={shopid}
                   onChange={(e) => {
                     if(e.target.value == "0"){
@@ -1591,7 +1607,13 @@ export default function UserPage() {
                     }
                   }}
                 >
-                  <option value="0">ไม่ระบุร้านค้า</option>
+                  {(leveluser === "Admin" || (leveluser === "Owner"? (level === "Owner"? true : false) : false )) && (
+                    <option value="0">ไม่ระบุร้านค้า</option>
+                  )}
+
+                    {/* <option value="0">ไม่ระบุร้านค้า</option> */}
+
+
                   {Array.isArray(shops) && shops.length > 0 ? (
                     shops
                       .filter((shop) => shop.ugroupid === ugroupId)
@@ -1601,6 +1623,7 @@ export default function UserPage() {
                         </option>
                       ))
                   ) : null}
+                  
                 </select>
               </div>
             )}
@@ -1611,6 +1634,7 @@ export default function UserPage() {
                 type="text"
                 value={name}
                 placeholder="กรุณากรอกชื่อ นามสกุล"
+                className='border-oxbowteal text-oxbowteal bg-oatmilk'
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
@@ -1621,6 +1645,7 @@ export default function UserPage() {
                 type="email"
                 placeholder="กรุณากรอกอีเมล์"
                 value={uinfoemail}
+                className='border-oxbowteal text-oxbowteal bg-oatmilk '
                 onChange={(e) => setUinfoemail(e.target.value)}
               />
             </div>
@@ -1631,6 +1656,7 @@ export default function UserPage() {
                 type="text"
                 value={username}
                 placeholder="กรุณากรอกชื่อบัญชีผู้ใช้"
+                className='border-oxbowteal text-oxbowteal bg-oatmilk '
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
@@ -1644,7 +1670,7 @@ export default function UserPage() {
                   type={isPasswordVisible ? "text" : "password"} // Toggle between text and password
                   value={userpassword}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full p-2 border border-[#2B5F60] rounded-md"
+                  className="w-full p-2 border border-oxbowteal text-oxbowteal bg-oatmilk  rounded-md"
                 />
                 <button
                   type="button"
@@ -1661,61 +1687,69 @@ export default function UserPage() {
             </div>
 
             <div>
-              <div>สิทธิ์ใช้งาน <span className="text-red-500">*</span></div>
-              {/* <input type="text" value={level} onChange={(e) => setLevel(e.target.value)} /> */}
-              <select
-                className="w-full h-[42px] border border-[#2B5F60] rounded-md p-2"
-                value={level}
-                onChange={(e) => setLevel(e.target.value)}
-              >
-                {
-                  // ไม่ระบุกลุ่มผู้ใช้งาน ไม่ระบุร้านค้า
-                  ((ugroupId === "0" && shopid === "0")
-                    ? userAccountRights.filter(
-                      (userAccount: UserAccountRight) =>
-                        userAccount.level !== "Owner" &&
-                        userAccount.level !== "Employee" &&
-                        userAccount.level !== "Manager"
+
+              {(leveluser === "Admin" || (leveluser === "Owner"? (level === "Owner"? false : true) : false )) && (
+                
+                <>
+                  <div>สิทธิ์ใช้งาน <span className="text-red-500">*</span></div>
+                  {/* <input type="text" value={level} onChange={(e) => setLevel(e.target.value)} /> */}
+                  <select
+                    className="w-full h-[42px] border border-oxbowteal text-oxbowteal  bg-oatmilk  rounded-md p-2"
+                    value={level}
+                    onChange={(e) => setLevel(e.target.value)}
+                  >
+                    {
+                      // ไม่ระบุกลุ่มผู้ใช้งาน ไม่ระบุร้านค้า
+                      ((ugroupId === "0" && shopid === "0")
+                        ? userAccountRights.filter(
+                          (userAccount: UserAccountRight) =>
+                            userAccount.level !== "Owner" &&
+                            userAccount.level !== "Employee" &&
+                            userAccount.level !== "Manager"
+                          )
+
+                        // เลือกกลุ่มผู้ใช้งาน ไม่ระบุร้านค้า
+                        : ((shopid === "0")
+                          ? userAccountRights.filter(
+                            (userAccount: UserAccountRight) =>
+                              userAccount.level !== "Admin" &&
+                              userAccount.level !== "Employee" &&
+                              userAccount.level !== "Manager"
+                            )
+                          : (userAccountRights.filter(
+                            (userAccount: UserAccountRight) =>
+                              userAccount.level !== "Admin" && 
+                              userAccount.level !== "Owner"
+                          ))
+                        )
+
+                      // filter ตามสิทธิ์ users
+                      // ไม่ใช่ Admin
+                      .filter(
+                        (userAccount: UserAccountRight) =>
+                          leveluser === "Admin" ||
+                          (userAccount.level !== "Admin" && leveluser !== "Admin")
+                      ))
+                      // ไม่ใช่ Owner
+                      .filter(
+                        (userAccount: UserAccountRight) =>
+                          leveluser === "Admin" || leveluser === "Owner" ||
+                          (userAccount.level !== "Owner" && leveluser !== "Owner")
                       )
 
-                    // เลือกกลุ่มผู้ใช้งาน ไม่ระบุร้านค้า
-                    : ((shopid === "0")
-                      ? userAccountRights.filter(
-                        (userAccount: UserAccountRight) =>
-                          userAccount.level !== "Admin" &&
-                          userAccount.level !== "Employee" &&
-                          userAccount.level !== "Manager"
-                        )
-                      : (userAccountRights.filter(
-                        (userAccount: UserAccountRight) =>
-                          userAccount.level !== "Admin" && 
-                          userAccount.level !== "Owner"
+
+                      .map((userAccount: UserAccountRight) => (
+
+                        <option key={userAccount.level} value={userAccount.level}>
+                          {userAccount.level}
+                        </option>
+
                       ))
-                    )
-
-                  // filter ตามสิทธิ์ users
-                  // ไม่ใช่ Admin
-                  .filter(
-                    (userAccount: UserAccountRight) =>
-                      leveluser === "Admin" ||
-                      (userAccount.level !== "Admin" && leveluser !== "Admin")
-                  ))
-                  // ไม่ใช่ Owner
-                  .filter(
-                    (userAccount: UserAccountRight) =>
-                      leveluser === "Admin" || leveluser === "Owner" ||
-                      (userAccount.level !== "Owner" && leveluser !== "Owner")
-                  )
-
-                  .map((userAccount: UserAccountRight) => (
-
-                    <option key={userAccount.level} value={userAccount.level}>
-                      {userAccount.level}
-                    </option>
-
-                  ))
-                }
-              </select>
+                    }
+                  </select>
+                </>
+              )}
+              
             </div>
           </div>
 
@@ -1744,7 +1778,7 @@ export default function UserPage() {
 
                 <select
                   value={ugroupId}
-                  className="w-full h-[42px] border border-[#2B5F60] rounded-md p-2"
+                  className="w-full h-[42px] border border-oxbowteal text-oxbowteal bg-oatmilk  rounded-md p-2"
                   onChange={(e) => {
 
                     if(e.target.value == "0"){
@@ -1795,7 +1829,7 @@ export default function UserPage() {
               <div>
                 <div>ร้าน</div>
                 <select
-                  className="w-full h-[42px] border border-[#2B5F60] rounded-md p-2"
+                  className="w-full h-[42px] border border-oxbowteal text-oxbowteal bg-oatmilk  rounded-md p-2"
                   value={shopid}
                   onChange={(e) => {
                     
@@ -1808,7 +1842,9 @@ export default function UserPage() {
                     }
                   }}
                 >
-                  <option value="0">ไม่ระบุร้านค้า</option>
+                  {leveluser !== "Owner" && (
+                    <option value="0">ไม่ระบุร้านค้า</option>
+                  )}
                   {Array.isArray(shops) && shops.length > 0 ? (
                     shops
                       .filter((shop) => shop.ugroupid === ugroupId)
@@ -1828,6 +1864,7 @@ export default function UserPage() {
                 placeholder="กรุณากรอกชื่อ นามสกุล"
                 type="text"
                 value={name}
+                className='border-oxbowteal text-oxbowteal bg-oatmilk '
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
@@ -1838,6 +1875,7 @@ export default function UserPage() {
                 placeholder="กรุณากรอกอีเมล์"
                 type="email"
                 value={uinfoemail}
+                className='border-oxbowteal text-oxbowteal bg-oatmilk '
                 onChange={(e) => setUinfoemail(e.target.value)}
               />
             </div>
@@ -1848,6 +1886,7 @@ export default function UserPage() {
                 type="text"
                 placeholder="กรุณากรอกชื่อบัญชีผู้ใช้"
                 value={username}
+                className='border-oxbowteal text-oxbowteal bg-oatmilk '
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
@@ -1857,7 +1896,7 @@ export default function UserPage() {
               <div className="relative">
                 <input
                   placeholder="กรุณากรอกรหัสผ่าน"
-                  className="w-full p-2 border border-[#2B5F60] rounded-md"
+                  className="w-full p-2 border border-oxbowteal text-oxbowteal bg-oatmilk  rounded-md"
                   type={isPasswordVisible ? "text" : "password"} // Toggle between text and password
                   value={userpassword}
                   onChange={(e) => setPassword(e.target.value)}
@@ -1878,66 +1917,73 @@ export default function UserPage() {
             </div>
 
             <div>
-              <div>สิทธิ์ใช้งาน <span className="text-red-500">*</span></div>
-              {/* <input type="text" value={level} onChange={(e) => setLevel(e.target.value)} /> */}
 
-              <select
-                className="w-full h-[42px] border border-[#2B5F60] rounded-md p-2"
-                value={level}
-                onChange={(e) => setLevel(e.target.value)}
-              >
-                {
-                  // ไม่ระบุกลุ่มผู้ใช้งาน ไม่ระบุร้านค้า
-                  ((ugroupId === "0" && shopid === "0")
-                    ? userAccountRights.filter(
-                      (userAccount: UserAccountRight) =>
-                        userAccount.level !== "Owner" &&
-                        userAccount.level !== "Employee" &&
-                        userAccount.level !== "Manager"
+              {(leveluser === "Admin" || leveluser === "Owner") && (
+                <>
+
+                  <div>สิทธิ์ใช้งาน <span className="text-red-500">*</span></div>
+                  {/* <input type="text" value={level} onChange={(e) => setLevel(e.target.value)} /> */}
+
+                  <select
+                    className="w-full h-[42px] border border-oxbowteal text-oxbowteal bg-oatmilk  rounded-md p-2"
+                    value={level}
+                    onChange={(e) => setLevel(e.target.value)}
+                  >
+                    {
+                      // ไม่ระบุกลุ่มผู้ใช้งาน ไม่ระบุร้านค้า
+                      ((ugroupId === "0" && shopid === "0")
+                        ? userAccountRights.filter(
+                          (userAccount: UserAccountRight) =>
+                            userAccount.level !== "Owner" &&
+                            userAccount.level !== "Employee" &&
+                            userAccount.level !== "Manager"
+                          )
+
+                        // เลือกกลุ่มผู้ใช้งาน ไม่ระบุร้านค้า
+                        : ((shopid === "0")
+                          ? userAccountRights.filter(
+                            (userAccount: UserAccountRight) =>
+                              userAccount.level !== "Admin" &&
+                              userAccount.level !== "Employee" &&
+                              userAccount.level !== "Manager"
+                            )
+                          : (userAccountRights.filter(
+                            (userAccount: UserAccountRight) =>
+                              userAccount.level !== "Admin" && 
+                              userAccount.level !== "Owner"
+                          ))
+                        )
+
+                      // filter ตามสิทธิ์ users
+                      // ไม่ใช่ Admin
+                      .filter(
+                        (userAccount: UserAccountRight) =>
+                          leveluser === "Admin" ||
+                          (userAccount.level !== "Admin")
+                      ))
+
+                      // ไม่ใช่ Owner
+                      .filter(
+                        (userAccount: UserAccountRight) =>
+                          leveluser === "Admin" || leveluser === "Owner" ||
+                          (userAccount.level !== "Owner" && leveluser !== "Owner")
                       )
 
-                    // เลือกกลุ่มผู้ใช้งาน ไม่ระบุร้านค้า
-                    : ((shopid === "0")
-                      ? userAccountRights.filter(
-                        (userAccount: UserAccountRight) =>
-                          userAccount.level !== "Admin" &&
-                          userAccount.level !== "Employee" &&
-                          userAccount.level !== "Manager"
-                        )
-                      : (userAccountRights.filter(
-                        (userAccount: UserAccountRight) =>
-                          userAccount.level !== "Admin" && 
-                          userAccount.level !== "Owner"
+                      .map((userAccount: UserAccountRight) => (
+
+                        <option key={userAccount.level} value={userAccount.level}>
+                          {userAccount.level}
+                        </option>
+
                       ))
-                    )
-
-                  // filter ตามสิทธิ์ users
-                  // ไม่ใช่ Admin
-                  .filter(
-                    (userAccount: UserAccountRight) =>
-                      leveluser === "Admin" ||
-                      (userAccount.level !== "Admin" && leveluser !== "Admin")
-                  ))
-                  // ไม่ใช่ Owner
-                  .filter(
-                    (userAccount: UserAccountRight) =>
-                      leveluser === "Admin" || leveluser === "Owner" ||
-                      (userAccount.level !== "Owner" && leveluser !== "Owner")
-                  )
-
-                  .map((userAccount: UserAccountRight) => (
-
-                    <option key={userAccount.level} value={userAccount.level}>
-                      {userAccount.level}
-                    </option>
-
-                  ))
-                
-                  // : (
-                  //   <option value="">ไม่มีข้อมูลสิทธิ์ใช้งาน</option> // Fallback if shops array is empty
-                  // )
-                }
-              </select>
+                    
+                      // : (
+                      //   <option value="">ไม่มีข้อมูลสิทธิ์ใช้งาน</option> // Fallback if shops array is empty
+                      // )
+                    }
+                  </select>
+                </>
+              )}
             </div>
           </div>
 
@@ -1970,7 +2016,7 @@ export default function UserPage() {
                   {/* <div>กลุ่มบัญชีผู้ใช้ </div> */}
 
                   <select
-                    className="w-[200px]  h-[42px] border border-[#2B5F60] rounded-md p-2"
+                    className="w-[200px]  h-[42px] border border-oxbowteal rounded-md p-2"
                     value={groupuseridExport}
                     onChange={(e) => setGroupuseridExport(e.target.value)}
                   >
@@ -2001,7 +2047,7 @@ export default function UserPage() {
                 <div>
                   {/* <div>ร้าน</div> */}
                   <select
-                    className="w-[200px] h-[42px] border border-[#2B5F60] rounded-md p-2"
+                    className="w-[200px] h-[42px] border border-oxbowteal text-oxbowteal bg-oatmilk rounded-md p-2"
                     value={shopidExport}
                     onChange={(e) => setShopidExport(e.target.value)}
                   >
@@ -2052,7 +2098,7 @@ export default function UserPage() {
                   {/* <div>กลุ่มบัญชีผู้ใช้ </div> */}
 
                   <select
-                    className="w-[200px] h-[42px] border border-[#2B5F60] rounded-md p-2"
+                    className="w-[200px] h-[42px] border border-oxbowteal text-oxbowteal bg-oatmilk rounded-md p-2"
                     value={groupuseridImport}
                     onChange={(e) => setGroupuseridImport(e.target.value)}
                   >
@@ -2092,7 +2138,7 @@ export default function UserPage() {
                 <div>
                   {/* <div>ร้าน</div> */}
                   <select
-                    className="w-[200px] h-[42px] border border-[#2B5F60] rounded-md p-2"
+                    className="w-[200px] h-[42px] border border-oxbowteal text-oxbowteal bg-oatmilk rounded-md p-2"
                     value={shopidImport}
                     onChange={(e) => setShopidImport(e.target.value)}
                   >
@@ -2114,7 +2160,7 @@ export default function UserPage() {
                 </div>
 
               <input 
-                className='w-full p-1 mt-2 border-[#009f4d]' 
+                className='w-full p-1 mt-2 border-oxbowteal text-oxbowteal bg-oatmilk rounded-md' 
                 type="file" 
                 accept=".csv" 
                 onChange={e => {

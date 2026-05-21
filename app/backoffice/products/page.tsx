@@ -1461,12 +1461,12 @@ export default function ProductsPage() {
                   level !== "Employee"
                     ? "h-[300px] md:h-[260px] xl:h-[300px]"
                     : "h-[240px] md:h-[200px] xl:h-[240px] pb-3"
-                } pt-4 bg-white rounded-xl border-solid border-2 border-[#009f4d] border-opacity-60  flex flex-col justify-center items-center gap-4`}
+                } pt-4 bg-oatmilk rounded-xl border-solid  border-2 border-oxbowteal border-opacity-60  flex flex-col justify-center items-center gap-4`}
               >
-                <p className="text-[16px] font-bold text-black  opacity-60">
+                <p className="text-[16px] font-bold text-oxbowteal  opacity-60">
                   ไม่มีข้อมูลสินค้า
                 </p>
-                <p className="text-[14px] text-black  opacity-60">
+                <p className="text-[14px] text-oxbowteal  opacity-60">
                   กรุณาเพิ่มข้อมูลสินค้า
                 </p>
               </div>
