@@ -123,6 +123,7 @@ export default function Sidebar({ className }: SidebarProps) {
   // เรียกและตรวจสอบข้อมูล user
   // Wrap fetchData1 in useCallback
   const fetchData1 = useCallback(async () => {
+    
     try {
       const token = localStorage.getItem("token");
 

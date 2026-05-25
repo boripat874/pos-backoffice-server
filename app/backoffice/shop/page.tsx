@@ -1437,7 +1437,7 @@ export default function ShopPage() {
                 <tr>
                   <td
                     colSpan={7}
-                    className="py-4 text-center text-base text-oxbowteal  opacity-60"
+                    className="py-4 text-center text-base text-oxbowteal  opacity-50"
                   >
                     ไม่มีข้อมูลร้านค้า
                   </td>

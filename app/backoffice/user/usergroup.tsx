@@ -250,8 +250,40 @@ export default function UserGroupPage(className: UserGroupPageProps) {
         text: 'ข้อมูลถูกเพิ่มเรียบร้อย',
         timer: 2000
       });
-    })
+    }).catch((err) => {
+
+      if (err.status === 402) {
+
+        if( err.response.data.message === "ugroupname already exists") {
+
+          Swal.fire({
+            icon: 'error',
+            title: 'ผิดพลาด',
+            text: `ชื่อกลุ่มบัญชีผู้ใช้นี้เคยมีอยู่แล้วในระบบ กรุณาใช้ชื่ออื่น`,
+          });
+          return;
+
+        }else {
+
+          Swal.fire({
+            icon: 'error',
+            title: 'ผิดพลาด',
+            text: `${err.response.data.message}`,
+          });
   
+          return;
+        }
+      }
+
+      if (err instanceof Error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'ผิดพลาด',
+            text: err.message,
+        });
+      }
+
+    });
   
     handleCloseModal();
     fetchData();

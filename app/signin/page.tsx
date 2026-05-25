@@ -17,11 +17,14 @@ export default function SignIn() {
 
   const handleSignIn = async () => {
     try {
+
       setIsLoading(true);
+
       const paylaod = {
         uinfologinname: username,
         uinfologinpass: password,
       }
+
       const response = await axios.post(
         `${config.apiUrl}/backoffice/signin`,
         paylaod,
@@ -35,20 +38,44 @@ export default function SignIn() {
         }
       );
 
-      if(response.data.token !== null){
-        localStorage.setItem('token', response.data.token)
-        router.push('/backoffice/dashboard')
+      if(response.data.activateShop === false){
+
+        Swal.fire({
+          title: 'ยังไม่มีร้านค้าของคุณที่ถูกเปิดใช้งาน',
+          text: 'กรุณาติดต่อเจ้าหน้าที่เพื่อเปิดใช้งานร้านค้าของคุณ',
+          icon: 'warning',
+          timer: 3000,
+          customClass: {
+            title: 'text-2xl' // กำหนดชื่อคลาสที่ต้องการ
+          }
+        })
+
+        setIsLoading(false);
         return;
+
+      }
+
+      if(response.data.token !== null){
+
+        localStorage.setItem('token', response.data.token)
+
+        router.push('/backoffice/dashboard')
+
+        return;
+
       } else {
+
         Swal.fire({
           title: 'กรุณาตรวจสอบบัญชีผู้ใช้',
           text: 'ชื่อผู้ใช้งาน หรือ รหัสผ่านไม่ถูกต้อง',
           icon: 'warning',
           timer: 2000
         })
+
         setIsLoading(false);
         return;
       }
+
     } catch (error: unknown) {
       if (error instanceof Error) {
         Swal.fire({
