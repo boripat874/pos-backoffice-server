@@ -648,7 +648,6 @@ export default function Promotions() {
     return <LoadingSpinner />;
   }
 
-
   return (
     // <div className="w-[374px] md:w-[700px] xl:w-full  flex flex-col">
     <div className=" flex flex-col ">
