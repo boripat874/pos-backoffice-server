@@ -796,6 +796,7 @@ export default function ProductsPage() {
         }
       }
     }
+    
     const handleClear = () => {
       // setProductid('');
       // setShopid('');
