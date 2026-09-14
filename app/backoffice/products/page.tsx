@@ -556,13 +556,13 @@ export default function ProductsPage() {
           // status: "ACTIVE"
         }
 
-        await axios.put(`${config.apiUrlZoo}/foods/${productid}`,payloadZoo,
-          {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-API-KEY': `${config.apiZookey}`,
-          },
-        })
+        // await axios.put(`${config.apiUrlZoo}/foods/${productid}`,payloadZoo,
+        //   {
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //     'X-API-KEY': `${config.apiZookey}`,
+        //   },
+        // })
         
         await axios.put(`${config.apiUrl}/backoffice/productupdate`, payload,
           {
@@ -673,13 +673,13 @@ export default function ProductsPage() {
         }
 
 
-        await axios.post(`${config.apiUrlZoo}/foods`, payloadZoo,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-API-KEY': `${config.apiZookey}`,
-          },
-        })
+        // await axios.post(`${config.apiUrlZoo}/foods`, payloadZoo,
+        // {
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //     'X-API-KEY': `${config.apiZookey}`,
+        //   },
+        // })
 
         await axios.post(`${config.apiUrl}/backoffice/productcreate`, payload,
           {
@@ -746,13 +746,13 @@ export default function ProductsPage() {
           }
         // console.log(productid);
   
-        await axios.delete(`${config.apiUrlZoo}/foods/${productid}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-API-KEY': `${config.apiZookey}`
-          },
-        })
+        // await axios.delete(`${config.apiUrlZoo}/foods/${productid}`,
+        // {
+        //   headers: {
+        //     'Content-Type': 'application/json' ,
+        //     'X-API-KEY': `${config.apiZookey}`
+        //   },
+        // })
   
         await axios.delete(`${config.apiUrl}/backoffice/productdelete`,
           {
@@ -796,7 +796,7 @@ export default function ProductsPage() {
         }
       }
     }
-    
+
     const handleClear = () => {
       // setProductid('');
       // setShopid('');
