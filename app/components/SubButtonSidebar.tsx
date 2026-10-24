@@ -75,7 +75,7 @@ function SubButtomSidebar( {label,data , status,hoveraction , children , onClick
 
   const handleButtonClick = () => {
 
-    if(currentPathname !== "/backoffice/report/order" && currentPathname !== "/backoffice/report/user"){
+    if(currentPathname !== "/backoffice/report/order" && currentPathname !== "/backoffice/report/inventory" && currentPathname !== "/backoffice/report/user"){
                   
       router.push("/backoffice/report/order");
     }

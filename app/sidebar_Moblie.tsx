@@ -59,6 +59,7 @@ export default function Sidebar() {
         || pathname === "/backoffice/user"
         || pathname === "/backoffice/user/usergroup"
         || pathname === "/backoffice/report/order"
+        || pathname === "/backoffice/report/inventory"
         || pathname === "/backoffice/report/user"
         || pathname === "/backoffice/event-log"
         || pathname === "/backoffice/notification"
@@ -482,6 +483,10 @@ export default function Sidebar() {
                   urllink: "/backoffice/report/order",
                 },
                 {
+                  label: "รายงานสินค้าคงเหลือ",
+                  urllink: "/backoffice/report/inventory",
+                },
+                {
                   label: "รายงานบัญชีผู้ใช้",
                   urllink: "/backoffice/report/user",
                 },
@@ -489,7 +494,8 @@ export default function Sidebar() {
               label="รายงาน"
               status={
                 currentPathname === "/backoffice/report/order" ||
-                currentPathname === "/backoffice/report/user"
+                currentPathname === "/backoffice/report/user" ||
+                currentPathname === "/backoffice/report/inventory"
               }
               hoveraction={true}
               urllink="/backoffice/report/"
@@ -505,7 +511,8 @@ export default function Sidebar() {
                 viewBox="0 0 25 20"
                 className={` stroke-[2] fill-transparent ${
                   currentPathname === "/backoffice/report/order" ||
-                  currentPathname === "/backoffice/report/user"
+                  currentPathname === "/backoffice/report/user" ||
+                  currentPathname === "/backoffice/report/inventory"
                     ? "stroke-white"
                     : "stroke-oxbowteal hover:stroke-deepforest"
                 } stroke-linecap-round stroke-linejoin-round`}

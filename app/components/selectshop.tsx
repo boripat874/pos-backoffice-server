@@ -13,9 +13,10 @@ interface SelectshopProps {
   shopslist?: Shop[];
   onChange?: (value: string) => void;
   className?: string;
+  allOption?: string; // ถ้าระบุ จะเพิ่มตัวเลือก value="all" ไว้บนสุด (เช่น "ทุกร้าน")
 }
 
-export default function Selectshop({shopid,shopslist,onChange,className="w-[160px]  xl:w-[180px]"}: SelectshopProps) {
+export default function Selectshop({shopid,shopslist,onChange,className="w-[160px]  xl:w-[180px]",allOption}: SelectshopProps) {
 
   return (
     <div>
@@ -25,6 +26,9 @@ export default function Selectshop({shopid,shopslist,onChange,className="w-[160p
         value={shopid}
         >
         {/* <option value="">บ้านสุขใจ</option> */}
+        {allOption && Array.isArray(shopslist) && shopslist.length > 0 ? (
+          <option value="all">{allOption}</option>
+        ) : null}
         {Array.isArray(shopslist) && shopslist.length > 0 ? (
           shopslist.map((shop: Shop) => (
             <option key={shop.shopid} value={shop.shopid}>
