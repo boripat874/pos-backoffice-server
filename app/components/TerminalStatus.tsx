@@ -52,9 +52,9 @@ export default function TerminalStatus({ terminal, variant = "card" }: Props) {
           <StatusDot online={online} />
           <span className={`font-semibold ${online ? "text-[#15803d]" : "text-[#6b7280]"}`}>Terminal {label}</span>
         </div>
-        <span className={`px-1.5 rounded ${terminal?.slot_to_app ? "bg-hoverteal text-oxbowteal" : "bg-lessengray text-[#6b7280]"}`}>
+        {/* <span className={`px-1.5 rounded ${terminal?.slot_to_app ? "bg-hoverteal text-oxbowteal" : "bg-lessengray text-[#6b7280]"}`}>
           {terminal?.slot_to_app ? "รับออเดอร์ App" : "ปิดรับ App"}
-        </span>
+        </span> */}
       </div>
     );
   }
@@ -74,9 +74,9 @@ export default function TerminalStatus({ terminal, variant = "card" }: Props) {
         อัปเดตล่าสุด: {agoText(terminal?.last_seen_ago_sec)}
         {terminal?.uinfoname ? ` · ผู้ใช้: ${terminal.uinfoname}` : ""}
       </div>
-      <div className={terminal?.slot_to_app ? "text-oxbowteal" : "text-[#b91c1c]"}>
+      {/* <div className={terminal?.slot_to_app ? "text-oxbowteal" : "text-[#b91c1c]"}>
         {terminal?.slot_to_app ? "ส่ง Slot ให้ App: เปิด" : "ส่ง Slot ให้ App: ปิด (Terminal ขาดการเชื่อมต่อ)"}
-      </div>
+      </div> */}
     </div>
   );
 }
