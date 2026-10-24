@@ -38,7 +38,19 @@ interface ProductSelllist{
   productid: string;
   productnameth: string;
   totalitem: number;
+  shopnameth?: string;    // ชื่อร้าน
+  productprice?: number;  // ราคาต่อหน่วย
 }
+
+// ป้ายกราฟ: "ไข่เจียว ร้านปอนด์ ราคา 500 บาท"
+export const productLabel = (p: ProductSelllist) => {
+  const parts = [p.productnameth || "-"];
+  if (p.shopnameth) parts.push(p.shopnameth);
+  if (p.productprice !== undefined && p.productprice !== null) {
+    parts.push(`ราคา ${Number(p.productprice).toLocaleString("th-TH", { maximumFractionDigits: 2 })} บาท`);
+  }
+  return parts.join(" ");
+};
 
 const backgroundColor = ['#005670', '#00205b', '#009f4d', '#fe5000', '#e4002b', '#da1884', '#a51890'];
 
@@ -65,7 +77,7 @@ const computedBarSpacing = () => {
 
 const data = (productsellslist: ProductSelllist[]) => {
 
-  const labels = productsellslist.map((product) => product.productnameth);
+  const labels = productsellslist.map((product) => productLabel(product));
   const dataValues = productsellslist.map((product) => product.totalitem);
 
   // Cycle through backgroundColors for each product
@@ -110,6 +122,11 @@ export const options = {
       display: false, // ซ่อนชื่อแผนภูมิหลัก [13, 14]
       text: "กราฟคะแนนความนิยมเมนูอาหาร", // ชื่อแผนภูมิ (หากต้องการแสดง)
     },
+    tooltip: {
+      callbacks: {
+        label: (context: any) => ` ขายได้ ${Number(context.parsed.x).toLocaleString("th-TH")} ชิ้น`,
+      },
+    },
     datalabels: {
       color: "black", // สีของป้ายกำกับข้อมูล
       anchor: "end" as const, // จัดตำแหน่งป้ายกำกับที่ปลายแท่งกราฟ [3]
@@ -132,7 +149,8 @@ export const options = {
       type: "linear" as const,
       position: "top" as const,
       min: 0,
-      max: 100, // กำหนดช่วงแกน X จาก 0 ถึง 100
+      suggestedMax: 10, // ปรับตามข้อมูล (เดิมล็อก 100 ทำให้ยอดเกิน 100 แท่งล้น)
+      grace: "10%" as const, // เผื่อที่ให้ตัวเลขปลายแท่ง
       grid: {
         display: true, // แสดงเส้นกริดแนวตั้ง
         color: "rgba(0, 0, 0, 0.1)", // สีของเส้นกริด

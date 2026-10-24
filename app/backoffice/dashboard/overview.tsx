@@ -10,6 +10,10 @@ import CardShopdisplay from '@/app/components/CardShopdisplay';
 import DashboardShopdetail from '@/app/backoffice/dashboard/shopdetail';
 import { HorizontalBarChart } from '@/app/components/HorizontalBarChart';
 import Selectdate from '@/app/components/selectdate';
+import Pagination from '@/app/components/Pagination';
+import { BackendStatus, TerminalInfo } from '@/app/components/TerminalStatus';
+
+const PAGE_SIZE = 10; // หน้าละไม่เกิน 10 ร้าน
 
 interface Shop{
   shoplogoimage?: string;
@@ -18,12 +22,15 @@ interface Shop{
   totalincome: number;
   totalorder: number;
   totalproduct: number;
+  terminal?: TerminalInfo;
 }
 
 interface ProductSell{
   productid: string;
   productnameth: string;
   totalitem: number;
+  shopnameth?: string;
+  productprice?: number;
 }
 
 // interface DashboardOverviewPageProps {
@@ -56,12 +63,35 @@ export default function DashboardOverview() {
   const [timestart, setTimeStart] = useState(`${new Date().toISOString().split('T')[0]}`);
   const [timeend, setTimeEnd] = useState(`${new Date().toISOString().split('T')[0]}`);
 
+  // แบ่งหน้าร้านค้า
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalShops, setTotalShops] = useState(0);
+  const pageRef = useRef(1);
+
+  // สถานะการเชื่อมต่อ Backend
+  const [backendOnline, setBackendOnline] = useState(true);
+  const [lastSync, setLastSync] = useState("");
+
   const periodRef = useRef(period); // สร้าง ref เก็บค่า period
   const timestartRef = useRef(timestart); // สร้าง ref เก็บค่า shopid
   const timeendRef = useRef(timeend); // สร้าง ref เก็บค่า shopid
 
   // const router = useRouter();
  
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const applyResult = (overview: any, productsells: any) => {
+    setShoplist(overview.result || []);
+    setDashboarddatalist(productsells.result || []);
+    setTotalShops(Number(overview.total) || 0);
+    setTotalPages(Number(overview.totalPages) || 1);
+    const p = Number(overview.page) || 1;
+    setPage(p);
+    pageRef.current = p;
+    setBackendOnline(true);
+    setLastSync(new Date().toLocaleTimeString('th-TH', { hour12: false }));
+  };
+
   const fetchDataFirst = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -76,6 +106,8 @@ export default function DashboardOverview() {
         period: periodRef.current,
         date_start: timestartRef.current,
         date_end: timeendRef.current,
+        page: pageRef.current,
+        limit: PAGE_SIZE,
       };
 
 
@@ -90,8 +122,7 @@ export default function DashboardOverview() {
         }),
       ]);
 
-      setShoplist(cardshoplist.data.result);
-      setDashboarddatalist(productsellslist.data.result);
+      applyResult(cardshoplist.data, productsellslist.data);
 
     } catch (err: unknown) {
       console.error("Error fetching report data:", err); // Log error for debugging
@@ -125,6 +156,8 @@ export default function DashboardOverview() {
         period: periodRef.current,
         date_start: timestartRef.current,
         date_end: timeendRef.current,
+        page: pageRef.current,
+        limit: PAGE_SIZE,
       };
 
 
@@ -139,23 +172,26 @@ export default function DashboardOverview() {
         }),
       ]);
 
-      setShoplist(cardshoplist.data.result);
-      setDashboarddatalist(productsellslist.data.result);
+      applyResult(cardshoplist.data, productsellslist.data);
 
     } catch (err: unknown) {
       console.error("Error fetching report data:", err); // Log error for debugging
-      let errorMessage = 'เกิดข้อผิดพลาดที่ไม่รู้จัก';
-      if (axios.isAxiosError(err)) {
-        // Handle Axios-specific errors (e.g., network error, 4xx, 5xx)
-        errorMessage = err.response?.data?.message || err.message;
-      } else if (err instanceof Error) {
-        errorMessage = err.message;
+      if (axios.isAxiosError(err) && !err.response) {
+        // network ขาด / server ไม่ตอบ -> ไฟ Backend สีเทา (ไม่เด้ง popup ทุก 10 วินาที)
+        setBackendOnline(false);
+      } else {
+        let errorMessage = 'เกิดข้อผิดพลาดที่ไม่รู้จัก';
+        if (axios.isAxiosError(err)) {
+          errorMessage = err.response?.data?.message || err.message;
+        } else if (err instanceof Error) {
+          errorMessage = err.message;
+        }
+        Swal.fire({
+          icon: 'error',
+          title: 'ผิดพลาด',
+          text: errorMessage,
+        });
       }
-      Swal.fire({
-        icon: 'error',
-        title: 'ผิดพลาด',
-        text: errorMessage,
-      });
     }
 
   }, []);
@@ -237,6 +273,9 @@ export default function DashboardOverview() {
         <div>
           <p className="text-lg md:text-2xl text-oxbowteal xl:text-4xl pt-4 font-bold">Dashboard</p>
           <p className="text-xs md:text-md xl:text-lg pt-1 md:pt-2">{date}</p>
+        </div>
+        <div className="pt-4">
+          <BackendStatus online={backendOnline} lastSync={lastSync} />
         </div>
       </div>
 
@@ -381,6 +420,7 @@ export default function DashboardOverview() {
                 total_income={shop.totalincome}
                 total_order_sold={shop.totalorder}
                 total_product_sold={shop.totalproduct}
+                terminal={shop.terminal}
               />
 
             </button>
@@ -388,9 +428,24 @@ export default function DashboardOverview() {
         </div>
       ) : null}
 
+      {/* เลือกหน้า: หน้าละไม่เกิน 10 ร้าน */}
+      <div className="w-full mt-2">
+        <Pagination
+          page={page}
+          totalPages={totalPages}
+          total={totalShops}
+          pageSize={PAGE_SIZE}
+          onChange={(p) => {
+            setPage(p);
+            pageRef.current = p;
+            fetchData();
+          }}
+        />
+      </div>
+
       {/* ยอดขายสินค้า */}
       <div className="w-full bg-oatmilk flex flex-col mt-2 p-2 rounded-lg shadow">
-        <p className="text-[12px] md:text-[16px] xl:text-2xl text-oxbowteal text-center py-2 font-semibold">ยอดขายสินค้า</p>
+        <p className="text-[12px] md:text-[16px] xl:text-2xl text-oxbowteal text-center py-2 font-semibold">ยอดขายสินค้า (รวมทุกร้าน)</p>
         <div className="w-[99%] min-h-[200px] mx-auto  border rounded-lg flex flex-col justify-center items-center">
           {dashboarddatalist.length > 0 ? (
             <HorizontalBarChart productsellslist={dashboarddatalist} />

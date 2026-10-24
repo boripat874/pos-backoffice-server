@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { config } from "@/app/lib/config";
+import TerminalStatus, { TerminalInfo } from "@/app/components/TerminalStatus";
 
 interface Props {
   imageshop?: string
@@ -8,9 +9,10 @@ interface Props {
   total_income?: number
   total_order_sold?: number
   total_product_sold?: number
+  terminal?: TerminalInfo | null
 }
 
-export default function CardShopdisplay({imageshop,shopname, total_income, total_order_sold, total_product_sold}: Props) {
+export default function CardShopdisplay({imageshop,shopname, total_income, total_order_sold, total_product_sold, terminal}: Props) {
 
   const formatNumber = (num?: number) => {
     if (num === undefined || num === null) return "-";
@@ -19,8 +21,11 @@ export default function CardShopdisplay({imageshop,shopname, total_income, total
   
 // w-[275px]
   return (
-    <div className="min-w-[200px] h-[300px] xl:min-w-[270px] xl:h-[300px] p-2 gap-2 border hover:border-oxbowteal shadow-lg rounded-lg flex flex-col justify-start items-center transition-all duration-300">
-      <div className="my-3">
+    <div className="min-w-[200px] h-[325px] xl:min-w-[270px] xl:h-[325px] p-2 gap-2 border hover:border-oxbowteal shadow-lg rounded-lg flex flex-col justify-start items-center transition-all duration-300">
+      {/* ไฟสถานะ Terminal */}
+      <TerminalStatus terminal={terminal} variant="card" />
+
+      <div className="my-1">
 
         <Image
           src={`${

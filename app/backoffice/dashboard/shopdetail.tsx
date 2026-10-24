@@ -12,6 +12,7 @@ import LoadingSpinner from "@/app/components/LoadingSpinner";
 import Selectdate from "@/app/components/selectdate";
 import Selectshop from "@/app/components/selectshop";
 import { useReactToPrint } from "react-to-print";
+import TerminalStatus, { BackendStatus, TerminalInfo } from "@/app/components/TerminalStatus";
 
 interface Shop {
   shopid: string;
@@ -22,6 +23,8 @@ interface ProductSell {
   productid: string;
   productnameth: string;
   totalitem: number;
+  shopnameth?: string;
+  productprice?: number;
 }
 
 export interface DashboardShopdetailProps {
@@ -58,6 +61,11 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
   const [totalorder, setTotalorder] = useState(0);
   const [totalproductsell, setTotalproductsell] = useState(0);
   const [level, setLevel] = useState("");
+
+  // ไฟสถานะ Terminal (เครื่อง POS) และการเชื่อมต่อ Backend
+  const [terminal, setTerminal] = useState<TerminalInfo | null>(null);
+  const [backendOnline, setBackendOnline] = useState(true);
+  const [lastSync, setLastSync] = useState("");
 
   const periodRef = useRef(period);
   const shopidRef = useRef(params.shopid_detail);
@@ -179,8 +187,13 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
       setTotalorder(Number(response.data.result?.total_order) || 0);
       setTotalproductsell(Number(response.data.result?.total_product) || 0);
       setDashboarddatalist(response.data.result?.product_sales || []);
+      setTerminal(response.data.result?.terminal || null);
+      setBackendOnline(true);
+      setLastSync(new Date().toLocaleTimeString("th-TH", { hour12: false }));
     } catch (err: unknown) {
       console.error("Error fetching report data:", err);
+      // network ขาด / server ไม่ตอบ -> ไฟ Backend สีเทา
+      if (axios.isAxiosError(err) && !err.response) setBackendOnline(false);
     }
     setIsLoading(false);
   }, []);
@@ -218,8 +231,13 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
       setTotalorder(Number(response.data.result?.total_order) || 0);
       setTotalproductsell(Number(response.data.result?.total_product) || 0);
       setDashboarddatalist(response.data.result?.product_sales || []);
+      setTerminal(response.data.result?.terminal || null);
+      setBackendOnline(true);
+      setLastSync(new Date().toLocaleTimeString("th-TH", { hour12: false }));
     } catch (err: unknown) {
       console.error("Error fetching report data:", err);
+      // network ขาด / server ไม่ตอบ -> ไฟ Backend สีเทา
+      if (axios.isAxiosError(err) && !err.response) setBackendOnline(false);
     }
   }, []);
 
@@ -237,6 +255,9 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
           <div>
             <p className="text-lg text-oxbowteal md:text-2xl xl:text-4xl pt-2 md:pt-3 xl:pt-4 font-bold">Dashboard</p>
             <p className="text-xs md:text-md xl:text-lg pt-1 md:pt-2 xl:pt-4">{date}</p>
+          </div>
+          <div className="pt-4 print:hidden">
+            <BackendStatus online={backendOnline} lastSync={lastSync} />
           </div>
         </div>
 
@@ -316,6 +337,11 @@ export default function DashboardShopdetail({ params }: DashboardShopdetailProps
             style={{ transform: "rotate(0deg)" }}
           />
           <p className="ml-10 text-oxbowteal  text-lg xl:text-2xl font-bold">{shopnameth || "-"}</p>
+
+          {/* ไฟสถานะ Terminal ของร้าน */}
+          <div className="ml-auto pr-2">
+            <TerminalStatus terminal={terminal} variant="full" />
+          </div>
         </div>
 
         {/* Info Cards Grid - ปรับสีตามรูปตัวอย่าง (HTML Dump) */}
