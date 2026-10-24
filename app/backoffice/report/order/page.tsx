@@ -27,8 +27,10 @@ interface ReportOrder {
   vat7pc: number;
   ordertotaldiscount: number;
   orderpricenet: number;
-  urlfile: string;
-  paymenttype: number;
+  urlfile: string | null;
+  paymenttype: number | null;   // null = ไม่มีประเภทการชำระ (แสดง "-")
+  ordertype?: number;           // 0 = Online, 1 = Offline
+  orderchannel?: string;        // "Online" | "Offline"
 }
 
 interface Shop {
@@ -124,6 +126,14 @@ export default function Reportorder() {
     { value: 3, label: "E-wallet" },
     { value: 4, label: "เงินสด" },
   ];
+
+  // ประเภทการชำระ: ไม่มี / ไม่รู้จัก -> "-"
+  const paymentLabel = (paymenttype: number | null | undefined) =>
+    orderPaymentType.find((p) => p.value === Number(paymenttype))?.label ?? "-";
+
+  // สถานะรายการสั่งซื้อ: ordertype 0 = Online, 1 = Offline
+  const orderChannel = (order: { ordertype?: number; orderchannel?: string }) =>
+    order.orderchannel || (Number(order.ordertype) === 0 ? "Online" : "Offline");
 
   const searchRef = useRef(searchOrder); // สร้าง ref เก็บค่า search
   const periodRef = useRef(period); // สร้าง ref เก็บค่า period
@@ -622,15 +632,16 @@ export default function Reportorder() {
       return;
     }
 
-    const headers = ['เวลา วันที่', 'หมายเลขบิล','ราคารวม', 'Vat 7%', 'ส่วนลด', 'ราคารวมสุทธิ', 'การชำระ'];
+    const headers = ['เวลา วันที่', 'หมายเลขบิล', 'สถานะรายการ', 'ราคารวม', 'Vat 7%', 'ส่วนลด', 'ราคารวมสุทธิ', 'การชำระ'];
     const rows = reportorders.map((order: ReportOrder) => [
       escapeCSV(order.ordertimestamp),
       escapeCSV(order.ordernumber),
+      escapeCSV(orderChannel(order)),
       escapeCSV(order.ordertotalprice),
       escapeCSV(order.vat7pc), // Assuming this is 'ราคารวม'
-      escapeCSV(order.ordertotaldiscount),
+      escapeCSV(Number(order.ordertotaldiscount) || 0),
       escapeCSV(order.orderpricenet),
-      escapeCSV(orderPaymentType[order.paymenttype - 1].label) // Assuming this is 'ยอดรวมย่อย'
+      escapeCSV(paymentLabel(order.paymenttype))
     ]);
 
     const csvContent = [
@@ -764,7 +775,9 @@ export default function Reportorder() {
           // Order Details
           doc.text(`หมายเลขคำสั่งซื้อ: ${receiptOrder.ordernumber}`, margin, yPosition);
           yPosition += lineHeight;
-          doc.text(`หมายเลขใบเสร็จ: ${receiptOrder.receiptnumber}`, margin, yPosition);
+          doc.text(`หมายเลขใบเสร็จ: ${receiptOrder.receiptnumber || "-"}`, margin, yPosition);
+          yPosition += lineHeight;
+          doc.text(`สถานะรายการ: ${orderChannel(receiptOrder)}`, margin, yPosition);
           yPosition += lineHeight+2;
           
           // Financial Details
@@ -792,20 +805,20 @@ export default function Reportorder() {
           yPosition += 2;
 
           // Payment Type
-          doc.text(`ประเภทการชำระเงิน: ${orderPaymentType[receiptOrder.paymenttype - 1].label}`, margin, yPosition);
+          doc.text(`ประเภทการชำระเงิน: ${paymentLabel(receiptOrder.paymenttype)}`, margin, yPosition);
           yPosition += lineHeight * 1.0;
     
     
           doc.text("ยอดชำระ:", margin, yPosition);
-          doc.text(`${receiptOrder.receiptcash.toFixed(2)}`, rightAlignX, yPosition, { align: 'right' });
+          doc.text(`${(Number(receiptOrder.receiptcash) || 0).toFixed(2)}`, rightAlignX, yPosition, { align: 'right' });
           yPosition += lineHeight;
     
           doc.text("ส่วนลด:", margin, yPosition);
-          doc.text(`${receiptOrder.receiptdiscount.toFixed(2)}`, rightAlignX, yPosition, { align: 'right' });
+          doc.text(`${(Number(receiptOrder.receiptdiscount) || 0).toFixed(2)}`, rightAlignX, yPosition, { align: 'right' });
           yPosition += lineHeight;
           
           doc.text("เงินทอน:", margin, yPosition);
-          doc.text(`${receiptOrder.receiptchange.toFixed(2)}`, rightAlignX, yPosition, { align: 'right' });
+          doc.text(`${(Number(receiptOrder.receiptchange) || 0).toFixed(2)}`, rightAlignX, yPosition, { align: 'right' });
           yPosition += lineHeight * 1.5;
     
     
@@ -819,7 +832,7 @@ export default function Reportorder() {
             doc.setFont("helvetica", "bold");
           }
           doc.text("ยอดรวมสุทธิ:", margin, yPosition);
-          doc.text(`${receiptOrder.totalpricenet.toFixed(2)} บาท`, rightAlignX, yPosition, { align: 'right' });
+          doc.text(`${(Number(receiptOrder.totalpricenet) || 0).toFixed(2)} บาท`, rightAlignX, yPosition, { align: 'right' });
     
           // --- Save the PDF ---
           // doc.save(`receipt_${receiptOrder.receiptnumber}.pdf`);
@@ -1116,6 +1129,7 @@ export default function Reportorder() {
                     <th className="h-12 w-[150px] px-2">เวลา วันที่</th>
                     {/* <th className='h-12 w-[120px] px-2'>ร้าน</th> */}
                     <th className="h-12 w-[120px] px-2">หมายเลขบิล</th>
+                    <th className="h-12 w-[110px] px-2">สถานะรายการ</th>
                     <th className="h-12 w-[120px] px-2">ราคารวม</th>
                     {/* <th className="h-12 w-[100px] px-2">Vat 7%</th> */}
                     <th className="h-12 w-[100px] px-2">ส่วนลด</th>
@@ -1142,6 +1156,17 @@ export default function Reportorder() {
                             ? reportorder.ordernumber.slice(0, 30) + "..."
                             : reportorder.ordernumber}
                         </td>
+                        <td className="h-12 px-2 text-center">
+                          <span
+                            className={`inline-block min-w-[72px] px-2 py-0.5 rounded-full text-[14px] font-semibold ${
+                              orderChannel(reportorder) === "Online"
+                                ? "bg-oxbowteal text-white"
+                                : "bg-lessengray text-oxbowteal"
+                            }`}
+                          >
+                            {orderChannel(reportorder)}
+                          </span>
+                        </td>
                         <td className="h-12 px-2 truncate">
                           {Number(reportorder.ordertotalprice).toFixed(2)}
                         </td>
@@ -1149,13 +1174,13 @@ export default function Reportorder() {
                           {Number(reportorder.vat7pc).toFixed(2)}
                         </td> */}
                         <td className="h-12 px-2 text-center">
-                          {Number(reportorder.ordertotaldiscount).toFixed(2)}
+                          {(Number(reportorder.ordertotaldiscount) || 0).toFixed(2)}
                         </td>
                         <td className="h-12 px-2 text-center">
-                          {Number(reportorder.orderpricenet).toFixed(2)}
+                          {(Number(reportorder.orderpricenet) || 0).toFixed(2)}
                         </td>
                         <td className="h-12 px-2 text-center">
-                          {orderPaymentType[reportorder.paymenttype - 1].label}
+                          {paymentLabel(reportorder.paymenttype)}
                         </td>
                         <td className="h-12 px-2 text-center items-center justify-center flex">
                           <button
@@ -1170,7 +1195,7 @@ export default function Reportorder() {
                   ) : (
                     <tr>
                       <td
-                        colSpan={7}
+                        colSpan={8}
                         className="py-4 text-[16px] text-center text-oxbowteal opacity-60"
                       >
                         ไม่พบข้อมูลรายการบิล
