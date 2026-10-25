@@ -583,7 +583,7 @@ export default function Sidebar({ className }: SidebarProps) {
             {/* ตั้งค่าเครื่อง POS (Admin) */}
             {level === "Admin" ? (
               <ButtomSidebar
-                label="ตั้งค่าเครื่อง POS"
+                label="ตั้งค่าเครื่อง"
                 status={currentPathname === "/backoffice/setting/terminal"}
                 hoveraction={hoversidebar}
                 urllink="/backoffice/setting/terminal"
@@ -721,4 +721,4 @@ export default function Sidebar({ className }: SidebarProps) {
             </Modal> */}
     </div>
   );
-}
+}
