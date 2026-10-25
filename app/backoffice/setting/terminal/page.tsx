@@ -265,7 +265,7 @@ export default function TerminalSettingPage() {
               </div>
 
               <button className="btn w-[170px]" onClick={openCreate}>
-                <i className="fa-solid fa-plus mr-2"></i>เพิ่มเครื่อง POS
+                <i className="fa-solid fa-plus mr-2"></i>เพิ่มเครื่อง
               </button>
             </div>
           </div>
