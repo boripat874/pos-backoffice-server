@@ -1083,7 +1083,7 @@ export default function Reportorder() {
               <div className="p-2">
                 <p className="text-lg xl:text-2xl font-bold text-oxbowteal">
                   {" "}
-                  รายงาานสั่งซื้อ
+                  รายงานสั่งซื้อ
                 </p>
               </div>
 
