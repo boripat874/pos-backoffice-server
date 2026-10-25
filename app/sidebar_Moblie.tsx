@@ -62,6 +62,7 @@ export default function Sidebar() {
         || pathname === "/backoffice/report/inventory"
         || pathname === "/backoffice/report/user"
         || pathname === "/backoffice/event-log"
+        || pathname === "/backoffice/setting/terminal"
         || pathname === "/backoffice/notification"
       ) {
 
@@ -553,6 +554,28 @@ export default function Sidebar() {
             </ButtomSidebar>
           ) : null}
 
+          {/* ตั้งค่าเครื่อง POS (Admin) */}
+          {level === "Admin" ? (
+            <ButtomSidebar
+              label="ตั้งค่าเครื่อง POS"
+              status={currentPathname === "/backoffice/setting/terminal"}
+              hoveraction={true}
+              urllink="/backoffice/setting/terminal"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                className={`${
+                  currentPathname === "/backoffice/setting/terminal"
+                    ? "stroke-white"
+                    : "stroke-oxbowteal hover:stroke-deepforest"
+                } fill-transparent stroke-[2px] stroke-linecap-round stroke-linejoin-round`}
+              >
+                <path d="M4 4H20V15H4V4ZM9 19H15M12 15V19M8 8H16M8 11H12" />
+              </svg>
+            </ButtomSidebar>
+          ) : null}
+
           {/* notification */}
           {level === "Owner" || level === "Manager" || level === "Employee" ? (
             <ButtomSidebar
@@ -687,4 +710,4 @@ export default function Sidebar() {
             </Modal> */}
     </div>
   );
-}
+}
