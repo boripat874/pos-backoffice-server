@@ -1379,27 +1379,29 @@ export default function ProductsPage() {
                             </p>
                           </div>
 
-                          <div className="absolute bottom-0 left-0">
-                            {Array.isArray(products) && products.length > 0 ? (
-                              <div className="min-w-[150px] h-[20px] xl:h-[25px] flex flex-row ">
-                                {product.promotion.map(
-                                  (promo: Promotion, index: number) => {
-                                    if (index > 2) return null;
-
-                                    return (
-                                      <div
-                                        key={promo.promotionid}
-                                        className={`flex items-center w-[87px] h-full pl-1 pr-1 bg-[${colorPromotions[index]}] bg-opacity-90 shadow overflow-y-hidden overflow-scroll no-scrollbar`}
-                                      >
-                                        <p className="text-white text-[10px] xl:text-xs">
-                                          {promo.initial}
-                                        </p>
-                                      </div>
-                                    );
-                                  }
-                                )}
-                              </div>
-                            ) : null}
+                          {/* ชื่อย่อโปรโมชัน: แถบไล่สีเข้มด้านล่างรูป + ป้ายสีทึบ ให้อ่านชัดบนทุกรูป */}
+                          <div className="absolute bottom-0 left-0 right-0 px-1.5 pt-6 pb-1.5 bg-gradient-to-t from-black/75 via-black/40 to-transparent">
+                            <div className="flex flex-row flex-wrap items-center gap-1">
+                              {product.promotion.slice(0, 3).map((promo: Promotion, index: number) => (
+                                <span
+                                  key={promo.promotionid}
+                                  title={`${promo.promoname} (${promo.initial}) ลด ${Number(promo.discount)}%`}
+                                  style={{ backgroundColor: colorPromotions[index % colorPromotions.length] }}
+                                  className="inline-flex items-center gap-1 max-w-full px-2 py-0.5 rounded-full text-white text-[11px] md:text-xs xl:text-sm font-bold leading-tight shadow-md ring-1 ring-white/70"
+                                >
+                                  <i className="fa-solid fa-tag text-[9px] xl:text-[11px]"></i>
+                                  <span className="truncate max-w-[90px] xl:max-w-[120px]">{promo.initial}</span>
+                                </span>
+                              ))}
+                              {product.promotion.length > 3 && (
+                                <span
+                                  title={product.promotion.slice(3).map((p) => p.initial).join(", ")}
+                                  className="inline-flex items-center px-2 py-0.5 rounded-full bg-white text-[#e4002b] text-[11px] md:text-xs xl:text-sm font-bold leading-tight shadow-md"
+                                >
+                                  +{product.promotion.length - 3}
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </>
                       )}
