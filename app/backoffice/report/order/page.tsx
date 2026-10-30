@@ -28,7 +28,7 @@ interface ReportOrder {
   ordertotaldiscount: number;
   orderpricenet: number;
   urlfile: string | null;
-  paymenttype: number | null;   // null = ไม่มีประเภทการชำระ (แสดง "-")
+  paymenttype: number | string | null; // number = ประเภทการชำระของ POS (1-4), string = ช่องทางชำระของออเดอร์ Online (เช่น "Credit Card"), null = แสดง "-"
   ordertype?: number;           // 0 = Online, 1 = Offline
   orderchannel?: string;        // "Online" | "Offline"
 }
@@ -127,13 +127,27 @@ export default function Reportorder() {
     { value: 4, label: "เงินสด" },
   ];
 
-  // ประเภทการชำระ: ไม่มี / ไม่รู้จัก -> "-"
-  const paymentLabel = (paymenttype: number | null | undefined) =>
-    orderPaymentType.find((p) => p.value === Number(paymenttype))?.label ?? "-";
+  // ประเภทการชำระ
+  //   ตัวเลข 1-4 (POS)            -> Credit Card / PromptPay / E-wallet / เงินสด
+  //   ข้อความ (ออเดอร์ Online)     -> แสดงตามที่ส่งมา เช่น "Credit Card"
+  //   ไม่มี / ไม่รู้จัก           -> "-"
+  const paymentLabel = (paymenttype: number | string | null | undefined) => {
+    if (paymenttype === null || paymenttype === undefined || paymenttype === "") return "-";
+    if (typeof paymenttype === "string" && !/^\d+$/.test(paymenttype.trim())) return paymenttype.trim();
+    return orderPaymentType.find((p) => p.value === Number(paymenttype))?.label ?? "-";
+  };
 
   // สถานะรายการสั่งซื้อ: ordertype 0 = Online, 1 = Offline
   const orderChannel = (order: { ordertype?: number; orderchannel?: string }) =>
     order.orderchannel || (Number(order.ordertype) === 0 ? "Online" : "Offline");
+
+  // ตัวเลือกร้านพิเศษ (เฉพาะ Admin): ทั้งหมด = ทุกร้าน, Online = ออเดอร์จาก /api/pos/orderinsert
+  const SHOP_ALL = "all";
+  const SHOP_ONLINE = "online";
+  const adminShopOptions = [
+    { value: SHOP_ALL, label: "ทั้งหมด" },
+    { value: SHOP_ONLINE, label: "Online" },
+  ];
 
   const searchRef = useRef(searchOrder); // สร้าง ref เก็บค่า search
   const periodRef = useRef(period); // สร้าง ref เก็บค่า period
@@ -632,9 +646,10 @@ export default function Reportorder() {
       return;
     }
 
-    const headers = ['เวลา วันที่', 'หมายเลขบิล', 'สถานะรายการ', 'ราคารวม', 'Vat 7%', 'ส่วนลด', 'ราคารวมสุทธิ', 'การชำระ'];
+    const headers = ['เวลา วันที่', 'ร้าน', 'หมายเลขบิล', 'สถานะรายการ', 'ราคารวม', 'Vat 7%', 'ส่วนลด', 'ราคารวมสุทธิ', 'การชำระ'];
     const rows = reportorders.map((order: ReportOrder) => [
       escapeCSV(order.ordertimestamp),
+      escapeCSV(order.shopnameth || "-"),
       escapeCSV(order.ordernumber),
       escapeCSV(orderChannel(order)),
       escapeCSV(order.ordertotalprice),
@@ -923,6 +938,7 @@ export default function Reportorder() {
               <Selectshop
                 shopid={shopid}
                 shopslist={shoplist}
+                extraOptions={level === "Admin" ? adminShopOptions : undefined}
                 onChange={(value) => {
                   setShopid(value);
                   shopidRef.current = value;
@@ -989,6 +1005,13 @@ export default function Reportorder() {
 
         </div>
   
+        {/* Online: แสดงข้อมูลในตารางอย่างเดียว ไม่คำนวณยอดรวม */}
+        {shopid === SHOP_ONLINE ? (
+          <div className="w-full mt-2 mr-2 p-3 rounded-lg border border-oxbowteal bg-hoverteal text-oxbowteal text-[14px] xl:text-[16px]">
+            <i className="fa-solid fa-circle-info mr-2"></i>
+            ออเดอร์ Online แสดงรายการในตารางเท่านั้น ไม่คำนวณยอดรวม
+          </div>
+        ) : (
         <div className="w-full grid grid-cols-4 xl:grid-cols-7 mt-2 gap-1 xl:gap-1 pr-2">
           
           {/* รายได้รวมทั้งหมดจากทุกช่องทาง */}
@@ -1069,6 +1092,7 @@ export default function Reportorder() {
             iconpath={"/icon/creait_card.svg"}
           />
         </div>
+)}
 
         {/*table */}
         <div className="mt-2 overflow-auto">
@@ -1127,7 +1151,7 @@ export default function Reportorder() {
                 <thead className="sticky top-0 border-b border-t border-oxbowteal bg-oatmilk  shadow-md ">
                   <tr>
                     <th className="h-12 w-[150px] px-2">เวลา วันที่</th>
-                    {/* <th className='h-12 w-[120px] px-2'>ร้าน</th> */}
+                    <th className="h-12 w-[140px] px-2">ร้าน</th>
                     <th className="h-12 w-[120px] px-2">หมายเลขบิล</th>
                     <th className="h-12 w-[110px] px-2">สถานะรายการ</th>
                     <th className="h-12 w-[120px] px-2">ราคารวม</th>
@@ -1149,6 +1173,11 @@ export default function Reportorder() {
                           {(reportorder.ordertimestamp || "").length > 20
                             ? reportorder.ordertimestamp.slice(0, 20) + "..."
                             : reportorder.ordertimestamp}
+                        </td>
+                        <td className="h-12 px-2 truncate" title={reportorder.shopnameth || ""}>
+                          {(reportorder.shopnameth || "-").length > 30
+                            ? (reportorder.shopnameth || "").slice(0, 30) + "..."
+                            : reportorder.shopnameth || "-"}
                         </td>
                         {/* <td className='h-12 px-2 truncate'>{`ON${Math.floor(Math.random() * 999999999) + 100000000}`}</td> */}
                         <td className="h-12 px-2 truncate">
@@ -1195,7 +1224,7 @@ export default function Reportorder() {
                   ) : (
                     <tr>
                       <td
-                        colSpan={8}
+                        colSpan={9}
                         className="py-4 text-[16px] text-center text-oxbowteal opacity-60"
                       >
                         ไม่พบข้อมูลรายการบิล
