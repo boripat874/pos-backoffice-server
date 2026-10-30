@@ -1000,6 +1000,17 @@ export default function Reportorder() {
             >
               Export to PDF
             </button>
+
+            {/* หมายเหตุการ์ดยอดรวม (เฉพาะ Admin ซึ่งเห็นออเดอร์ Online จาก /api/pos/orderinsert) */}
+            {level === "Admin" && shopid !== SHOP_ONLINE && (
+              <p
+                className="text-[12px] xl:text-[13px] leading-snug text-oxbowteal opacity-80 max-w-[420px]"
+                title="ยอดรวมนับเฉพาะออเดอร์หน้าร้าน (Offline) ที่ออกใบเสร็จแล้ว และไม่ถูกยกเลิก"
+              >
+                <i className="fa-solid fa-circle-info mr-1"></i>
+                ยอดสรุปนับเฉพาะออเดอร์หน้าร้านที่ออกใบเสร็จแล้ว ไม่รวมออเดอร์ Online
+              </p>
+            )}
           </div>
 
 
