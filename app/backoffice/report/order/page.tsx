@@ -780,7 +780,8 @@ export default function Reportorder() {
           // Date and Time
           const orderDate = new Date(receiptOrder.create_at*1000);
           const formattedOrderDate = `${orderDate.getDate()}/${orderDate.getMonth() + 1}/${orderDate.getFullYear()}`;
-          const formattedOrderTime = `${orderDate.getHours()}:${orderDate.getMinutes()}`;
+          // เวลา HH:mm (เติม 0 นำหน้าชั่วโมง/นาทีที่เป็นหลักเดียว เช่น 13:06, 03:28)
+          const formattedOrderTime = `${String(orderDate.getHours()).padStart(2, "0")}:${String(orderDate.getMinutes()).padStart(2, "0")}`;
     
           doc.text(`วันที่: ${formattedOrderDate}`, margin, yPosition);
           yPosition += lineHeight;
