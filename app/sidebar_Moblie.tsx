@@ -10,6 +10,7 @@ import { useEffect,useState,useCallback, useRef } from "react";
 import Image from "next/image";
 import ButtomSidebar from "@/app/components/ButtomSidebar";
 import SubButtomSidebar from "@/app/components/SubButtonSidebar";
+import { startPolling, CHECKLOGIN_INTERVAL_MS, NOTI_UNREAD_INTERVAL_MS, NOTI_REFRESH_EVENT } from "@/app/modules/poll";
 // import { Router } from "next/router";
 // import { set } from "date-fns";
 
@@ -78,17 +79,19 @@ export default function Sidebar() {
 
     }
 
-    const interval1 = setInterval(() => {
-      fetchData1(); // เรียกและตรวจสอบข้อมูล user
-    }, 30000); // ตรวจสอบและอัปเดตทุก 30 วินาที
+    // ตรวจข้อมูล user (checklogin) ทุก 5 นาที และจำนวนแจ้งเตือนทุก 30 วินาที
+    // ยิงเฉพาะตอนเปิดดูแท็บอยู่ ; กลับมาที่แท็บจะดึงทันที
+    const stopPoll1 = startPolling(fetchData1, CHECKLOGIN_INTERVAL_MS);
+    const stopPoll2 = startPolling(fetchData2, NOTI_UNREAD_INTERVAL_MS);
 
-    const interval2 = setInterval(() => {
-      fetchData2(); // ตรวจสอบข้อมูลการแจ้งเตือนใหม่
-    }, 3000); // ตรวจสอบและอัปเดตทุก 3 วินาที
+    // หน้าแจ้งเตือนสั่งอัปเดตจำนวนที่ยังไม่อ่านได้ทันที (หลังเปิดอ่าน / ลบ)
+    const onNotiRefresh = () => fetchData2();
+    window.addEventListener(NOTI_REFRESH_EVENT, onNotiRefresh);
 
     return () => {
-      clearInterval(interval1);
-      clearInterval(interval2);
+      stopPoll1();
+      stopPoll2();
+      window.removeEventListener(NOTI_REFRESH_EVENT, onNotiRefresh);
       if (logoutTextTimerRef.current) {
         clearTimeout(logoutTextTimerRef.current);
       }

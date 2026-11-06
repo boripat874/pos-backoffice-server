@@ -8,6 +8,7 @@ import { config } from "@/app/lib/config";
 import LoadingSpinner from "../../components/LoadingSpinner"
 import Selectdate from '@/app/components/selectdate';
 import Selectshop  from '@/app/components/selectshop';
+import { startPolling, requestNotiRefresh, NOTI_UNREAD_INTERVAL_MS } from "@/app/modules/poll";
 // import Autocomplete from '@mui/material/Autocomplete';
 // import TextField from '@mui/material/TextField';
 // import { error } from 'console';
@@ -85,14 +86,13 @@ export default function Notification() {
       setDate(datenow + " น.");
     }, 2000); // ตรวจสอบและอัปเดตทุก 1 วินาที
 
-    const intervalId2 = setInterval(() => {
-      fetchData();
-    }, 10000); // ตรวจสอบและอัปเดตทุก 10 วินาที
+    // รายการแจ้งเตือน: ทุก 30 วินาที เฉพาะตอนเปิดดูแท็บอยู่
+    const stopPoll = startPolling(() => fetchData(), NOTI_UNREAD_INTERVAL_MS);
 
     // ล้าง interval เมื่อ component unmount
     return () => {
       clearInterval(intervalId);
-      clearInterval(intervalId2);
+      stopPoll();
     };
   }, []);
 
@@ -155,6 +155,7 @@ export default function Notification() {
 
           if (response.status === 200) {
             setNotifications(response.data.result);
+            requestNotiRefresh(); // อัปเดตจำนวนที่ยังไม่อ่านบนเมนู
           } else {
             Swal.fire({
               icon: "error",
@@ -216,6 +217,7 @@ export default function Notification() {
 
       if (response.status === 200) {
         setNotifications(response.data.result);
+        requestNotiRefresh(); // เปิดดูแล้ว = อ่านแล้ว -> อัปเดตจำนวนบนเมนู
       } else {
         Swal.fire({
           icon: "error",
