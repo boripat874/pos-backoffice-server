@@ -31,6 +31,26 @@ interface ReportOrder {
   paymenttype: number | string | null; // number = ประเภทการชำระของ POS (1-4), string = ช่องทางชำระของออเดอร์ Online (เช่น "Credit Card"), null = แสดง "-"
   ordertype?: number;           // 0 = Online, 1 = Offline
   orderchannel?: string;        // "Online" | "Offline"
+  // แบ่งชำระ / คืนเงิน (ออเดอร์ Offline)
+  issplit?: boolean;
+  paymentstatus?: number | null; // 1 = ชำระครบ, 3 = คืนเงินแล้ว
+  paymentstatusname?: string | null;
+  isrefunded?: boolean;
+  refundreason?: string | null;
+  refund_at?: string | null;
+  payments?: PaymentLine[];
+}
+
+// แต่ละส่วนที่ชำระ (บิลช่องทางเดียว = 1 ส่วน, แบ่งชำระ = 2-3 ส่วน)
+interface PaymentLine {
+  paymenttype: number;
+  paymenttypename: string | null;
+  amount: number;
+  cashreceived: number;
+  cashchange: number;
+  transactionid: string;
+  refno: string | null;
+  linestatus: number;
 }
 
 interface Shop {
@@ -135,6 +155,15 @@ export default function Reportorder() {
     if (paymenttype === null || paymenttype === undefined || paymenttype === "") return "-";
     if (typeof paymenttype === "string" && !/^\d+$/.test(paymenttype.trim())) return paymenttype.trim();
     return orderPaymentType.find((p) => p.value === Number(paymenttype))?.label ?? "-";
+  };
+
+  // รายละเอียดการชำระ (tooltip) : ช่องทาง ยอด และเลขธุรกรรม
+  const paymentDetail = (order: ReportOrder) => {
+    const lines = order.payments || [];
+    if (!lines.length) return paymentLabel(order.paymenttype);
+    return lines
+      .map((p) => `${p.paymenttypename || paymentLabel(p.paymenttype)} ${(Number(p.amount) || 0).toFixed(2)} (${p.transactionid})`)
+      .join("\n");
   };
 
   // สถานะรายการสั่งซื้อ: ordertype 0 = Online, 1 = Offline
@@ -646,7 +675,7 @@ export default function Reportorder() {
       return;
     }
 
-    const headers = ['เวลา วันที่', 'ร้าน', 'หมายเลขบิล', 'สถานะรายการ', 'ราคารวม', 'Vat 7%', 'ส่วนลด', 'ราคารวมสุทธิ', 'การชำระ'];
+    const headers = ['เวลา วันที่', 'ร้าน', 'หมายเลขบิล', 'สถานะรายการ', 'ราคารวม', 'Vat 7%', 'ส่วนลด', 'ราคารวมสุทธิ', 'การชำระ', 'สถานะการชำระ', 'เลขธุรกรรม'];
     const rows = reportorders.map((order: ReportOrder) => [
       escapeCSV(order.ordertimestamp),
       escapeCSV(order.shopnameth || "-"),
@@ -656,7 +685,9 @@ export default function Reportorder() {
       escapeCSV(order.vat7pc), // Assuming this is 'ราคารวม'
       escapeCSV(Number(order.ordertotaldiscount) || 0),
       escapeCSV(order.orderpricenet),
-      escapeCSV(paymentLabel(order.paymenttype))
+      escapeCSV(paymentLabel(order.paymenttype)),
+      escapeCSV(order.isrefunded ? `คืนเงินแล้ว${order.refundreason ? ` (${order.refundreason})` : ""}` : (order.paymentstatusname || "-")),
+      escapeCSV((order.payments || []).map((p) => p.transactionid).join(" | ") || "-")
     ]);
 
     const csvContent = [
@@ -699,7 +730,10 @@ export default function Reportorder() {
         const baseHeight = 90; // ความสูงพื้นฐาน (header, footer ฯลฯ)
         const lineHeight = 5;  // ความสูงแต่ละบรรทัด
         const productLines = receiptOrder?.products?.length || 0;
-        const extraHeight = productLines * lineHeight;
+        const payLines: PaymentLine[] = receiptOrder?.payments || [];
+        // แบ่งชำระ: 1 บรรทัดต่อช่องทาง + เลขธุรกรรม ; คืนเงิน: 3 บรรทัด
+        const paymentExtra = (payLines.length > 1 ? payLines.length * 2 : 1) + (receiptOrder?.isrefunded ? 3 : 0);
+        const extraHeight = (productLines + paymentExtra) * lineHeight;
         const totalHeight = baseHeight + extraHeight;
 
         const doc = new jsPDF({
@@ -821,11 +855,33 @@ export default function Reportorder() {
           yPosition += 2;
 
           // Payment Type
-          doc.text(`ประเภทการชำระเงิน: ${paymentLabel(receiptOrder.paymenttype)}`, margin, yPosition);
-          yPosition += lineHeight * 1.0;
+          if (payLines.length > 1) {
+            // แบ่งชำระ: แสดงทีละช่องทาง
+            doc.text("ประเภทการชำระเงิน: แบ่งชำระ", margin, yPosition);
+            yPosition += lineHeight;
+            payLines.forEach((p) => {
+              doc.text(`- ${p.paymenttypename || paymentLabel(p.paymenttype)}`, margin, yPosition);
+              doc.text(`${(Number(p.amount) || 0).toFixed(2)}`, rightAlignX, yPosition, { align: 'right' });
+              yPosition += lineHeight;
+              doc.setFontSize(10);
+              doc.text(`   เลขธุรกรรม: ${p.transactionid}${p.refno ? ` (Ref ${p.refno})` : ""}`, margin, yPosition - 1);
+              doc.setFontSize(12);
+              yPosition += lineHeight * 0.8;
+            });
+          } else {
+            doc.text(`ประเภทการชำระเงิน: ${paymentLabel(receiptOrder.paymenttype)}`, margin, yPosition);
+            yPosition += lineHeight * 1.0;
+            if (payLines.length === 1) {
+              doc.setFontSize(10);
+              doc.text(`เลขธุรกรรม: ${payLines[0].transactionid}${payLines[0].refno ? ` (Ref ${payLines[0].refno})` : ""}`, margin, yPosition - 1);
+              doc.setFontSize(12);
+              yPosition += lineHeight * 0.8;
+            }
+          }
     
     
-          doc.text("ยอดชำระ:", margin, yPosition);
+          // ยอดชำระ / เงินทอน : แบ่งชำระ = เฉพาะส่วนที่เป็นเงินสด
+          doc.text(payLines.length > 1 ? "รับเงินสด:" : "ยอดชำระ:", margin, yPosition);
           doc.text(`${(Number(receiptOrder.receiptcash) || 0).toFixed(2)}`, rightAlignX, yPosition, { align: 'right' });
           yPosition += lineHeight;
     
@@ -849,6 +905,20 @@ export default function Reportorder() {
           }
           doc.text("ยอดรวมสุทธิ:", margin, yPosition);
           doc.text(`${(Number(receiptOrder.totalpricenet) || 0).toFixed(2)} บาท`, rightAlignX, yPosition, { align: 'right' });
+
+          // คืนเงินแล้ว
+          if (receiptOrder.isrefunded) {
+            yPosition += lineHeight * 1.5;
+            doc.setFontSize(12);
+            doc.setTextColor(228, 0, 43);
+            doc.text("สถานะ: ยกเลิก / คืนเงินแล้ว", margin, yPosition);
+            yPosition += lineHeight;
+            doc.text(`เวลา: ${receiptOrder.refund_at || "-"}`, margin, yPosition);
+            yPosition += lineHeight;
+            const reason = String(receiptOrder.refundreason || "-");
+            doc.text(`เหตุผล: ${reason.length > 30 ? reason.slice(0, 30) + "..." : reason}`, margin, yPosition);
+            doc.setTextColor(0, 0, 0);
+          }
     
           // --- Save the PDF ---
           // doc.save(`receipt_${receiptOrder.receiptnumber}.pdf`);
@@ -1222,7 +1292,21 @@ export default function Reportorder() {
                           {(Number(reportorder.orderpricenet) || 0).toFixed(2)}
                         </td>
                         <td className="h-12 px-2 text-center">
-                          {paymentLabel(reportorder.paymenttype)}
+                          {/* แบ่งชำระแสดงเป็น "เงินสด 50 + PromptPay 50" (ยาวเกินจะตัด และแสดงเต็มเมื่อวางเมาส์) */}
+                          <div
+                            className="max-w-[220px] mx-auto truncate"
+                            title={paymentDetail(reportorder)}
+                          >
+                            {paymentLabel(reportorder.paymenttype)}
+                          </div>
+                          {reportorder.isrefunded && (
+                            <span
+                              className="inline-block mt-0.5 px-2 py-0.5 rounded-full text-[12px] font-semibold bg-[#e4002b] text-white"
+                              title={`คืนเงินแล้ว${reportorder.refund_at ? ` ${reportorder.refund_at}` : ""}${reportorder.refundreason ? ` : ${reportorder.refundreason}` : ""}`}
+                            >
+                              คืนเงิน
+                            </span>
+                          )}
                         </td>
                         <td className="h-12 px-2 text-center items-center justify-center flex">
                           <button

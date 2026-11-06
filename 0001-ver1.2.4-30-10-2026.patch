@@ -1,0 +1,33 @@
+From b2b56dc0f55e5b945dd93180292fbbc4cc8f7c6d Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Fri, 30 Oct 2026 14:24:26 +0700
+Subject: [PATCH] ver1.2.4 30-10-2026
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- ใบเสร็จ PDF: เวลาเติม 0 นำหน้าชั่วโมง/นาที (13:6 -> 13:06, 3:28 -> 03:28)
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01TnyY8ai7Cc6J2wYBQvjKFJ
+---
+ app/backoffice/report/order/page.tsx | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/app/backoffice/report/order/page.tsx b/app/backoffice/report/order/page.tsx
+index 588cb42..e5becea 100644
+--- a/app/backoffice/report/order/page.tsx
++++ b/app/backoffice/report/order/page.tsx
+@@ -780,7 +780,8 @@ export default function Reportorder() {
+           // Date and Time
+           const orderDate = new Date(receiptOrder.create_at*1000);
+           const formattedOrderDate = `${orderDate.getDate()}/${orderDate.getMonth() + 1}/${orderDate.getFullYear()}`;
+-          const formattedOrderTime = `${orderDate.getHours()}:${orderDate.getMinutes()}`;
++          // เวลา HH:mm (เติม 0 นำหน้าชั่วโมง/นาทีที่เป็นหลักเดียว เช่น 13:06, 03:28)
++          const formattedOrderTime = `${String(orderDate.getHours()).padStart(2, "0")}:${String(orderDate.getMinutes()).padStart(2, "0")}`;
+     
+           doc.text(`วันที่: ${formattedOrderDate}`, margin, yPosition);
+           yPosition += lineHeight;
+-- 
+2.43.0
+
