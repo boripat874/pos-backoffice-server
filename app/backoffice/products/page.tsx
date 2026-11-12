@@ -52,6 +52,7 @@ export default function ProductsPage() {
     update_PRemain: string;
     promotion: Array<Promotion>;
     additional: [string];
+    synconline?: boolean; // ส่งข้อมูลไป ZooApp แล้ว (false = มีเฉพาะฝั่ง POS)
   }
 
   // ใช้สําหรับเก็บข้อมูลร้านค้า
@@ -102,6 +103,9 @@ export default function ProductsPage() {
   const [productremain, setProductremain] = useState(0); // เก็บจำนวนคงเหลือ
   const [update_PRemain, setUpdate_PRemain] = useState("-");
   const [additional, setAdditional] = useState<string[]>([]);
+  const [synconline, setSynconline] = useState(true); // checkbox "sync online" ตอนเพิ่มสินค้า (ค่าเริ่มต้น = ส่ง)
+  const [editSynconline, setEditSynconline] = useState(true); // สถานะ sync online ของสินค้าที่กำลังแก้ไข
+  const [syncingId, setSyncingId] = useState(""); // สินค้าที่กำลัง sync online
 
   const [search, setSearch] = useState(""); // เก็บคำค้นหา
   const [categorylist, setCategorylist] = useState<Category[]>([]);
@@ -117,6 +121,15 @@ export default function ProductsPage() {
 
   const shopidRef = useRef(shopid); 
   const searchRef = useRef(search);
+
+  // ข้อความ error จาก API (เช่น ส่งข้อมูลไป ZooApp ไม่สำเร็จ)
+  const apiErrorMessage = (err: unknown) => {
+    if (axios.isAxiosError(err)) {
+      const m = (err.response?.data as { message?: string } | undefined)?.message;
+      if (m) return m;
+    }
+    return err instanceof Error ? err.message : 'เกิดข้อผิดพลาดที่ไม่รู้จัก';
+  };
   // const [uomtext, setUomtext] = useState("จาน");
 
   useEffect(() => {
@@ -497,6 +510,7 @@ export default function ProductsPage() {
         setProductCgtyId(product.productCgtyId ?? '0');
         setImagePath(product.productimage ?? '');
         setAdditional(product.additional ?? []);
+        setEditSynconline(product.synconline !== false);
         // setCategoryid(product.productCgtyId ?? '');
         
         handleOpenModal();
@@ -572,13 +586,23 @@ export default function ProductsPage() {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           },
         }
-      ).then(async () => {
-        Swal.fire({
-          icon: 'success',
-          title: 'บันทึกข้อมูลเรียบร้อย',
-          text: 'ข้อมูลถูกบันทึกเรียบร้อย',
-          timer: 2000
-        });
+      ).then(async (res) => {
+        const msg: string = res?.data?.message || '';
+        if (msg.includes('ไม่พบสินค้านี้ใน ZooApp')) {
+          // ZooApp ไม่มีสินค้านี้ : บันทึกฝั่ง POS แล้ว และเปลี่ยนเป็นยังไม่ sync online
+          Swal.fire({
+            icon: 'warning',
+            title: 'บันทึกข้อมูลเรียบร้อย',
+            text: 'ไม่พบสินค้านี้ใน ZooApp จึงเปลี่ยนเป็น "ยังไม่ sync online" กด sync online เพื่อส่งข้อมูลใหม่ได้',
+          });
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: 'บันทึกข้อมูลเรียบร้อย',
+            text: editSynconline ? 'ข้อมูลถูกบันทึกเรียบร้อย (อัปเดตที่ ZooApp แล้ว)' : 'ข้อมูลถูกบันทึกเรียบร้อย',
+            timer: 2000
+          });
+        }
       })
       // if (id === 0) {
         //     // เพิ่มรายการ
@@ -594,26 +618,18 @@ export default function ProductsPage() {
           
         } catch (err: unknown) {
             
-          if (err instanceof Error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'ผิดพลาด',
-                text: err.message,
-            });
-          } else {
-            // Handle cases where err is not an Error object
-            Swal.fire({
-                icon: 'error',
-                title: 'ผิดพลาด',
-                text: 'เกิดข้อผิดพลาดที่ไม่รู้จัก',
-            });
-          }
+          Swal.fire({
+              icon: 'error',
+              title: 'ผิดพลาด',
+              text: apiErrorMessage(err),
+          });
         }
     }
     
     const handleOpenCreate = () => {
 
       handleClear();
+      setSynconline(true); // ค่าเริ่มต้น : ส่งข้อมูลไปสร้างที่ ZooApp
 
       if(categorylist.length > 0){
         setProductCgtyId(categorylist[0].productCgtyId);
@@ -669,6 +685,7 @@ export default function ProductsPage() {
           productimage: image,
           productCgtyId: productCgtyId,
           additional: additional.join(''), // ได้ string ที่ต่อกันหมด
+          synconline: synconline ? 'true' : 'false', // sync online : ส่งไปสร้างที่ ZooApp (ทำที่ POS Server)
           // productCgtyId: categoryid
         }
 
@@ -693,7 +710,7 @@ export default function ProductsPage() {
           Swal.fire({
             icon: 'success',
             title: 'บันทึกข้อมูลเรียบร้อย',
-            text: 'ข้อมูลถูกเพิ่มเรียบร้อย',
+            text: synconline ? 'ข้อมูลถูกเพิ่มเรียบร้อย (สร้างที่ ZooApp แล้ว)' : 'ข้อมูลถูกเพิ่มเรียบร้อย (ยังไม่ sync online)',
             timer: 2000
           });
         })
@@ -705,20 +722,11 @@ export default function ProductsPage() {
 
       } catch (err: unknown) {
             
-        if (err instanceof Error) {
-          Swal.fire({
-              icon: 'error',
-              title: 'ผิดพลาด',
-              text: err.message,
-          });
-        } else {
-          // Handle cases where err is not an Error object
-          Swal.fire({
-              icon: 'error',
-              title: 'ผิดพลาด',
-              text: 'เกิดข้อผิดพลาดที่ไม่รู้จัก',
-          });
-        }
+        Swal.fire({
+            icon: 'error',
+            title: 'ผิดพลาด',
+            text: apiErrorMessage(err),
+        });
       }
         
     }
@@ -728,7 +736,9 @@ export default function ProductsPage() {
       // แสดงกล่องข้อความยืนยันก่อนลบ
       const result = await Swal.fire({
         title: 'ยืนยันการลบ',
-        text: 'คุณแน่ใจหรือไม่ว่าต้องการลบร้านค้านี้?',
+        text: editSynconline
+          ? 'คุณแน่ใจหรือไม่ว่าต้องการลบสินค้านี้? (สินค้านี้ sync online แล้ว จะถูกลบที่ ZooApp ด้วย)'
+          : 'คุณแน่ใจหรือไม่ว่าต้องการลบสินค้านี้? (ลบเฉพาะฝั่ง POS)',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -779,21 +789,64 @@ export default function ProductsPage() {
   
         } catch (err: unknown) {
               
-          if (err instanceof Error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'ผิดพลาด',
-                text: err.message,
-            });
-          } else {
-            // Handle cases where err is not an Error object
-            Swal.fire({
-                icon: 'error',
-                title: 'ผิดพลาด',
-                text: 'เกิดข้อผิดพลาดที่ไม่รู้จัก',
-            });
-          }
+          Swal.fire({
+              icon: 'error',
+              title: 'ผิดพลาด',
+              text: apiErrorMessage(err),
+          });
         }
+      }
+    }
+
+    // sync online ภายหลัง : ส่งสินค้าที่ยังไม่ได้ sync ไปสร้างที่ ZooApp
+    const handleSyncOnline = async (product: Product) => {
+
+      const result = await Swal.fire({
+        title: 'sync online',
+        text: `ส่งข้อมูลสินค้า "${product.productnameth}" ไปสร้างที่ ZooApp?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#188875',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'sync online',
+        cancelButtonText: 'ยกเลิก',
+      });
+
+      if (!result.isConfirmed) return;
+
+      setSyncingId(product.productid);
+      try {
+        await axios.post(`${config.apiUrl}/backoffice/productsynconline`,
+          { productid: product.productid },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'X-API-KEY': config.apiKey,
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+          }
+        );
+
+        Swal.fire({
+          icon: 'success',
+          title: 'sync online เรียบร้อย',
+          text: `สร้างสินค้า "${product.productnameth}" ที่ ZooApp แล้ว`,
+          timer: 2000
+        });
+
+        if (isOpen && productid === product.productid) {
+          setEditSynconline(true);
+        }
+        fetchData();
+
+      } catch (err: unknown) {
+        Swal.fire({
+          icon: 'error',
+          title: 'sync online ไม่สำเร็จ',
+          text: apiErrorMessage(err),
+        });
+      } finally {
+        setSyncingId("");
       }
     }
 
@@ -1434,6 +1487,33 @@ export default function ProductsPage() {
                             )}
                           </p>
                         </div>
+
+                        {/* สถานะ sync online (ZooApp) */}
+                        {product.synconline === false ? (
+                          level !== "Employee" ? (
+                            <button
+                              type="button"
+                              title="สินค้านี้มีเฉพาะฝั่ง POS กดเพื่อส่งไปสร้างที่ ZooApp"
+                              disabled={syncingId === product.productid}
+                              onClick={() => handleSyncOnline(product)}
+                              className="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-[#fe5000] text-[#fe5000] text-[11px] xl:text-xs font-bold hover:bg-[#fe5000] hover:text-white disabled:opacity-60"
+                            >
+                              <i className={`fa-solid ${syncingId === product.productid ? "fa-spinner fa-spin" : "fa-cloud-arrow-up"}`}></i>
+                              {syncingId === product.productid ? "กำลัง sync..." : "sync online"}
+                            </button>
+                          ) : (
+                            <span className="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gray-200 text-gray-600 text-[11px] xl:text-xs">
+                              <i className="fa-solid fa-cloud"></i> ยังไม่ sync online
+                            </span>
+                          )
+                        ) : (
+                          <span
+                            title="สินค้านี้มีอยู่ใน ZooApp แล้ว"
+                            className="mt-1 inline-flex items-center gap-1 text-[#009f4d] text-[11px] xl:text-xs"
+                          >
+                            <i className="fa-solid fa-cloud"></i> sync online แล้ว
+                          </span>
+                        )}
                       </div>
                     </div>
 
@@ -1754,6 +1834,29 @@ export default function ProductsPage() {
               {/* <div>หน่วย</div>
             <input type="text" value={uomtext} onChange={(e) => setUomtext(e.target.value)} /> */}
             </div>
+            {/* สถานะ sync online ของสินค้านี้ */}
+            <div className={`mt-2 px-3 py-2 rounded-md text-sm flex flex-row flex-wrap items-center gap-2 ${editSynconline ? "bg-[#009f4d]/10 text-[#00753a]" : "bg-[#fe5000]/10 text-[#b33a00]"}`}>
+              <i className="fa-solid fa-cloud"></i>
+              {editSynconline ? (
+                <span>sync online แล้ว : การแก้ไข / ลบ จะส่งไปที่ ZooApp ด้วย</span>
+              ) : (
+                <>
+                  <span>ยังไม่ sync online : แก้ไข / ลบ เฉพาะฝั่ง POS</span>
+                  <button
+                    type="button"
+                    className="ml-auto inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-[#fe5000] text-[#fe5000] text-xs font-bold hover:bg-[#fe5000] hover:text-white disabled:opacity-60"
+                    disabled={syncingId === productid}
+                    onClick={() => {
+                      const p = products.find((x) => x.productid === productid);
+                      if (p) handleSyncOnline(p);
+                    }}
+                  >
+                    <i className={`fa-solid ${syncingId === productid ? "fa-spinner fa-spin" : "fa-cloud-arrow-up"}`}></i>
+                    {syncingId === productid ? "กำลัง sync..." : "sync online"}
+                  </button>
+                </>
+              )}
+            </div>
             <div className="w-full mt-2 border-t-2 border-gray-300 pt-2 flex flex-row justify-start items-center">
               <button className="btn mr-2" onClick={handleEditSave}>
                 <i className="fa-solid fa-save mr-2"></i>
@@ -2043,6 +2146,23 @@ export default function ProductsPage() {
               {/* <div>หน่วย</div>
               <input type="text" value={uomtext} onChange={(e) => setUomtext(e.target.value)} /> */}
             </div>
+            {/* sync online : ส่งข้อมูลสินค้าไปสร้างที่ ZooApp ด้วย (ค่าเริ่มต้น = ส่ง) */}
+            <label className="mt-2 flex flex-row items-start gap-2 cursor-pointer select-none text-oxbowteal">
+              <input
+                type="checkbox"
+                className="mt-1 w-4 h-4 accent-[#2B5F60]"
+                checked={synconline}
+                onChange={(e) => setSynconline(e.target.checked)}
+              />
+              <span>
+                <span className="font-bold">sync online</span>
+                <span className="block text-xs opacity-80">
+                  {synconline
+                    ? "ส่งข้อมูลไปสร้างสินค้าที่ ZooApp ด้วย"
+                    : "สร้างเฉพาะฝั่ง POS (กด sync online ที่สินค้าภายหลังได้)"}
+                </span>
+              </span>
+            </label>
             <div className="mt-2 border-t-2 border-gray-300 pt-2">
               <button className="btn mr-2" onClick={handleCreate}>
                 <i className="fa-solid fa-save mr-2"></i>

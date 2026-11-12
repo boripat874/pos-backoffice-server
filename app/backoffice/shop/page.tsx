@@ -62,8 +62,13 @@ export default function ShopPage() {
 
   const shoptypedatalist = [
     { value: "FOOD", label: "อาหาร" },
-    { value: "SOUVENIRS", label: "ของฝาก" },
+    { value: "SOUVENIRS", label: "ของที่ระลึก" },
+    { value: "TICKET", label: "ขายตั๋ว" },
   ];
+
+  // แสดงชื่อประเภทร้านภาษาไทย (ค่าที่ไม่รู้จักแสดงตามที่บันทึกไว้)
+  const shoptypeLabel = (value: string) =>
+    shoptypedatalist.find((t) => t.value === (value || "").trim().toUpperCase())?.label || value || "";
 
   const [level, setLevel] = useState('');
 
@@ -1367,7 +1372,7 @@ export default function ShopPage() {
                     </td>
                     <td className="h-[48px] w-[190px]">{(shop.shopnameth || "").length > 30 ? `${shop.shopnameth.substring(0, 30)}...` : shop.shopnameth}</td>
                     <td className="h-[48px] w-[190px]">{(shop.shopnameeng || "").length > 30 ? `${shop.shopnameeng.substring(0, 30)}...` : shop.shopnameeng}</td>
-                    <td className="h-[48px] w-[140px]">{(shop.shoptype || "").length > 20 ? `${shop.shoptype.substring(0, 20)}...` : shop.shoptype}</td>
+                    <td className="h-[48px] w-[140px]">{shoptypeLabel(shop.shoptype).length > 20 ? `${shoptypeLabel(shop.shoptype).substring(0, 20)}...` : shoptypeLabel(shop.shoptype)}</td>
                     <td className="h-[48px] w-[120px]">{(shop.shopopentime || "").length > 20 ? `${shop.shopopentime.substring(0, 20)}...` : shop.shopopentime}</td>
                     <td className="h-[48px] w-[120px]">{(shop.shopclosetime || "").length > 20 ? `${shop.shopclosetime.substring(0, 20)}...` : shop.shopclosetime}</td>
                     <td className="h-[48px] w-[130px]">
